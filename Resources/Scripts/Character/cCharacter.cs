@@ -70,7 +70,7 @@ public class cCharacter : MonoBehaviour
         nickName = pNickName;
         damage = pDamage;
         maxMoveSpeed = pMaxMoveSpeed;
-        curMoveSpeed = maxMoveSpeed;
+        curMoveSpeed = 0;
         maxHp = pMaxHp;
         curHp = pCurHp;
         dir = Vector3.right;

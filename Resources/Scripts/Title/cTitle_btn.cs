@@ -9,6 +9,11 @@ public class cTitle_btn : MonoBehaviour
     private float alpha;
     private bool isTransparent;
 
+    private void Start()
+    {
+        this.GetComponent<Button>().onClick.AddListener(() => cUtil._sm.ChangeScene("Main"));
+    }
+
     private void FixedUpdate()
     {
         if(isTransparent == false)
