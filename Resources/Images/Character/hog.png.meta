@@ -1,0 +1,352 @@
+fileFormatVersion: 2
+guid: 696a9d7255f4ee64480c1328895df2bd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8047294905370001330
+    second: hog_rightear
+  - first:
+      213: 1208556011445059488
+    second: hog_leftear
+  - first:
+      213: 1140723338406680974
+    second: hog_tail
+  - first:
+      213: -4327632892227126592
+    second: hog_eye
+  - first:
+      213: 3872503768117884370
+    second: hog_body
+  - first:
+      213: -7829455062515814437
+    second: hog_righttooth
+  - first:
+      213: -3923247252970127815
+    second: hog_lefttooth
+  - first:
+      213: -3632056035104647467
+    second: hog_rightfrontleg
+  - first:
+      213: 2607002018597718634
+    second: hog_leftfrontleg
+  - first:
+      213: -8102333743355332402
+    second: hog_righthindleg
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: hog_rightear
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 638
+        width: 135
+        height: 87
+      alignment: 9
+      pivot: {x: 0.4888889, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29caaab7e16d4954db4fe678a203c921
+      internalID: -8047294905370001330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_leftear
+      rect:
+        serializedVersion: 2
+        x: 205.49998
+        y: 644
+        width: 129.00002
+        height: 90
+      alignment: 9
+      pivot: {x: 0.48837215, y: 0.51111114}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e08257f914637e4bb449fd754094a02
+      internalID: 1208556011445059488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_tail
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 655
+        width: 154
+        height: 86
+      alignment: 9
+      pivot: {x: 0.52272725, y: 0.5406977}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4ff76d8f5e789043921052d6a236eb2
+      internalID: 1140723338406680974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_eye
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 421
+        width: 107
+        height: 91
+      alignment: 9
+      pivot: {x: 0.49999997, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 572e748c05aaf3b4db36883f4cefc49e
+      internalID: -4327632892227126592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_body
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 162
+        width: 600
+        height: 470
+      alignment: 9
+      pivot: {x: 0.5058333, y: 0.49999997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e655c21293ad7504d847fb1f52452965
+      internalID: 3872503768117884370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_righttooth
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 221.00002
+        width: 140
+        height: 156.99998
+      alignment: 9
+      pivot: {x: 0.475, y: 0.49999994}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 712613893ff33bf489811e97618a439f
+      internalID: -7829455062515814437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_lefttooth
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 41
+        width: 134
+        height: 147
+      alignment: 9
+      pivot: {x: 0.4738806, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 016f30f2544d8be43bd110b6fa48ad96
+      internalID: -3923247252970127815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_rightfrontleg
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 0
+        width: 131
+        height: 100.00001
+      alignment: 9
+      pivot: {x: 0.5, y: 0.47499993}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82c3cd3c463f9744881d95cc46a3a2aa
+      internalID: -3632056035104647467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_leftfrontleg
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 0
+        width: 117
+        height: 82
+      alignment: 9
+      pivot: {x: 0.5, y: 0.46951216}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2714fd2574a73442b9bec8fe08a059f
+      internalID: 2607002018597718634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hog_righthindleg
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 0
+        width: 134
+        height: 101.5
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4679803}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4878cadbbbfd9ea4fac3a9ee3e41faf5
+      internalID: -8102333743355332402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 873a87d0dcef1164c95e8e6c41a1a972
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637085498524564231
+  assetBundleName: 
+  assetBundleVariant: 

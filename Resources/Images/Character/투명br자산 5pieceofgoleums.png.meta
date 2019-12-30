@@ -1,0 +1,280 @@
+fileFormatVersion: 2
+guid: 8356ed62ce7aa434cbaa2e9bc8f6f7df
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7625274180860227676
+    second: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_0"
+  - first:
+      213: 551470679018299185
+    second: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_1"
+  - first:
+      213: -5777972302549233346
+    second: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_2"
+  - first:
+      213: -3762136800623905289
+    second: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_3"
+  - first:
+      213: -2584163909549527063
+    second: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_4"
+  - first:
+      213: -2171348441576885337
+    second: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_5"
+  - first:
+      213: 695792850192630126
+    second: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_6"
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_0"
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 593
+        width: 41
+        height: 34
+      alignment: 9
+      pivot: {x: 0.49999997, y: 0.60294116}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9fe6759be64ec8438b38f6f0a614f67
+      internalID: 7625274180860227676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_1"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 296
+        width: 98
+        height: 79
+      alignment: 9
+      pivot: {x: 0.4642857, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f965c1ef3b59da4ca94a3da7a4e07f0
+      internalID: 551470679018299185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_2"
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 174
+        width: 501
+        height: 403
+      alignment: 9
+      pivot: {x: 0.506986, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05db66ee365928945be97c874f58301d
+      internalID: -5777972302549233346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_3"
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 0
+        width: 91
+        height: 98
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4642857}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 965a0f1473f027242a3d3ba95f29c9e3
+      internalID: -3762136800623905289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_4"
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 0
+        width: 87
+        height: 74
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4527027}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10bfd5221b65a0449a2f0a0c18a99558
+      internalID: -2584163909549527063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_5"
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 0
+        width: 54
+        height: 88
+      alignment: 9
+      pivot: {x: 0.5, y: 0.46022728}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f6bec2c30e55aa48bd09911b14f5aa6
+      internalID: -2171348441576885337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\uD22C\uBA85br\uC790\uC0B0 5pieceofgoleums_6"
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 0
+        width: 58
+        height: 86
+      alignment: 9
+      pivot: {x: 0.5, y: 0.47093022}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b942b340e334a7a448333ed59b868a3f
+      internalID: 695792850192630126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: cacbfee6c70148d419a04886ef2d35ac
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637054380369597135
+  assetBundleName: 
+  assetBundleVariant: 
