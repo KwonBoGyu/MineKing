@@ -204,6 +204,27 @@ public class cJoystick : MonoBehaviour
 
         if (scr_player.GetStatus() == CHARACTERSTATUS.ATTACK)
             scr_player.SetCurMoveSpeed(0);
+
+        if (scr_player.isGrounded.Equals(true) &&
+            scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
+        {
+            if (scr_player.GetCharDir().Equals(CHARDIRECTION.UPRIGHT) ||
+                scr_player.GetCharDir().Equals(CHARDIRECTION.RIGHT) ||
+                scr_player.GetCharDir().Equals(CHARDIRECTION.UPLEFT) ||
+                scr_player.GetCharDir().Equals(CHARDIRECTION.LEFT))
+                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+            else if (scr_player.GetCharDir().Equals(CHARDIRECTION.DOWNRIGHT) ||
+                scr_player.GetCharDir().Equals(CHARDIRECTION.DOWNLEFT))
+            {
+                scr_player.LookDown(true);
+                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() * 0.5f);
+            }
+        }
+        else if(scr_player.isGrounded.Equals(false))
+        {
+            scr_player.LookDown(false);
+            scr_player.LookUp(false);
+        }
     }
 
     public void PointerDown(BaseEventData _data)
@@ -267,6 +288,7 @@ public class cJoystick : MonoBehaviour
         scr_player.SetCurMoveSpeed(0);
         scr_player.LookUp(false);
         scr_player.LookDown(false);
+        scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
     }
 
     public void PointerUp(BaseEventData _data)
@@ -279,6 +301,7 @@ public class cJoystick : MonoBehaviour
         scr_player.SetCurMoveSpeed(0);
         scr_player.LookUp(false);
         scr_player.LookDown(false);
+        scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
     }
 
     private void Jump()
@@ -387,10 +410,11 @@ public class cJoystick : MonoBehaviour
                 //로프가 없을 때
                 else
                 {
+                    scr_player.SetCurMoveSpeed(0);
+
                     if (scr_player.isGrounded.Equals(true))
                     {
                         scr_player.LookUp(true);
-                        scr_player.SetCurMoveSpeed(0);
                     }
                 }
             }
@@ -436,21 +460,29 @@ public class cJoystick : MonoBehaviour
             _player.transform.localScale = new Vector3(-1, 1, 1);
 
             scr_player.LookUp(false);
+            if(scr_player.isGrounded.Equals(false))
+                scr_player.LookDown(false);
 
             if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
                  scr_player.GetStatus() != CHARACTERSTATUS.DASH)
             {
-                scr_player.LookDown(true);
                 scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
-                scr_player.SetStatus(CHARACTERSTATUS.CROUCH);
+
+                if (scr_player.isGrounded.Equals(true))
+                {
+                    scr_player.LookDown(true);
+                    scr_player.SetStatus(CHARACTERSTATUS.CROUCH);
+                }
             }
         }
         //DOWN
         else if (padAngle < -cUtil.pi * 3 / 8 && padAngle > -cUtil.pi * 5 / 8)
         {
-            scr_player.SetDir(Vector3.down, CHARDIRECTION.DOWNLEFT);
+            scr_player.SetDir(Vector3.down, CHARDIRECTION.DOWN);
 
             scr_player.LookUp(false);
+            if (scr_player.isGrounded.Equals(false))
+                scr_player.LookDown(false);
 
             //예외처리
             if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
@@ -463,9 +495,10 @@ public class cJoystick : MonoBehaviour
                 //로프가 없을 때
                 else
                 {
+                    scr_player.SetCurMoveSpeed(0);
+
                     if (scr_player.isGrounded.Equals(true))
                     {
-                        scr_player.SetCurMoveSpeed(0);
                         scr_player.LookDown(true);
                         scr_player.SetStatus(CHARACTERSTATUS.CROUCH);
                     }
@@ -479,14 +512,21 @@ public class cJoystick : MonoBehaviour
             _player.transform.localScale = new Vector3(1, 1, 1);
 
             scr_player.LookUp(false);
+            if (scr_player.isGrounded.Equals(false))
+                scr_player.LookDown(false);
 
             //기어가기
             if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                 scr_player.GetStatus() != CHARACTERSTATUS.DASH)
+                 scr_player.GetStatus() != CHARACTERSTATUS.DASH && 
+                 scr_player.isGrounded.Equals(true))
             {
-                scr_player.LookDown(true);
                 scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
-                scr_player.SetStatus(CHARACTERSTATUS.CROUCH);
+
+                if (scr_player.isGrounded.Equals(true))
+                {
+                    scr_player.LookDown(true);
+                    scr_player.SetStatus(CHARACTERSTATUS.CROUCH);
+                }
             }
         }
         else

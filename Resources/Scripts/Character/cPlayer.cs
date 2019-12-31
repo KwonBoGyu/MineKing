@@ -79,6 +79,18 @@ public class cPlayer : cCharacter
         originObj.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
 
+        if(dir.Equals(Vector3.up))
+            _animator.SetInteger("Direction", 0);
+        else if (dir.Equals(Vector3.right))
+            _animator.SetInteger("Direction", 1);
+        else if (dir.Equals(Vector3.down))
+            _animator.SetInteger("Direction", 2);
+        else if (dir.Equals(Vector3.left))
+            _animator.SetInteger("Direction", 3);  
+
+        if(charDir.Equals(CHARDIRECTION.NONE))
+            _animator.SetInteger("Direction", 1);
+
         base.FixedUpdate();
         if (!isAttatchedOnRope)
         {

@@ -17,6 +17,7 @@ public enum CHARACTERSTATUS
 
 public enum CHARDIRECTION
 {
+    NONE,
     UP,
     UPRIGHT,
     RIGHT,
