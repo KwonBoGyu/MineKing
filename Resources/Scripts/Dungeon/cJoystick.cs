@@ -170,6 +170,10 @@ public class cJoystick : MonoBehaviour
                 Jump();
             }
         }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            scr_player.StartSpeedUp(100.0f, 3.0f);
+        }
 
         ////제트팩 ON
         //if (Input.GetKey(KeyCode.Space))
@@ -335,7 +339,7 @@ public class cJoystick : MonoBehaviour
 
     private void Item()
     {
-        scr_player.SetRope();
+        //scr_player.SetRope();
         //scr_player.SetSandBag();
         //scr_player.SetBomb();
         //scr_player.UseSpeedPotion();

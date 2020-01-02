@@ -48,6 +48,8 @@ public class cPlayer : cCharacter
         attackBoxPos[2] = new Vector3(22, -128, 0);
 
         weapon.damage = damage;
+        if(cUtil._user.GetPlayer() != null)
+            cUtil._user.SetPlayer(this);
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)
@@ -155,31 +157,25 @@ public class cPlayer : cCharacter
         }
     }
 
-    public void SetRope()
+    public void UseItem(ITEM rItem)
     {
-        inven.GetItemUse()[0].SetRope(this.gameObject);
+        Debug.Log(rItem);
+        inven.GetItemUse()[(int)rItem].UseItem();
     }
 
-    public void SetSandBag()
+    public void StartSpeedUp(float pAmount, float pTime)
     {
-        inven.GetItemUse()[0].SetSandBag(this.gameObject, dir);
+        StartCoroutine(SpeedUp(pAmount, pTime));
     }
 
-    public void SetBomb()
+    IEnumerator SpeedUp(float pAmount, float pTime)
     {
-        inven.GetItemUse()[0].SetBomb(this.gameObject);
-    }
+        Debug.Log("스피드업 시작");
+        maxMoveSpeed += pAmount;
 
-    public void UseSpeedPotion()
-    {
-        inven.GetItemUse()[0].UseSpeedPotion(ref isSpeedUp);
-        speedUpTime = inven.GetItemUse()[0].GetSpeedUpTime();
-        speedUpAmount = inven.GetItemUse()[0].GetSpeedUpAmount();
-    }
+        yield return new WaitForSeconds(pTime);
 
-    public void UseHpPotion()
-    {
-        IncreaseHP(inven.GetItemUse()[0].UseHpPotion(maxHp)); 
-        SetHp();
+        Debug.Log("스피드업 끝");
+        maxMoveSpeed -= pAmount;
     }
 }

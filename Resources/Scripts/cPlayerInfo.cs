@@ -6,10 +6,7 @@ using UnityEngine;
 public class cPlayerInfo
 {
     public string nickName;
-    public float moveSpeed;
-    public float attackSpeed;
-    public float damage;
-    public float hp;
+    public cPlayer player;
     public cInventory inventory;
     public cItem_equip[] item_equip;
     public cItem_use[] item_use;
@@ -23,10 +20,6 @@ public class cPlayerInfo
         inventory.Init();
 
         nickName = pNickName;
-        moveSpeed = pMoveSpeed;
-        attackSpeed = pAttackSpeed;
-        damage = pDamage;
-        hp = pHp;
 
         if(pItem_equip != null)
         {
@@ -53,16 +46,12 @@ public class cPlayerInfo
         inventory.Init();
 
         this.nickName = pPi.nickName;
-        this.moveSpeed = pPi.moveSpeed;
-        this.attackSpeed = pPi.attackSpeed;
-        this.damage = pPi.damage;
-        this.hp = pPi.hp;
         
 
         if (pPi.item_equip != null)
         {
             for (int i = 0; i < pPi.item_equip.Length; i++)
-                inventory.GetItemEquip().Add(pPi.item_equip[i]);            
+                inventory.GetItemEquip().Add(pPi.item_equip[i]);
         }
 
         if (pPi.item_use != null)
@@ -91,7 +80,7 @@ public class cPlayerInfo
         }
 
         item_use = new cItem_use[inventory.GetItemUse().Count];
-        for (int i = 0; i < inventory.GetItemEquip().Count; i++)
+        for (int i = 0; i < inventory.GetItemUse().Count; i++)
         {
             item_use[i] = new cItem_use(inventory.GetItemUse()[i]._name, inventory.GetItemUse()[i].price, inventory.GetItemUse()[i].amount,
                 inventory.GetItemUse()[i].kind, inventory.GetItemUse()[i].kindNum);

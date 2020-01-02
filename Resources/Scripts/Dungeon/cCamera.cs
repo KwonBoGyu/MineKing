@@ -70,21 +70,21 @@ public class cCamera : MonoBehaviour
             xFixedPos = minMax_entireRange.y - cam_width * 0.5f;
 
             isXLocked = true;
-            Debug.Log("오른");
+            //Debug.Log("오른");
         }
         if (camRange.z <= minMax_entireRange.z)
         {
             yFixedPos = minMax_entireRange.z + cam_height * 0.5f;
 
             isYLocked = true;
-            Debug.Log("아래");
+            //Debug.Log("아래");
         }
         if (camRange.w <= minMax_entireRange.w)
         {
             xFixedPos = minMax_entireRange.w + cam_width * 0.5f;
 
             isXLocked = true;
-            Debug.Log("왼");
+            //Debug.Log("왼");
         }
 
         // 가로 방향 바운더리에서 캐릭터가 벗어난 경우

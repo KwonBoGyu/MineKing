@@ -12,9 +12,8 @@ public class cUser : MonoBehaviour
     }
 
     public string GetPlayerName() { return _playerInfo.nickName; }
-    public float GetMoveSpeed() { return _playerInfo.moveSpeed; }
-    public float GetDamage() { return _playerInfo.damage; }
-    public float GetHp() { return _playerInfo.hp; }
+    public cPlayer GetPlayer() { return _playerInfo.player; }
+    public void SetPlayer(cPlayer pP) { _playerInfo.player = pP; }
     public cInventory GetInventory() { return _playerInfo.inventory; }
 
     #region 데이터 저장&불러오기
