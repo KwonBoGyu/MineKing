@@ -1,25 +1,22 @@
 fileFormatVersion: 2
-guid: a58d28a5c326e4747ab5b07e6e1c3d30
+guid: 0972dffb6ad53d64f88c41d6be8f8e02
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2280553745555932083
-    second: ui_dungeonPad_1
+      213: 6174567191599212586
+    second: img_playUi_0
   - first:
-      213: -2204290412344432939
-    second: ui_dungeonPad_2
+      213: -7315161629494274111
+    second: img_playUi_1
   - first:
-      213: 117556922957022934
-    second: ui_dungeonPad_3
+      213: -3197111802824378961
+    second: img_playUi_2
   - first:
-      213: -4436909083473132368
-    second: ui_dungeonPad_4
+      213: 2895570619686279698
+    second: img_playUi_3
   - first:
-      213: -8614524212042505091
-    second: ui_dungeonPad_8
-  - first:
-      213: 3467879880324849345
-    second: ui_dungeonPad_9
+      213: -3616494652259197373
+    second: img_playUi_4
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -124,55 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ui_dungeonPad_1
-      rect:
-        serializedVersion: 2
-        x: 923
-        y: 507
-        width: 407
-        height: 447
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3f7a23cac16e110409bd2d2b53fa537f
-      internalID: 2280553745555932083
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ui_dungeonPad_2
-      rect:
-        serializedVersion: 2
-        x: 1785
-        y: 504
-        width: 413
-        height: 414
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 59672461d54c334409fde721070935b6
-      internalID: -2204290412344432939
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ui_dungeonPad_3
+      name: img_playUi_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 129
-        width: 825
-        height: 825
+        y: 371
+        width: 1041
+        height: 321
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,20 +135,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9f033c4c1745c64c8bcea14b8f82095
-      internalID: 117556922957022934
+      spriteID: 81696093f336cfa48b0afab23c06cbe8
+      internalID: 6174567191599212586
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_dungeonPad_4
+      name: img_playUi_1
       rect:
         serializedVersion: 2
-        x: 1457
-        y: 597
-        width: 227
-        height: 228
+        x: 11
+        y: 8
+        width: 300
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,20 +156,62 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71400f5b87236a34a908f1e4c743f14c
-      internalID: -4436909083473132368
+      spriteID: d086de2ffda62b6438c4a0be1e4d40a5
+      internalID: -7315161629494274111
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_dungeonPad_8
+      name: img_playUi_2
       rect:
         serializedVersion: 2
-        x: 920
+        x: 378
+        y: 244
+        width: 711
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8af7c03b405ef74fb12b8a0c5b25f02
+      internalID: -3197111802824378961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_playUi_3
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 125
+        width: 711
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c63ef2b8cde0bf4d89802119c8f4dee
+      internalID: 2895570619686279698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_playUi_4
+      rect:
+        serializedVersion: 2
+        x: 373
         y: 0
-        width: 414
-        height: 413
+        width: 304
+        height: 67
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -222,29 +219,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53fdfbd68eea20a43945ae42eb2a7f33
-      internalID: -8614524212042505091
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ui_dungeonPad_9
-      rect:
-        serializedVersion: 2
-        x: 1404
-        y: 11
-        width: 415
-        height: 413
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3985ec1c16e0dfe4dbd9633f8ea985f2
-      internalID: 3467879880324849345
+      spriteID: 038b7b7570079d64196b43f9e1c315d7
+      internalID: -3616494652259197373
       vertices: []
       indices: 
       edges: []
@@ -252,7 +228,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 9f26ed31b8ba69b4aa23d492bc67bb05
+    spriteID: 833ff64e26ed39f4f82d3a3c1d405321
     internalID: 0
     vertices: []
     indices: 

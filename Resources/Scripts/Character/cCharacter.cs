@@ -33,12 +33,13 @@ public class cCharacter : MonoBehaviour
     protected string nickName;
     protected float damage;
     protected float maxMoveSpeed;
+    protected float dashMoveSpeed;
+    protected const float dashTime = 0.5f;
     protected float curMoveSpeed;
     protected float maxHp;
     protected float curHp;
     protected float jumpHeight;
     protected bool isDoubleJump;
-    protected float dashDistance;
     protected float maxDashCoolDown; // 실제 대쉬 쿨다운
     protected float dashCoolDown; // 쿨다운 계산용 (변화)
     protected bool isJetPackOn;
@@ -65,12 +66,14 @@ public class cCharacter : MonoBehaviour
     protected Vector3[] attackBoxPos; //오른, 아래, 왼, 위
 
     private IEnumerator cor_knockBack;
+    protected Animator _animator;
 
     public virtual void Init(string pNickName, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp)
     {
         nickName = pNickName;
         damage = pDamage;
         maxMoveSpeed = pMaxMoveSpeed;
+        dashMoveSpeed = maxMoveSpeed + 300;
         curMoveSpeed = 0;
         maxHp = pMaxHp;
         curHp = pCurHp;
@@ -79,8 +82,7 @@ public class cCharacter : MonoBehaviour
         attackBoxPos = new Vector3[4];
         status = CHARACTERSTATUS.NONE;
 
-        dashDistance = 300.0f;
-        maxDashCoolDown = 5.0f;
+        maxDashCoolDown = 4.0f;
         dashCoolDown = maxDashCoolDown;
         isJetPackOn = false;
     }
@@ -186,59 +188,37 @@ public class cCharacter : MonoBehaviour
     {
         yield return null;
 
-        float currentPosition = originObj.transform.position.x;
-        float maxPosition = originObj.transform.position.x + dashDistance;
-        Vector3 fixedDir = dir;
-        if (fixedDir == Vector3.right)
-        {
-            maxPosition = originObj.transform.position.x + dashDistance;
-        }
-        else
-        {
-            maxPosition = originObj.transform.position.x - dashDistance;
-        }
+        status = CHARACTERSTATUS.DASH;
+        float DashTimer = 0;
+        float factor = 0;
 
         while (true)
         {
             yield return new WaitForFixedUpdate();
-            dir = fixedDir;
-            if (isGrounded == false)
-                break;
 
-            if (fixedDir == Vector3.right)
-            {
-                currentPosition += 15f;
-            }
+            factor = Mathf.PI * (DashTimer / dashTime);
+            
+            if (charDir.Equals(CHARDIRECTION.RIGHT) || charDir.Equals(CHARDIRECTION.LEFT))
+                curMoveSpeed = maxMoveSpeed + dashMoveSpeed * Mathf.Sin(factor);
             else
-            {
-                currentPosition -= 15f;
-            }
+                curMoveSpeed = dashMoveSpeed * Mathf.Sin(factor);
 
-            originObj.transform.position = new Vector3(currentPosition, originObj.transform.position.y, originObj.transform.position.z);
+            if (curMoveSpeed > dashMoveSpeed)
+                curMoveSpeed = dashMoveSpeed;
 
-            if (fixedDir == Vector3.right)
-            {
-                if (currentPosition >= maxPosition)
-                {
-                    originObj.transform.position = new Vector2(maxPosition, originObj.transform.position.y);
-                    break;
-                }
-            }
-            else
-            {
-                if (currentPosition <= maxPosition)
-                {
-                    originObj.transform.position = new Vector2(maxPosition, originObj.transform.position.y);
-                    break;
-                }
-            }
+            DashTimer += Time.deltaTime;
 
-            if (isLeftBlocked || isRightBlocked)
+            if(DashTimer > dashTime)
             {
-                originObj.transform.position = new Vector2(originObj.transform.position.x - 15.0f, originObj.transform.position.y);
+                if (charDir.Equals(CHARDIRECTION.RIGHT) || charDir.Equals(CHARDIRECTION.LEFT))
+                    curMoveSpeed = maxMoveSpeed;
+                else
+                    curMoveSpeed = 0;
                 break;
             }
         }
+
+        status = CHARACTERSTATUS.NONE;
     }
 
     IEnumerator DashCoolDown()
@@ -248,7 +228,6 @@ public class cCharacter : MonoBehaviour
         while(true)
         {
             yield return new WaitForFixedUpdate();
-            Debug.Log(dashCoolDown);
             dashCoolDown -= Time.deltaTime;
             if (dashCoolDown <= 0)
                 break;
@@ -343,7 +322,8 @@ public class cCharacter : MonoBehaviour
             float dist = Vector2.Distance(new Vector2(hitDownFin.transform.position.x, rayDown.y - rt.size.y / 2),
                 new Vector2(hitDownFin.transform.position.x, hitDownFin.transform.position.y + 90));
 
-            //일정 거리 이상 가까워지면..
+            //일정 거리 이상 가까워지면..            
+            
             if (hitDownFin.transform.position.y + 90 >= rayDown.y - rt.size.y / 2)
             {
                 originObj.transform.position = new Vector2(originObj.transform.position.x, hitDownFin.transform.position.y + 90 + rt.size.y / 2);
@@ -618,6 +598,9 @@ public class cCharacter : MonoBehaviour
 
         if (curHp > 0)
             StartKnockBack(pDir, pVelocity);
+
+        if (this.tag.Equals("Player"))
+            _animator.SetTrigger("getHit");
     }
 
     public void RestoreHp(float pVal, bool toFool)

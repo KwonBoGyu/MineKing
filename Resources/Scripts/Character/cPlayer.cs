@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class cPlayer : cCharacter
 {
-    public Animator _animator;
     public cWeapon weapon;
     public bool isDash;
     public cInventory inven;
     public bool isJumpAttack;
     public int jumpAttackPoint;
+    private bool isJumpAniDone;
 
     private bool isOnRope;
     private bool isAttatchedOnRope;
@@ -30,6 +30,7 @@ public class cPlayer : cCharacter
     {
         base.Init(pNickName, pDamage, pMoveSpeed, pMaxHp, pCurHp);
 
+        _animator = this.GetComponent<Animator>();
         originObj = this.transform.parent.gameObject;
         if(cUtil._user != null)
             inven = cUtil._user.GetInventory();
@@ -78,6 +79,15 @@ public class cPlayer : cCharacter
     {
         originObj.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
+        _animator.SetBool("isGrounded", isGrounded);
+
+        if (isGrounded.Equals(false) && isJumpAniDone.Equals(false))
+        {
+            _animator.SetTrigger("jumping");
+            isJumpAniDone = true;
+        }
+        else if(isGrounded.Equals(true))
+            isJumpAniDone = false;
 
         if(dir.Equals(Vector3.up))
             _animator.SetInteger("Direction", 0);
@@ -101,19 +111,21 @@ public class cPlayer : cCharacter
                 jumpAttackPoint = 0;
         }
     }
-
-    public void LookUp(bool pB)
-    {
-        _animator.SetBool("LookUp", pB);
-    }
-    public void LookDown(bool pB)
-    {
-        _animator.SetBool("LookDown", pB);
-    }
-
+       
     public void Attack_front()
     {
         _animator.SetTrigger("AttackFront");
+        status = CHARACTERSTATUS.ATTACK;
+    }
+    public void Attack_up()
+    {
+        _animator.SetTrigger("AttackUp");
+        status = CHARACTERSTATUS.ATTACK;
+    }
+    public void Attack_down()
+    {
+        _animator.SetTrigger("AttackDown");
+        status = CHARACTERSTATUS.ATTACK;
     }
 
     public void ActiveAttackBox(int pDir)
