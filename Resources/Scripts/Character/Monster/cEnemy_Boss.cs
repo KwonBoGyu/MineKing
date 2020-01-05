@@ -27,9 +27,8 @@ public class cEnemy_Boss : cCharacter
         rocks = pRocks;
     }
 
-    public override void FixedUpdate()
+    public void FixedUpdate()
     {
-        base.FixedUpdate();
         Move();
     }
 

@@ -6,10 +6,6 @@ using UnityEngine;
 public class cPlayerInfo
 {
     public string nickName;
-    public float moveSpeed;
-    public float attackSpeed;
-    public float damage;
-    public float hp;
     public cInventory inventory;
     public cItem_equip[] item_equip;
     public cItem_use[] item_use;
@@ -23,10 +19,6 @@ public class cPlayerInfo
         inventory.Init();
 
         nickName = pNickName;
-        moveSpeed = pMoveSpeed;
-        attackSpeed = pAttackSpeed;
-        damage = pDamage;
-        hp = pHp;
 
         if(pItem_equip != null)
         {
@@ -53,11 +45,6 @@ public class cPlayerInfo
         inventory.Init();
 
         this.nickName = pPi.nickName;
-        this.moveSpeed = pPi.moveSpeed;
-        this.attackSpeed = pPi.attackSpeed;
-        this.damage = pPi.damage;
-        this.hp = pPi.hp;
-        
 
         if (pPi.item_equip != null)
         {
