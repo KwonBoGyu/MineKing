@@ -48,8 +48,8 @@ public class cPlayer : cCharacter
         attackBoxPos[2] = new Vector3(22, -128, 0);
 
         weapon.damage = damage;
-        if(cUtil._user.GetPlayer() != null)
-            cUtil._user.SetPlayer(this);
+        //if(cUtil._user.GetPlayer() != null)
+        //    cUtil._user.SetPlayer(this);
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)

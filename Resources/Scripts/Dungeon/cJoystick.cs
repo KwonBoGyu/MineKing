@@ -375,7 +375,15 @@ public class cJoystick : MonoBehaviour
                  scr_player.GetStatus() != CHARACTERSTATUS.DASH)
             {
                 scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                
+                if (scr_player.isRightBlocked)
+                {
+                    scr_player.SetCurMoveSpeed(0);
+                }
+                else
+                {
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                }
             }
         }
         //UPRIGHT
@@ -391,7 +399,15 @@ public class cJoystick : MonoBehaviour
                  scr_player.GetStatus() != CHARACTERSTATUS.DASH)
             {
                 scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                
+                if (scr_player.isRightBlocked)
+                {
+                    scr_player.SetCurMoveSpeed(0);
+                }
+                else
+                {
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                }
             }
         }
         //UP
@@ -436,7 +452,15 @@ public class cJoystick : MonoBehaviour
                  scr_player.GetStatus() != CHARACTERSTATUS.DASH)
             {
                 scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                
+                if (scr_player.isLeftBlocked)
+                {
+                    scr_player.SetCurMoveSpeed(0);
+                }
+                else
+                {
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                }
             }
         }
         //LEFT
@@ -453,7 +477,15 @@ public class cJoystick : MonoBehaviour
                 scr_player.GetStatus() != CHARACTERSTATUS.DASH)
             {
                 scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                
+                if (scr_player.isLeftBlocked)
+                {
+                    scr_player.SetCurMoveSpeed(0);
+                }
+                else
+                {
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                }
             }
         }
         //DOWNLEFT
@@ -470,7 +502,15 @@ public class cJoystick : MonoBehaviour
             if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
                  scr_player.GetStatus() != CHARACTERSTATUS.DASH)
             {
-                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
+                
+                if (scr_player.isLeftBlocked)
+                {
+                    scr_player.SetCurMoveSpeed(0);
+                }
+                else
+                {
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
+                }
 
                 if (scr_player.isGrounded.Equals(true))
                 {
@@ -524,7 +564,15 @@ public class cJoystick : MonoBehaviour
                  scr_player.GetStatus() != CHARACTERSTATUS.DASH && 
                  scr_player.isGrounded.Equals(true))
             {
-                scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
+                
+                if (scr_player.isRightBlocked)
+                {
+                    scr_player.SetCurMoveSpeed(0);
+                }
+                else
+                {
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
+                }
 
                 if (scr_player.isGrounded.Equals(true))
                 {

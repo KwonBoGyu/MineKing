@@ -66,6 +66,20 @@ public class cCharacter : MonoBehaviour
 
     private IEnumerator cor_knockBack;
 
+    public float pheight;
+    public float pwidth;
+    public float mapHeight;
+    public int[] Playerpos = { 1, 1 };
+    public int[,] Map = { {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+                                     {-1,0,0,0,0,0,0,0,0,-1},
+                                     {-1,0,0,0,0,0,0,0,0,-1},
+                                     {-1,0,0,0,0,0,0,0,0,-1},
+                                     {-1,1,0,0,0,0,0,0,0,-1},
+                                     {-1,1,0,0,0,0,0,1,0,-1},
+                                     {-1,1,1,0,0,0,1,1,1,-1},
+                                     {-1,1,1,1,0,1,1,1,1,-1},
+                                     {-1,1,1,1,1,1,1,1,1,-1},
+                                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},};
     public virtual void Init(string pNickName, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp)
     {
         nickName = pNickName;
@@ -83,6 +97,12 @@ public class cCharacter : MonoBehaviour
         maxDashCoolDown = 5.0f;
         dashCoolDown = maxDashCoolDown;
         isJetPackOn = false;
+
+        pheight = 171.84f;
+        pwidth = 61.52f;
+        mapHeight = 1800f;
+        originObj.transform.position = new Vector2(Playerpos[1] * 180, mapHeight - Playerpos[0] * 180);
+        Debug.Log("init done");
     }
 
 
@@ -303,298 +323,83 @@ public class cCharacter : MonoBehaviour
     //충돌 검사
     public virtual void ManageCollision()
     {
-        //바닥 검사
-        Vector2 rayDown = new Vector2(rt.bounds.center.x - rt.size.x / 2.55f, rt.bounds.center.y);
-        Vector2 rayDown2 = new Vector2(rt.bounds.center.x + rt.size.x / 2.55f, rt.bounds.center.y);
+        Vector2 pPos = originObj.transform.position;
 
-        RaycastHit2D[] hitDown = Physics2D.RaycastAll(rayDown, Vector2.down, 200.0f);
-        RaycastHit2D[] hitDown2 = Physics2D.RaycastAll(rayDown2, Vector2.down, 200.0f);
+        //맵을 타일 하나의 크기인 180으로 가로와 세로를 나누어 int [,] Map의 행렬에 그 칸의 정보가 들어있게 만듬
+        //맵 상의 어떤 위치의 x과 y값을 180으로 나눈 값을 X,Y라 하면 그 위치의 칸은 Map[Y,X]이다. 
+        //Map[Y,X]에서 Y가 행, X가 열이다
+        //주의!)Map[Y,X]에서 Y가 증가하면 실제 좌표값은 감소하고 Y가 감소하면 좌표값은 증가한다
+        //플레이어 위치를 TestPlayerPos라 하고, y값에 해당하는 행은 [0]에 x값에 해당하는 열은 [1]에
+        Playerpos = new int[] { Mathf.FloorToInt((mapHeight - pPos.y) / 180), Mathf.FloorToInt(pPos.x / 180) };
 
-        RaycastHit2D hitDownFin = new RaycastHit2D();
-        RaycastHit2D hitDownFin2 = new RaycastHit2D();
-
-        for (int i = 0; i < hitDown.Length; i++)
-            if (hitDown[i].transform.tag.Equals("Tilemap_rock"))
+        Debug.Log("y:"+Playerpos[0]+"x:"+Playerpos[1]);
+        Debug.Log(pPos);
+        
+        ////현재 칸 빈공간
+        //if (Map[Playerpos[0], Playerpos[1]].Equals(0))
+        //{
+            //아래 막힘&땅 닿는 범위에 있음
+            if ((pPos.y <= (mapHeight - Playerpos[0] * 180.0f)-(85f-pheight/2)) && (!Map[Playerpos[0] + 1, Playerpos[1]].Equals(0)))
             {
-                hitDownFin = hitDown[i];
-                break;
-            }
-        for (int i = 0; i < hitDown2.Length; i++)
-            if (hitDown2[i].transform.tag.Equals("Tilemap_rock"))
-            {
-                hitDownFin2 = hitDown2[i];
-                break;
-            }
-
-        Debug.DrawRay(rayDown, Vector2.down * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-        Debug.DrawRay(rayDown2, Vector2.down * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-
-        //둘 중 하나가 검출되었을 때
-        if ((hitDownFin && !hitDownFin2) || (!hitDownFin && hitDownFin2))
-        {
-            bool isFirst = hitDownFin ? true : false;
-            if (isFirst == false)
-            {
-                rayDown = rayDown2;
-                hitDownFin = hitDownFin2;
-            }
-
-            //거리
-            float dist = Vector2.Distance(new Vector2(hitDownFin.transform.position.x, rayDown.y - rt.size.y / 2),
-                new Vector2(hitDownFin.transform.position.x, hitDownFin.transform.position.y + 90));
-
-            //일정 거리 이상 가까워지면..
-            if (hitDownFin.transform.position.y + 90 >= rayDown.y - rt.size.y / 2)
-            {
-                originObj.transform.position = new Vector2(originObj.transform.position.x, hitDownFin.transform.position.y + 90 + rt.size.y / 2);
+                originObj.transform.position = new Vector2(originObj.transform.position.x, (mapHeight - Playerpos[0] * 180.0f) - 90 + pheight / 2);
                 isGrounded = true;
             }
             else
+            {
                 isGrounded = false;
-        }
-        //둘 다 검출되었을 때
-        else if (hitDownFin && hitDownFin2)
-        {
-            //거리
-            float dist = Vector2.Distance(new Vector2(hitDownFin.transform.position.x, rayDown.y - rt.size.y / 2),
-                new Vector2(hitDownFin.transform.position.x, hitDownFin.transform.position.y + 90));
-            float dist2 = Vector2.Distance(new Vector2(hitDownFin2.transform.position.x, rayDown2.y - rt.size.y / 2),
-                new Vector2(hitDownFin2.transform.position.x, hitDownFin2.transform.position.y + 90));
-
-            if (dist > dist2)
-            {
-                hitDownFin = hitDownFin2;
-                rayDown = rayDown2;
             }
-
-            //충돌했다면..
-            if (hitDownFin.transform.position.y + 90 >= rayDown.y - rt.size.y / 2)
+            //왼쪽 막힘&땅 닿는 범위에 있음
+            if ((pPos.x < Playerpos[1] * 180.0f - (85.0f-pwidth)) && (!Map[Playerpos[0], Playerpos[1] - 1].Equals(0)))
             {
-                originObj.transform.position = new Vector2(originObj.transform.position.x, hitDownFin.transform.position.y + 90 + rt.size.y / 2);
-                isGrounded = true;
+                originObj.transform.position = new Vector2(Playerpos[1] * 180.0f - (90.0f - pwidth), originObj.transform.position.y);
+                isLeftBlocked = true;
             }
             else
-                isGrounded = false;
-        }
-        else
-            isGrounded = false;
-
-        //위쪽 검사
-        Vector2 rayUp = new Vector2(rt.bounds.center.x - rt.size.x / 2.15f, rt.bounds.center.y);
-        Vector2 rayUp2 = new Vector2(rt.bounds.center.x + rt.size.x / 2.15f, rt.bounds.center.y);
-
-        RaycastHit2D[] hitUp = Physics2D.RaycastAll(rayUp, Vector2.up, 200.0f);
-        RaycastHit2D[] hitUp2 = Physics2D.RaycastAll(rayUp2, Vector2.up, 200.0f);
-
-        RaycastHit2D hitUpFin = new RaycastHit2D();
-        RaycastHit2D hitUpFin2 = new RaycastHit2D();
-
-        for (int i = 0; i < hitUp.Length; i++)
-            if (hitUp[i].transform.tag.Equals("Tilemap_rock")) { hitUpFin = hitUp[i]; break; }
-        for (int i = 0; i < hitUp2.Length; i++)
-            if (hitUp2[i].transform.tag.Equals("Tilemap_rock")) { hitUpFin2 = hitUp2[i]; break; }
-
-        Debug.DrawRay(rayUp, Vector2.up * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-        Debug.DrawRay(rayUp2, Vector2.up * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-
-        //둘 중 하나가 검출되었을 때
-        if ((hitUpFin && !hitUpFin2) || (!hitUpFin && hitUpFin2))
-        {
-            bool isFirst = hitUpFin ? true : false;
-            if (isFirst == false)
             {
-                rayUp = rayUp2;
-                hitUpFin = hitUpFin2;
+                isLeftBlocked = false;
             }
-
-            //거리
-            float dist = Vector2.Distance(new Vector2(hitUpFin.transform.position.x, rayUp.y + rt.size.y / 2),
-                new Vector2(hitUpFin.transform.position.x, hitUpFin.transform.position.y - 90));
-
-            //일정 거리 이상 가까워지면..
-            if (dist <= 10 && dist >= 0)
+            //오른쪽 막힘&땅 닿는 범위에 있음
+            if ((pPos.x > Playerpos[1] * 180.0f + (85.0f - pwidth)) && (!Map[Playerpos[0], Playerpos[1] + 1].Equals(0)))
             {
-                originObj.transform.position = new Vector2(originObj.transform.position.x, hitUpFin.transform.position.y - 90 - rt.size.y / 2 - 2);
-                isUpBlocked = true;
+                originObj.transform.position = new Vector2(Playerpos[1] * 180.0f + (90.0f - pwidth), originObj.transform.position.y);
+                isRightBlocked = true;
             }
             else
-                isUpBlocked = false;
-        }
-        //둘 다 검출되었을 때
-        else if (hitUpFin && hitUpFin2)
-        {
-            //거리
-            float dist = Vector2.Distance(new Vector2(hitUpFin.transform.position.x, rayUp.y + rt.size.y / 2),
-                new Vector2(hitUpFin.transform.position.x, hitUpFin.transform.position.y - 90));
-            float dist2 = Vector2.Distance(new Vector2(hitUpFin2.transform.position.x, rayUp2.y + rt.size.y / 2),
-                new Vector2(hitUpFin2.transform.position.x, hitUpFin2.transform.position.y - 90));
-
-            if (dist > dist2)
             {
-                dist = dist2;
-                hitUpFin = hitUpFin2;
-            }
-
-            //일정 거리 이상 가까워지면..
-            if (dist <= 10 && dist >= 0)
-            {
-                originObj.transform.position = new Vector2(originObj.transform.position.x, hitUpFin.transform.position.y - 90 - rt.size.y / 2 - 2);
-                isUpBlocked = true;
-            }
-            else
-                isUpBlocked = false;
-        }
-        else
-            isUpBlocked = false;
-
-
-        //오른쪽으로 이동할 때..
-        Vector2 rayRight = new Vector2(rt.bounds.center.x, rt.bounds.center.y + rt.size.y / 2.15f);
-        Vector2 rayRight2 = new Vector2(rt.bounds.center.x, rt.bounds.center.y - rt.size.y / 2.15f);
-
-        RaycastHit2D[] hitRight = Physics2D.RaycastAll(rayRight, Vector2.right, 200.0f);
-        RaycastHit2D[] hitRight2 = Physics2D.RaycastAll(rayRight2, Vector2.right, 200.0f);
-
-        RaycastHit2D hitRightFin = new RaycastHit2D();
-        RaycastHit2D hitRightFin2 = new RaycastHit2D();
-
-        for (int i = 0; i < hitRight.Length; i++)
-            if (hitRight[i].transform.tag.Equals("Tilemap_rock")) { hitRightFin = hitRight[i]; break; }
-        for (int i = 0; i < hitRight2.Length; i++)
-            if (hitRight2[i].transform.tag.Equals("Tilemap_rock")) { hitRightFin2 = hitRight2[i]; break; }
-
-        Debug.DrawRay(rayRight, Vector2.right * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-        Debug.DrawRay(rayRight2, Vector2.right * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-
-        //둘 중 하나가 검출되었을 때
-        if ((hitRightFin && !hitRightFin2) || (!hitRightFin && hitRightFin2))
-        {
-            bool isFirst = hitRightFin ? true : false;
-            if (isFirst == false)
-            {
-                rayRight = rayRight2;
-                hitRightFin = hitRightFin2;
-            }
-
-            //거리
-            float dist = Vector2.Distance(new Vector2(rayRight.x + rt.size.x / 2, hitRightFin.transform.position.y),
-                new Vector2(hitRightFin.transform.position.x - 90, hitRightFin.transform.position.y));
-
-            //일정 거리 이상 가까워지면..
-            if (dist <= 10 && dist >= 0 && dir != Vector3.left)
-            {
-                originObj.transform.position = new Vector2(hitRightFin.transform.position.x - 90 - rt.size.x / 2,
-                    originObj.transform.position.y);
-                isRightBlocked = true;
-            }
-            else if (dist <= 10 && dist >= 0)
-                isRightBlocked = true;
-            else            
-                isRightBlocked = false;            
-        }
-        //둘 다 검출되었을 때
-        else if (hitRightFin && hitRightFin2)
-        {
-            //거리
-            float dist = Vector2.Distance(new Vector2(rayRight.x + rt.size.x / 2, hitRightFin.transform.position.y),
-                new Vector2(hitRightFin.transform.position.x - 90, hitRightFin.transform.position.y));
-            float dist2 = Vector2.Distance(new Vector2(rayRight2.x + rt.size.x / 2, hitRightFin2.transform.position.y),
-                new Vector2(hitRightFin2.transform.position.x - 90, hitRightFin2.transform.position.y));
-
-            if (dist > dist2)
-            {
-                dist = dist2;
-                hitRightFin = hitRightFin2;
-            }
-
-            //일정 거리 이상 가까워지면..
-            if (dist <= 10 && dist >= 0 && dir != Vector3.left)
-            {
-                originObj.transform.position = new Vector2(hitRightFin.transform.position.x - 90 - rt.size.x / 2,
-                    originObj.transform.position.y);
-                isRightBlocked = true;
-            }
-            else if (dist <= 10 && dist >= 0)
-                isRightBlocked = true;
-            else
                 isRightBlocked = false;
-        }
-        else
-            isRightBlocked = false;
-
-        //왼쪽으로 이동할 때..
-        Vector2 rayLeft = new Vector2(rt.bounds.center.x, rt.bounds.center.y + rt.size.y / 2.15f);
-        Vector2 rayLeft2 = new Vector2(rt.bounds.center.x, rt.bounds.center.y - rt.size.y / 2.15f);
-
-        RaycastHit2D[] hitLeft = Physics2D.RaycastAll(rayLeft, Vector2.left, 200.0f);
-        RaycastHit2D[] hitLeft2 = Physics2D.RaycastAll(rayLeft2, Vector2.left, 200.0f);
-
-        RaycastHit2D hitLeftFin = new RaycastHit2D();
-        RaycastHit2D hitLeftFin2 = new RaycastHit2D();
-
-        for (int i = 0; i < hitLeft.Length; i++)
-            if (hitLeft[i].transform.tag.Equals("Tilemap_rock")) { hitLeftFin = hitLeft[i]; break; }
-        for (int i = 0; i < hitLeft2.Length; i++)
-            if (hitLeft2[i].transform.tag.Equals("Tilemap_rock")) { hitLeftFin2 = hitLeft2[i]; break; }
-
-        Debug.DrawRay(rayLeft, Vector2.left * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-        Debug.DrawRay(rayLeft2, Vector2.left * 200.0f, new Color(1.0f, 0.0f, 0.0f));
-
-        //둘 중 하나가 검출되었을 때
-        if ((hitLeftFin && !hitLeftFin2) || (!hitLeftFin && hitLeftFin2))
-        {
-            bool isFirst = hitLeftFin ? true : false;
-            if (isFirst == false)
-            {
-                rayLeft = rayLeft2;
-                hitLeftFin = hitLeftFin2;
             }
-
-            //거리
-            float dist = Vector2.Distance(new Vector2(rayLeft.x - rt.size.x / 2, hitLeftFin.transform.position.y),
-                new Vector2(hitLeftFin.transform.position.x + 90, hitLeftFin.transform.position.y));
-
-            //일정 거리 이상 가까워지면..
-            if (dist <= 10 && dist >= 0 && dir != Vector3.right)
+            //위쪽 막힘&땅 닿는 범위에 있음
+            if ((pPos.y > (mapHeight - Playerpos[0] * 180.0f) + (90.0f - pheight / 2)) && (!Map[Playerpos[0] - 1, Playerpos[1]].Equals(0)))
             {
-                originObj.transform.position = new Vector2(hitLeftFin.transform.position.x + 90 + rt.size.x / 2,
-                    originObj.transform.position.y);
-                isLeftBlocked = true;
+                originObj.transform.position = new Vector2(originObj.transform.position.x, (mapHeight - Playerpos[0] * 180.0f) + (90f - pheight / 2));
+                isUpBlocked = true;
             }
-            else if (dist <= 10 && dist >= 0)
-                isLeftBlocked = true;
             else
-                isLeftBlocked = false;
-        }
-        //둘 다 검출되었을 때
-        else if (hitLeftFin && hitLeftFin2)
-        {
-            //거리
-            float dist = Vector2.Distance(new Vector2(rayLeft.x - rt.size.x / 2, hitLeftFin.transform.position.y),
-                   new Vector2(hitLeftFin.transform.position.x + 90, hitLeftFin.transform.position.y));
-            float dist2 = Vector2.Distance(new Vector2(rayLeft2.x - rt.size.x / 2, hitLeftFin2.transform.position.y),
-                   new Vector2(hitLeftFin2.transform.position.x + 90, hitLeftFin2.transform.position.y));
-
-            if (dist > dist2)
             {
-                dist = dist2;
-                hitLeftFin = hitLeftFin2;
+                isUpBlocked = false;
             }
+        //}
+        ////현재 칸 채워져있음
+        //else
+        //{
+        //    if (pPos.x - Playerpos[1] * 180.0f >= 0)
+        //    {
 
-            //일정 거리 이상 가까워지면..
-            if (dist <= 10 && dist >= 0 && dir != Vector3.right)
-            {
-                originObj.transform.position = new Vector2(hitLeftFin.transform.position.x + 90 + rt.size.x / 2,
-                    originObj.transform.position.y);
-                isLeftBlocked = true;
-            }
-            else if (dist <= 10 && dist >= 0)
-                isLeftBlocked = true;
-            else
-                isLeftBlocked = false;
-        }
-        else
-            isLeftBlocked = false;
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //    if (pPos.y - (mapHeight - Playerpos[0] * 180.0f) >= 0)
+        //    {
+
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //}
+
     }
 
     public virtual void ReduceHp(float pVal)
