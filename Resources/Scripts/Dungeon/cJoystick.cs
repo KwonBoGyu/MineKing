@@ -255,6 +255,8 @@ public class cJoystick : MonoBehaviour
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                    if(scr_player.isRightBlocked.Equals(true))
+                        scr_player.SetCurMoveSpeed(0);
                 }
                 break;
             //DOWN
@@ -287,6 +289,8 @@ public class cJoystick : MonoBehaviour
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                    if (scr_player.isLeftBlocked.Equals(true))
+                        scr_player.SetCurMoveSpeed(0);
                 }
                 break;
         }        

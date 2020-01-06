@@ -48,7 +48,7 @@ public class cCharacter : MonoBehaviour
     public CHARDIRECTION GetCharDir() { return charDir; }
     protected Vector3 dir;
     public GameObject originObj;
-    protected BoxCollider2D rt;
+    public BoxCollider2D rt;
 
     //hp
     public Image img_curHp;
@@ -91,7 +91,7 @@ public class cCharacter : MonoBehaviour
 
     public virtual void FixedUpdate()
     {
-        ManageCollision();
+        //ManageCollision();
     }
 
     public float GetMaxHp() { return maxHp; }
