@@ -257,13 +257,7 @@ public class cJoystick : MonoBehaviour
                      scr_player.GetStatus() != CHARACTERSTATUS.DASH)
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
-<<<<<<< HEAD
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
-                    if(scr_player.isRightBlocked.Equals(true))
-                        scr_player.SetCurMoveSpeed(0);
-=======
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());                    
->>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());         
                 }
                 break;
             //DOWN
@@ -296,8 +290,6 @@ public class cJoystick : MonoBehaviour
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
-                    if (scr_player.isLeftBlocked.Equals(true))
-                        scr_player.SetCurMoveSpeed(0);
                 }
                 break;
         }        

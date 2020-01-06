@@ -86,18 +86,7 @@ public class cCharacter : MonoBehaviour
         dashCoolDown = maxDashCoolDown;
         isJetPackOn = false;
     }
-<<<<<<< HEAD
-
-
-
-    public virtual void FixedUpdate()
-    {
-        //ManageCollision();
-    }
-
-=======
     
->>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
     public float GetMaxHp() { return maxHp; }
     public float GetCurHP() { return curHp; }
     public void IncreaseHP(float pAmount)

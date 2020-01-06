@@ -27,17 +27,6 @@ public class cTileMng : MonoBehaviour
 
     private Tilemap tileMap;
 
-<<<<<<< HEAD
-    public cPlayer player;
-    private Transform playerT;
-    Vector3Int[] cellPos;
-
-    private void Start()
-    {
-        player = GameObject.Find("DungeonNormalScene").
-            transform.Find("Canvas_main").Find("Player").GetChild(0).GetComponent<cPlayer>();
-        playerT = player.transform;
-=======
     public GameObject player;
     public cPlayer scr_player;
     Vector3Int[] cellPos;
@@ -50,7 +39,6 @@ public class cTileMng : MonoBehaviour
         player = GameObject.Find("DungeonNormalScene").
             transform.Find("Canvas_main").Find("Player").gameObject;
         scr_player = player.transform.GetChild(0).GetComponent<cPlayer>();
->>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
         tileMap = this.GetComponent<Tilemap>();
     }
 
@@ -63,17 +51,6 @@ public class cTileMng : MonoBehaviour
     {
         tileMap.RefreshAllTiles();
 
-<<<<<<< HEAD
-        cellPos = new Vector3Int[]
-            {
-                new Vector3Int((int)playerT.position.x, (int)playerT.position.y + 60, 0),
-                new Vector3Int((int)playerT.position.x + 60, (int)playerT.position.y, 0),
-                new Vector3Int((int)playerT.position.x, (int)playerT.position.y - 60, 0),
-                new Vector3Int((int)playerT.position.x - 60, (int)playerT.position.y, 0)
-            };
-
-        for(int i = 0; i < 4; i++)
-=======
         isUpBlocked_123 = 0;
         isGrounded_123 = 0;
 
@@ -90,7 +67,6 @@ public class cTileMng : MonoBehaviour
             };
 
         for(int i = 0; i < cellPos.Length; i++)
->>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
         {
             Vector3Int worldToCellPos = tileMap.WorldToCell(cellPos[i]);
 
@@ -105,42 +81,6 @@ public class cTileMng : MonoBehaviour
                 {
                     //위쪽 충돌
                     case 0:
-<<<<<<< HEAD
-                        if(player.isUpBlocked.Equals(false))
-                        {
-                            player.isUpBlocked = true;
-                            player.transform.position = new Vector3(
-                                playerT.position.x,
-                                tileMap.CellToWorld(worldToCellPos).y - (player.rt.size.y * 0.5f),
-                                playerT.position.z);
-                        }
-
-                        Debug.Log(tileMap.CellToWorld(worldToCellPos));
-                        break;
-                    //오른쪽 충돌
-                    case 1: player.isRightBlocked = true; break;
-                    //아래쪽 충돌
-                    case 2: player.isGrounded = true; break;
-                    //왼쪽 충돌
-                    case 3: player.isLeftBlocked = true; break;
-                }
-            }
-            else
-            {
-                switch (i)
-                {
-                    //위쪽 충돌
-                    case 0: player.isUpBlocked = false; break;
-                    //오른쪽 충돌
-                    case 1: player.isRightBlocked = false; break;
-                    //아래쪽 충돌
-                    case 2: player.isGrounded = false; break;
-                    //왼쪽 충돌
-                    case 3: player.isLeftBlocked = false; break;
-                }
-            }
-        }
-=======
                         isUpBlocked_123 += 1;
                         //충돌하였다면..
                         if (player.transform.position.y + scr_player.rt.size.y * 0.5f> tileMap.CellToWorld(worldToCellPos).y)
@@ -335,6 +275,5 @@ public class cTileMng : MonoBehaviour
             scr_player.isGrounded = false;
         if (isUpBlocked_123.Equals(0))
             scr_player.isUpBlocked = false;
->>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
     }
 }

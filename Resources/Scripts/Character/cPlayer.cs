@@ -104,7 +104,7 @@ public class cPlayer : cCharacter
         if (!isAttatchedOnRope)
         {
             if(isJumpAttack.Equals(false))
-                //SetGravity();
+                SetGravity();
 
             if (isGrounded.Equals(true))
                 jumpAttackPoint = 0;
