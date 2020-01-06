@@ -27,6 +27,7 @@ public class cTileMng : MonoBehaviour
 
     private Tilemap tileMap;
 
+<<<<<<< HEAD
     public cPlayer player;
     private Transform playerT;
     Vector3Int[] cellPos;
@@ -36,6 +37,20 @@ public class cTileMng : MonoBehaviour
         player = GameObject.Find("DungeonNormalScene").
             transform.Find("Canvas_main").Find("Player").GetChild(0).GetComponent<cPlayer>();
         playerT = player.transform;
+=======
+    public GameObject player;
+    public cPlayer scr_player;
+    Vector3Int[] cellPos;
+
+    private int isUpBlocked_123;
+    private int isGrounded_123;
+
+    private void Start()
+    {
+        player = GameObject.Find("DungeonNormalScene").
+            transform.Find("Canvas_main").Find("Player").gameObject;
+        scr_player = player.transform.GetChild(0).GetComponent<cPlayer>();
+>>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
         tileMap = this.GetComponent<Tilemap>();
     }
 
@@ -48,6 +63,7 @@ public class cTileMng : MonoBehaviour
     {
         tileMap.RefreshAllTiles();
 
+<<<<<<< HEAD
         cellPos = new Vector3Int[]
             {
                 new Vector3Int((int)playerT.position.x, (int)playerT.position.y + 60, 0),
@@ -57,6 +73,24 @@ public class cTileMng : MonoBehaviour
             };
 
         for(int i = 0; i < 4; i++)
+=======
+        isUpBlocked_123 = 0;
+        isGrounded_123 = 0;
+
+        cellPos = new Vector3Int[]
+            {
+                new Vector3Int((int)player.transform.position.x, (int)player.transform.position.y + 150, 0),
+                new Vector3Int((int)player.transform.position.x + 30, (int)player.transform.position.y + 150, 0),
+                new Vector3Int((int)player.transform.position.x + 60, (int)player.transform.position.y, 0),
+                new Vector3Int((int)player.transform.position.x + 30, (int)player.transform.position.y - 150, 0),
+                new Vector3Int((int)player.transform.position.x, (int)player.transform.position.y - 150, 0),
+                new Vector3Int((int)player.transform.position.x - 30, (int)player.transform.position.y - 150, 0),
+                new Vector3Int((int)player.transform.position.x - 60, (int)player.transform.position.y, 0),
+                new Vector3Int((int)player.transform.position.x - 30, (int)player.transform.position.y + 150, 0),
+            };
+
+        for(int i = 0; i < cellPos.Length; i++)
+>>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
         {
             Vector3Int worldToCellPos = tileMap.WorldToCell(cellPos[i]);
 
@@ -71,6 +105,7 @@ public class cTileMng : MonoBehaviour
                 {
                     //위쪽 충돌
                     case 0:
+<<<<<<< HEAD
                         if(player.isUpBlocked.Equals(false))
                         {
                             player.isUpBlocked = true;
@@ -105,5 +140,201 @@ public class cTileMng : MonoBehaviour
                 }
             }
         }
+=======
+                        isUpBlocked_123 += 1;
+                        //충돌하였다면..
+                        if (player.transform.position.y + scr_player.rt.size.y * 0.5f> tileMap.CellToWorld(worldToCellPos).y)
+                        {
+                            scr_player.isUpBlocked = true;
+                            player.gameObject.transform.position = new Vector3(
+                                player.transform.position.x,
+                                tileMap.CellToWorld(worldToCellPos).y - scr_player.rt.size.y * 0.5f,                                
+                                player.transform.position.z
+                                );
+                        }
+                        break;
+                    //오른쪽 위 충돌
+                    case 1:
+                        isUpBlocked_123 += 1;
+                        //충돌하였다면..
+                        if (player.transform.position.x + scr_player.rt.size.x * 0.5f > tileMap.CellToWorld(worldToCellPos).x &&
+                           player.transform.position.y + scr_player.rt.size.y * 0.5f > tileMap.CellToWorld(worldToCellPos).y)
+                        {
+                            float distX = Mathf.Abs((player.transform.position.x + scr_player.rt.size.x * 0.5f) -
+                                tileMap.CellToWorld(worldToCellPos).x);
+                            float distY = Mathf.Abs((player.transform.position.y + scr_player.rt.size.y * 0.5f) -
+                                tileMap.CellToWorld(worldToCellPos).y);
+
+                            //가로 면적이 크다면 아래로
+                            if (distX > distY)
+                            {
+                                scr_player.isUpBlocked = true;
+                                player.gameObject.transform.position = new Vector3(
+                                    player.transform.position.x,
+                                    tileMap.CellToWorld(worldToCellPos).y - scr_player.rt.size.y * 0.5f,
+                                    player.transform.position.z
+                                    );
+                            }
+                            //세로 면적이 크다면 왼쪽으로
+                            else
+                            {
+                                player.gameObject.transform.position = new Vector3(
+                                tileMap.CellToWorld(worldToCellPos).x - scr_player.rt.size.x * 0.5f,
+                                player.transform.position.y,
+                                player.transform.position.z
+                                );
+                            }
+
+                            
+                        }
+                        break;
+                    //오른쪽 충돌
+                    case 2:
+                        //충돌하였다면..
+                        if(player.transform.position.x + scr_player.rt.size.x * 0.5f > tileMap.CellToWorld(worldToCellPos).x)
+                        {
+                            player.gameObject.transform.position = new Vector3(
+                                tileMap.CellToWorld(worldToCellPos).x - scr_player.rt.size.x * 0.5f,
+                                player.transform.position.y,
+                                player.transform.position.z
+                                );
+                        }
+                        break;
+                    //오른쪽 아래 충돌
+                    case 3:
+                        isGrounded_123 += 1;
+                        //충돌하였다면..
+                        if (player.transform.position.x + scr_player.rt.size.x * 0.5f > tileMap.CellToWorld(worldToCellPos).x &&
+                           player.transform.position.y - scr_player.rt.size.y * 0.5f < (tileMap.CellToWorld(worldToCellPos).y + tileSize))
+                        {
+                            float distX = Mathf.Abs((player.transform.position.x + scr_player.rt.size.x * 0.5f) -
+                                tileMap.CellToWorld(worldToCellPos).x);
+                            float distY = Mathf.Abs((player.transform.position.y - scr_player.rt.size.y * 0.5f) -
+                               (tileMap.CellToWorld(worldToCellPos).y + tileSize));
+
+                            //가로 면적이 크다면 위로
+                            if (distX > distY)
+                            {
+                                scr_player.isGrounded = true;
+                                player.gameObject.transform.position = new Vector3(
+                                    player.transform.position.x,
+                                    (tileMap.CellToWorld(worldToCellPos).y + tileSize) + scr_player.rt.size.y * 0.5f,
+                                    player.transform.position.z
+                                    );
+                            }
+                            //세로 면적이 크다면 왼쪽으로
+                            else
+                            {
+                                player.gameObject.transform.position = new Vector3(
+                                  tileMap.CellToWorld(worldToCellPos).x - scr_player.rt.size.x * 0.5f,
+                                  player.transform.position.y,
+                                  player.transform.position.z
+                                  );
+                            }
+                        }
+                        break;
+                    //아래쪽 충돌
+                    case 4:
+                        isGrounded_123 += 1;
+                        //충돌하였다면..
+                        if (player.transform.position.y - scr_player.rt.size.y * 0.5f < (tileMap.CellToWorld(worldToCellPos).y + tileSize))
+                        {
+                            Debug.Log("GROUNDED");
+                            scr_player.isGrounded = true;
+                            player.gameObject.transform.position = new Vector3(
+                                player.transform.position.x,
+                                (tileMap.CellToWorld(worldToCellPos).y + tileSize) + scr_player.rt.size.y * 0.5f,
+                                player.transform.position.z
+                                );
+                        }
+                        break;
+                    //왼쪽 아래 충돌
+                    case 5:
+                        isGrounded_123 += 1;
+                        //충돌하였다면..
+                        if (player.transform.position.x - scr_player.rt.size.x * 0.5f < (tileMap.CellToWorld(worldToCellPos).x + tileSize) &&
+                           player.transform.position.y - scr_player.rt.size.y * 0.5f < (tileMap.CellToWorld(worldToCellPos).y + tileSize))
+                        {
+                            float distX = Mathf.Abs((player.transform.position.x - scr_player.rt.size.x * 0.5f) -
+                                (tileMap.CellToWorld(worldToCellPos).x + tileSize));
+                            float distY = Mathf.Abs((player.transform.position.y - scr_player.rt.size.y * 0.5f) -
+                               (tileMap.CellToWorld(worldToCellPos).y + tileSize));
+
+                            //가로 면적이 크다면 위로
+                            if (distX > distY)
+                            {
+                                scr_player.isGrounded = true;
+                                player.gameObject.transform.position = new Vector3(
+                                    player.transform.position.x,
+                                    (tileMap.CellToWorld(worldToCellPos).y + tileSize) + scr_player.rt.size.y * 0.5f,
+                                    player.transform.position.z
+                                    );
+                            }
+                            //세로 면적이 크다면 오른쪽으로
+                            else
+                            {
+                                player.gameObject.transform.position = new Vector3(
+                                (tileMap.CellToWorld(worldToCellPos).x + tileSize) + scr_player.rt.size.x * 0.5f,
+                                player.transform.position.y,
+                                player.transform.position.z
+                                );
+                            }
+                        }
+                        break;
+                    //왼쪽 충돌
+                    case 6:
+                        //충돌하였다면..
+                        if (player.transform.position.x - scr_player.rt.size.x * 0.5f < (tileMap.CellToWorld(worldToCellPos).x + tileSize))
+                        {
+                            player.gameObject.transform.position = new Vector3(
+                                (tileMap.CellToWorld(worldToCellPos).x +tileSize) + scr_player.rt.size.x * 0.5f,
+                                player.transform.position.y,
+                                player.transform.position.z
+                                );
+                        }
+                        break;
+                    //왼쪽 위 충돌
+                    case 7:
+                        isUpBlocked_123 += 1;
+                        //충돌하였다면..
+                        if (player.transform.position.x - scr_player.rt.size.x * 0.5f < (tileMap.CellToWorld(worldToCellPos).x + tileSize) &&
+                           player.transform.position.y + scr_player.rt.size.y * 0.5f > tileMap.CellToWorld(worldToCellPos).y)
+                        {
+                            float distX = Mathf.Abs((player.transform.position.x - scr_player.rt.size.x * 0.5f) -
+                                (tileMap.CellToWorld(worldToCellPos).x + tileSize));
+                            float distY = Mathf.Abs((player.transform.position.y + scr_player.rt.size.y * 0.5f) -
+                               (tileMap.CellToWorld(worldToCellPos).y));
+
+                            //가로 면적이 크다면 아래로
+                            if (distX > distY)
+                            {
+                                scr_player.isUpBlocked = true;
+                                player.gameObject.transform.position = new Vector3(
+                                    player.transform.position.x,
+                                    tileMap.CellToWorld(worldToCellPos).y - scr_player.rt.size.y * 0.5f,
+                                    player.transform.position.z
+                                    );
+                            }
+                            //세로 면적이 크다면 오른쪽으로
+                            else
+                            {
+                                player.gameObject.transform.position = new Vector3(
+                                (tileMap.CellToWorld(worldToCellPos).x + tileSize) + scr_player.rt.size.x * 0.5f,
+                                player.transform.position.y,
+                                player.transform.position.z
+                                );
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        //========for문 종료========//
+
+        if (isGrounded_123.Equals(0))
+            scr_player.isGrounded = false;
+        if (isUpBlocked_123.Equals(0))
+            scr_player.isUpBlocked = false;
+>>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
     }
 }

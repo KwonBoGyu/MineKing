@@ -75,7 +75,7 @@ public class cPlayer : cCharacter
 
     
     
-    public override void FixedUpdate()
+    public void FixedUpdate()
     {
         originObj.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
@@ -100,8 +100,7 @@ public class cPlayer : cCharacter
 
         if(charDir.Equals(CHARDIRECTION.NONE))
             _animator.SetInteger("Direction", 1);
-
-        base.FixedUpdate();
+        
         if (!isAttatchedOnRope)
         {
             if(isJumpAttack.Equals(false))

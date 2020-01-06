@@ -28,7 +28,7 @@ public class cJoystick : MonoBehaviour
 
     private Vector3 prevTouchPos;
     private float minSwipeDist;
-    
+        
 
 
     private void Start()
@@ -176,6 +176,9 @@ public class cJoystick : MonoBehaviour
 
     private void Jump()
     {
+        if (scr_player.isUpBlocked.Equals(true))
+            return;
+
         if (scr_player.isGrounded == true || jumpCount < 2)
         {
             scr_player.StartCoroutine("Jump");
@@ -254,9 +257,13 @@ public class cJoystick : MonoBehaviour
                      scr_player.GetStatus() != CHARACTERSTATUS.DASH)
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
+<<<<<<< HEAD
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
                     if(scr_player.isRightBlocked.Equals(true))
                         scr_player.SetCurMoveSpeed(0);
+=======
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());                    
+>>>>>>> 91cb152cacca1d92a11171c832fa85b84fbef6ee
                 }
                 break;
             //DOWN
