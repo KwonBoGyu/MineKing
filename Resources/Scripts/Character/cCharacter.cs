@@ -144,6 +144,8 @@ public class cCharacter : MonoBehaviour
 
         if (isGrounded == true)
             isDoubleJump = false;
+
+        isGrounded = false;
         
         float currentHeight = originObj.transform.position.y;
         float maxHeight = originObj.transform.position.y + jumpHeight;        

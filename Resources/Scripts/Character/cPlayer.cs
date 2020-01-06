@@ -19,6 +19,9 @@ public class cPlayer : cCharacter
     private float speedUpTime;
     private float speedUpAmount;
 
+    public cTileMng tileMng;
+    public cJoystick joystick;
+
     public bool GetIsOnRope() { return isOnRope; }
     public bool GetIsAttatchedOnRope() { return isAttatchedOnRope; }
     public void SetIsAttatchedOnRope(bool pBool)
@@ -47,8 +50,11 @@ public class cPlayer : cCharacter
         attackBoxPos[0] = new Vector3(18, 225, 0); 
         attackBoxPos[1] = new Vector3(78, 2.08f, 0); 
         attackBoxPos[2] = new Vector3(22, -128, 0);
-
+        attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
+        status = CHARACTERSTATUS.NONE;
+        StartCoroutine("Jump");
+        Attack_front();
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)
@@ -115,16 +121,21 @@ public class cPlayer : cCharacter
     {
         _animator.SetTrigger("AttackFront");
         status = CHARACTERSTATUS.ATTACK;
+        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
+        
+
     }
     public void Attack_up()
     {
         _animator.SetTrigger("AttackUp");
         status = CHARACTERSTATUS.ATTACK;
+        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
     }
     public void Attack_down()
     {
         _animator.SetTrigger("AttackDown");
         status = CHARACTERSTATUS.ATTACK;
+        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
     }
 
     public void ActiveAttackBox(int pDir)
@@ -146,6 +157,8 @@ public class cPlayer : cCharacter
         attackBox.SetActive(false);
         status = CHARACTERSTATUS.NONE;
         isJumpAttack = false;
+        if (joystick.isDrag.Equals(true))
+            joystick.SetSwipeDistAfterAttack();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

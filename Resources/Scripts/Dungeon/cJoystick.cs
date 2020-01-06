@@ -17,7 +17,7 @@ public class cJoystick : MonoBehaviour
     private Vector3 defaultPos;
     private Vector3 joyDir;
     private float rad;
-    private bool isDrag;
+    public bool isDrag;
     private int jumpCount;
     private float keyTime;
 
@@ -26,9 +26,11 @@ public class cJoystick : MonoBehaviour
     private float padY;
     private float padAngle;
 
+    private Vector3 dragPos;
     private Vector3 prevTouchPos;
     private float minSwipeDist;
-        
+    public float prevSwipeDist;
+    public float swipeDist;
 
 
     private void Start()
@@ -102,6 +104,43 @@ public class cJoystick : MonoBehaviour
 
         if (scr_player.GetStatus() == CHARACTERSTATUS.ATTACK)
             scr_player.SetCurMoveSpeed(0);
+        else
+        {
+            if (isDrag.Equals(true))
+            {
+                if (swipeDist > minSwipeDist)
+                {
+                    //위
+                    if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y > 0.7f)
+                    {
+                        CalcDir(0);
+                    }
+                    //오른
+                    else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
+                    {
+                        CalcDir(1);
+                    }
+                    //아래
+                    else if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y < -0.7f)
+                    {
+                        CalcDir(2);
+                    }
+                    //왼
+                    else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
+                    {
+                        CalcDir(3);
+                    }
+
+                    this.transform.position = dragPos;
+                    prevTouchPos = this.transform.position;
+                }
+            }
+        }
+    }
+
+    public void SetSwipeDistAfterAttack()
+    {
+        swipeDist = prevSwipeDist;
     }
 
     public void PointerDown(BaseEventData _data)
@@ -116,40 +155,15 @@ public class cJoystick : MonoBehaviour
     public void Drag(BaseEventData _data)
     {
         PointerEventData d = _data as PointerEventData;
-        Vector3 pos = d.position;
+        dragPos = d.position;
         isDrag = true;
 
         //스와이프 거리
-        float swipeDist = (pos - prevTouchPos).magnitude;
-        //방향
-        joyDir = (pos - this.transform.position).normalized;
-        
+        swipeDist = (dragPos - prevTouchPos).magnitude;
         if (swipeDist > minSwipeDist)
-        {
-            //위
-            if(Mathf.Abs(joyDir.x) < 0.3f && joyDir.y > 0.7f)
-            {
-                CalcDir(0);
-            }
-            //오른
-            else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
-            {
-                CalcDir(1);
-            }
-            //아래
-            else if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y < -0.7f)
-            {
-                CalcDir(2);
-            }
-            //왼
-            else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
-            {
-                CalcDir(3);
-            }
-
-            this.transform.position = d.position;
-            prevTouchPos = this.transform.position;
-        }            
+            prevSwipeDist = swipeDist;
+        //방향
+        joyDir = (dragPos - this.transform.position).normalized;        
     }
 
     public void DragEnd()

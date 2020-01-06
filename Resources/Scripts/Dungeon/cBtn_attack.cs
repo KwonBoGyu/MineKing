@@ -37,6 +37,8 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         PointerEventData d = eventData as PointerEventData;
         prevTouchPos = d.position;
 
+        StopCoroutine(cor_keepPointerDown);
+
         isChargingOn = false;
         chargeTimer = 0;
         chargeStartTimer = 0;
@@ -51,50 +53,42 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         float dist = (d.position - prevTouchPos).magnitude;
         Vector2 swipeDir = (d.position - prevTouchPos).normalized;
 
-        //방향 공격
-        if (dist >= minSwipeDist)
+        StopCoroutine(cor_keepPointerDown);
+
+        //일반 연속 공격
+        if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && chargeTimer < 0.2f)
         {
-            //위로 공격
-            if (d.position.y > prevTouchPos.y)
+            //점프 공격
+            if (scr_player.isGrounded.Equals(false))
             {
+                if (scr_player.jumpAttackPoint > 0)
+                    return;
+
+                scr_player.jumpAttackPoint += 1;
+                scr_player.isJumpAttack = true;
+            }
+
+            if (scr_player.GetDirection().Equals(Vector3.up))
                 scr_player.Attack_up();
-            }
-            //아래로 공격
-            else
-            {
+            else if (scr_player.GetDirection().Equals(Vector3.down))
                 scr_player.Attack_down();
-            }
-        }
-        //일반 공격
-        else
-        {
-            //일반 연속 공격
-            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && chargeTimer < 0.2f)
-            {
-                //점프 공격
-                if (scr_player.isGrounded.Equals(false))
-                {
-                    if (scr_player.jumpAttackPoint > 0)
-                        return;
-
-                    scr_player.jumpAttackPoint += 1;
-                    scr_player.isJumpAttack = true;
-                }
-
+            else
                 scr_player.Attack_front();
-                scr_player.SetStatus(CHARACTERSTATUS.ATTACK);
 
-                if (comboPoint < 3)
-                    comboPoint += 1;
-                //else
-                //3타 공격
-            }
-        }        
+            scr_player.SetStatus(CHARACTERSTATUS.ATTACK);
+
+            if (comboPoint < 3)
+                comboPoint += 1;
+            //else
+            //3타 공격
+        }
 
         chargeTimer = 0;
+        chargeStartTimer = 0;
         img_gageBar.fillAmount = minChargePoint;
         img_gageBar.transform.parent.gameObject.SetActive(false);
-        StopCoroutine(cor_keepPointerDown);
+
+        
     }
 
     IEnumerator KeepPointerDown()
