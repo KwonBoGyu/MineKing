@@ -100,6 +100,7 @@ public class cTileMng : MonoBehaviour
         CheckTiles(tileMap_canHit, pObj);
         CheckTiles(tileMap_cannotHit, pObj);
 
+
         if (pObj.notUpBlocked)
             pObj.isUpBlocked = false;
         if (pObj.notGrounded)
@@ -144,10 +145,10 @@ public class cTileMng : MonoBehaviour
                 {
                     //위쪽 충돌
                     case 0:
-                        pObj.notUpBlocked = false;
                         //충돌하였다면..
                         if (originTPos.y + originRtYLenHalf> pTileMap.CellToWorld(worldToCellPos).y)
                         {
+                            pObj.notUpBlocked = false;
                             pObj.isUpBlocked = true;
                             pObj.originObj.transform.position = new Vector3(
                                 originTPos.x,
@@ -158,8 +159,6 @@ public class cTileMng : MonoBehaviour
                         break;
                     //오른쪽 위 충돌
                     case 1:
-                        pObj.notUpBlocked = false;
-                        pObj.notRightBlocked = false;
                         //충돌하였다면..
                         if (originTPos.x + originRtXLenHalf > pTileMap.CellToWorld(worldToCellPos).x &&
                            originTPos.y + originRtYLenHalf > pTileMap.CellToWorld(worldToCellPos).y)
@@ -172,6 +171,7 @@ public class cTileMng : MonoBehaviour
                             //가로 면적이 크다면 아래로
                             if (distX > distY)
                             {
+                                pObj.notUpBlocked = false;
                                 pObj.isUpBlocked = true;
                                 pObj.originObj.transform.position = new Vector3(
                                     originTPos.x,
@@ -182,6 +182,7 @@ public class cTileMng : MonoBehaviour
                             //세로 면적이 크다면 왼쪽으로
                             else
                             {
+                                pObj.notRightBlocked = false;
                                 pObj.isRightBlocked = true;
                                 pObj.originObj.transform.position = new Vector3(
                                 pTileMap.CellToWorld(worldToCellPos).x - originRtXLenHalf,
@@ -192,11 +193,11 @@ public class cTileMng : MonoBehaviour
                         }
                         break;
                     //오른쪽 충돌
-                    case 2:
-                        pObj.notRightBlocked = false;
+                    case 2:                        
                         //충돌하였다면..
                         if (originTPos.x + originRtXLenHalf >= pTileMap.CellToWorld(worldToCellPos).x)
                         {
+                            pObj.notRightBlocked = false;
                             pObj.isRightBlocked = true;
                             pObj.originObj.transform.position = new Vector3(
                                 pTileMap.CellToWorld(worldToCellPos).x - originRtXLenHalf,
@@ -207,8 +208,6 @@ public class cTileMng : MonoBehaviour
                         break;
                     //오른쪽 아래 충돌
                     case 3:
-                        pObj.notGrounded = false;
-                        pObj.notRightBlocked = false;
                         //충돌하였다면..
                         if (originTPos.x + originRtXLenHalf > pTileMap.CellToWorld(worldToCellPos).x &&
                            originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
@@ -221,6 +220,7 @@ public class cTileMng : MonoBehaviour
                             //가로 면적이 크다면 위로
                             if (distX > distY)
                             {
+                                pObj.notGrounded = false;
                                 pObj.isGrounded = true;
                                 pObj.originObj.transform.position = new Vector3(
                                     originTPos.x,
@@ -231,6 +231,7 @@ public class cTileMng : MonoBehaviour
                             //세로 면적이 크다면 왼쪽으로
                             else
                             {
+                                pObj.notRightBlocked = false;
                                 pObj.isRightBlocked = true;
                                 pObj.originObj.transform.position = new Vector3(
                                   pTileMap.CellToWorld(worldToCellPos).x - originRtXLenHalf,
@@ -239,13 +240,20 @@ public class cTileMng : MonoBehaviour
                                   );
                             }
                         }
+                        else if (originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + 1)
+                        {
+                            pObj.notGrounded = false;
+                        }
+
                         break;
                     //아래쪽 충돌
                     case 4:
-                        pObj.notGrounded = false;
                         //충돌하였다면..
                         if (originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
                         {
+                            Debug.Log(originTPos.y - originRtYLenHalf);
+                            Debug.Log((pTileMap.CellToWorld(worldToCellPos).y + tileSize));
+                            pObj.notGrounded = false;
                             pObj.isGrounded = true;
                             pObj.originObj.transform.position = new Vector3(
                                 originTPos.x,
@@ -253,11 +261,15 @@ public class cTileMng : MonoBehaviour
                                 originTPos.z
                                 );
                         }
+
+                        else if (originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + 1)
+                        {
+                            pObj.notGrounded = false;
+                        }
+
                         break;
                     //왼쪽 아래 충돌
                     case 5:
-                        pObj.notGrounded = false;
-                        pObj.notLeftBlocked = false;
                         //충돌하였다면..
                         if (originTPos.x - originRtXLenHalf < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
                            originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
@@ -270,6 +282,7 @@ public class cTileMng : MonoBehaviour
                             //가로 면적이 크다면 위로
                             if (distX > distY)
                             {
+                                pObj.notGrounded = false;
                                 pObj.isGrounded = true;
                                 pObj.originObj.transform.position = new Vector3(
                                     originTPos.x,
@@ -280,6 +293,7 @@ public class cTileMng : MonoBehaviour
                             //세로 면적이 크다면 오른쪽으로
                             else
                             {
+                                pObj.notLeftBlocked = false;
                                 pObj.isLeftBlocked = true;
                                 pObj.originObj.transform.position = new Vector3(
                                 (pTileMap.CellToWorld(worldToCellPos).x + tileSize) + originRtXLenHalf,
@@ -288,13 +302,19 @@ public class cTileMng : MonoBehaviour
                                 );
                             }
                         }
+                        else if (originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + 1)
+                        {
+                            Debug.Log(originTPos.y - originRtYLenHalf);
+                            Debug.Log((pTileMap.CellToWorld(worldToCellPos).y + tileSize));
+                            pObj.notGrounded = false;
+                        }
                         break;
                     //왼쪽 충돌
                     case 6:
-                        pObj.notLeftBlocked = false;
                         //충돌하였다면..
                         if (originTPos.x - originRtXLenHalf <= (pTileMap.CellToWorld(worldToCellPos).x + tileSize))
                         {
+                            pObj.notLeftBlocked = false;
                             pObj.isLeftBlocked = true;
                             pObj.originObj.transform.position = new Vector3(
                                 (pTileMap.CellToWorld(worldToCellPos).x +tileSize) + originRtXLenHalf,
@@ -305,8 +325,6 @@ public class cTileMng : MonoBehaviour
                         break;
                     //왼쪽 위 충돌
                     case 7:
-                        pObj.notUpBlocked = false;
-                        pObj.notLeftBlocked = false;
                         //충돌하였다면..
                         if (originTPos.x - originRtXLenHalf < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
                            originTPos.y + originRtYLenHalf > pTileMap.CellToWorld(worldToCellPos).y)
@@ -319,6 +337,7 @@ public class cTileMng : MonoBehaviour
                             //가로 면적이 크다면 아래로
                             if (distX > distY)
                             {
+                                pObj.notUpBlocked = false;
                                 pObj.isUpBlocked = true;
                                 pObj.originObj.transform.position = new Vector3(
                                     originTPos.x,
@@ -329,6 +348,7 @@ public class cTileMng : MonoBehaviour
                             //세로 면적이 크다면 오른쪽으로
                             else
                             {
+                                pObj.notLeftBlocked = false;
                                 pObj.isLeftBlocked = true;
                                 pObj.originObj.transform.position = new Vector3(
                                 (pTileMap.CellToWorld(worldToCellPos).x + tileSize) + originRtXLenHalf,

@@ -268,7 +268,7 @@ public class cJoystick : MonoBehaviour
                     //벽에 붙은 상태일때
                     if (scr_player.GetIsClimbing())
                     {
-                        scr_player.SetCurMoveSpeed(150);
+                        scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() * 0.5f);
                     }
                     //벽에 안붙어있을때
                     else
@@ -306,7 +306,7 @@ public class cJoystick : MonoBehaviour
                     //벽에 붙은 상태
                     if (scr_player.GetIsClimbing())
                     {
-                        scr_player.SetCurMoveSpeed(150);
+                        scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() * 0.5f);
                         if (scr_player.isGrounded)
                             scr_player.SetIsClimbing(false);
                     }

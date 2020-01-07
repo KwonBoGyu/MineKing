@@ -63,7 +63,6 @@ public class cCamera : MonoBehaviour
             yFixedPos = minMax_entireRange.x - cam_height * 0.5f;
 
             isYLocked = true;
-            Debug.Log("위");
         }
         if (camRange.y >= minMax_entireRange.y)
         {

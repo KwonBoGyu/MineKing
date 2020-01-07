@@ -44,7 +44,6 @@ public class cPlayer : cCharacter
         weapon.damage = damage;
         status = CHARACTERSTATUS.NONE;
         StartCoroutine("Jump");
-        Attack_front();
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)

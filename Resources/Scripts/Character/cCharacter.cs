@@ -287,7 +287,6 @@ public class cCharacter : MonoBehaviour
         if (isGrounded == false)
         {
             originObj.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
-
             if (changingGravity <= 1500)
                 changingGravity *= 1.02f;
             if (changingGravity > 1500)
