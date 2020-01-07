@@ -146,6 +146,22 @@ public class cJoystick : MonoBehaviour
         {
             joystick.position = joyDir * rad + defaultPos;
         }
+        if(scr_player.isRightBlocked)
+        {
+            //오른
+            if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
+            {
+                scr_player.SetIsClimbing(true);
+            }
+        }
+        else if (scr_player.isLeftBlocked)
+        {
+            //왼
+            if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
+            {
+                scr_player.SetIsClimbing(true);
+            }
+        }
     }
 
     public void Drag(BaseEventData _data)
@@ -249,13 +265,12 @@ public class cJoystick : MonoBehaviour
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
 
-                    //로프가 있을 때
-                    if (scr_player.GetIsOnRope().Equals(true))
+                    //벽에 붙은 상태일때
+                    if (scr_player.GetIsClimbing())
                     {
-                        scr_player.SetIsAttatchedOnRope(true);
-                        scr_player.SetCurMoveSpeed(3);
+                        scr_player.SetCurMoveSpeed(150);
                     }
-                    //로프가 없을 때
+                    //벽에 안붙어있을때
                     else
                     {
                         scr_player.SetCurMoveSpeed(0);
@@ -266,6 +281,12 @@ public class cJoystick : MonoBehaviour
             case 1:
                 scr_player.SetDir(Vector3.right, CHARDIRECTION.RIGHT);
                 _player.transform.localScale = new Vector3(1, 1, 1);
+
+                //붙은거 떨어지기
+                if(scr_player.isLeftBlocked && scr_player.GetIsClimbing())
+                {
+                    scr_player.SetIsClimbing(false);
+                }
 
                 //달리기
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
@@ -282,12 +303,12 @@ public class cJoystick : MonoBehaviour
                 //예외처리
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
                 {
-                    //로프가 있을 때
-                    if (scr_player.GetIsAttatchedOnRope().Equals(true))
+                    //벽에 붙은 상태
+                    if (scr_player.GetIsClimbing())
                     {
-                        scr_player.SetCurMoveSpeed(3);
+                        scr_player.SetIsClimbing(false);
                     }
-                    //로프가 없을 때
+                    //벽에 붙은 상태 아닐때
                     else
                     {
                         scr_player.SetCurMoveSpeed(0);
@@ -298,6 +319,10 @@ public class cJoystick : MonoBehaviour
             case 3:
                 scr_player.SetDir(Vector3.left, CHARDIRECTION.LEFT);
                 _player.transform.localScale = new Vector3(-1, 1, 1);
+                if (scr_player.isRightBlocked && scr_player.GetIsClimbing())
+                {
+                    scr_player.SetIsClimbing(false);
+                }
 
                 //왼쪽 이동
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&

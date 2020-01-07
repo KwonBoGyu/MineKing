@@ -13,18 +13,12 @@ public class cPlayer : cCharacter
     public int jumpAttackPoint;
     private bool isJumpAniDone;
 
-    private bool isOnRope;
-    private bool isAttatchedOnRope;
+    
     private bool isSpeedUp;
     private float speedUpTime;
     private float speedUpAmount;
 
-    public bool GetIsOnRope() { return isOnRope; }
-    public bool GetIsAttatchedOnRope() { return isAttatchedOnRope; }
-    public void SetIsAttatchedOnRope(bool pBool)
-    {
-        isAttatchedOnRope = pBool;
-    }
+    
 
     public override void Init(string pNickName, float pDamage, float pMoveSpeed, float pMaxHp, float pCurHp)
     {
@@ -38,8 +32,7 @@ public class cPlayer : cCharacter
         defaultGravity = 300.0f;
         changingGravity = defaultGravity;
         isGrounded = false;
-        isOnRope = false;
-        isAttatchedOnRope = false;
+        isClimbing = false;
         isSpeedUp = false;
         speedUpTime = 0.0f;
         speedUpAmount = 0.0f;
@@ -106,13 +99,16 @@ public class cPlayer : cCharacter
         if(charDir.Equals(CHARDIRECTION.NONE))
             _animator.SetInteger("Direction", 1);
         
-        if (!isAttatchedOnRope)
+        if (!isClimbing)
         {
-            if(isJumpAttack.Equals(false))
+            if(!isJumpAttack)
                 SetGravity();
-
-            if (isGrounded.Equals(true))
+            if (isGrounded)
                 jumpAttackPoint = 0;
+        }
+        else if (!isRightBlocked && !isLeftBlocked)
+        {
+            isClimbing = false;
         }
     }
        
@@ -155,20 +151,10 @@ public class cPlayer : cCharacter
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.tag.Equals("Rope"))
-        {
-            isOnRope = true;
-            Debug.Log("isOnRope");
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.tag.Equals("Rope"))
-        {
-            isOnRope = false;
-            isAttatchedOnRope = false;
-        }
     }
 
     public void UseItem(ITEM rItem)

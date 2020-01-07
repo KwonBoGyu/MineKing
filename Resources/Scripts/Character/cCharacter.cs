@@ -43,6 +43,9 @@ public class cCharacter : MonoBehaviour
     protected float maxDashCoolDown; // 실제 대쉬 쿨다운
     protected float dashCoolDown; // 쿨다운 계산용 (변화)
     protected bool isJetPackOn;
+    protected bool isClimbing;
+    public bool GetIsClimbing() { return isClimbing; }
+    public void SetIsClimbing(bool pbool) { isClimbing = pbool; }
     protected CHARACTERSTATUS status;
     protected CHARDIRECTION charDir;
     public CHARDIRECTION GetCharDir() { return charDir; }
@@ -51,8 +54,11 @@ public class cCharacter : MonoBehaviour
     public BoxCollider2D rt;
 
     public cTileMng tileMng;
-    public int isUpBlocked_123;
-    public int isGrounded_123;
+
+    public bool notUpBlocked;
+    public bool notGrounded;
+    public bool notLeftBlocked;
+    public bool notRightBlocked;
 
     //hp
     public Image img_curHp;
@@ -150,14 +156,15 @@ public class cCharacter : MonoBehaviour
 
         bool goBreak = false;
 
-        if (isGrounded == false && isDoubleJump == false)
+        if (!isGrounded && !isDoubleJump)
             isDoubleJump = true;
-        else if (isGrounded == false && isDoubleJump == true)
+        else if (!isGrounded && isDoubleJump)
             goBreak = true;
 
-        if (isGrounded == true)
+        if (isGrounded || isClimbing)
             isDoubleJump = false;
 
+        isClimbing = false;
         isGrounded = false;
         
         float currentHeight = originObj.transform.position.y;
@@ -165,7 +172,7 @@ public class cCharacter : MonoBehaviour
 
         while (true)
         {
-            if(goBreak == true)            
+            if(goBreak || isClimbing)
                 break;
 
             yield return new WaitForFixedUpdate();
