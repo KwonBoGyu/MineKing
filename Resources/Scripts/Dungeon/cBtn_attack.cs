@@ -43,7 +43,7 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         chargeTimer = 0;
         chargeStartTimer = 0;
 
-        if(scr_player.isGrounded.Equals(true))
+        if(scr_player.isGrounded)
             StartCoroutine(cor_keepPointerDown);                
     }
 
