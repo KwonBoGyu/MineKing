@@ -50,6 +50,10 @@ public class cCharacter : MonoBehaviour
     public GameObject originObj;
     public BoxCollider2D rt;
 
+    public cTileMng tileMng;
+    public int isUpBlocked_123;
+    public int isGrounded_123;
+
     //hp
     public Image img_curHp;
 
@@ -68,20 +72,6 @@ public class cCharacter : MonoBehaviour
     private IEnumerator cor_knockBack;
     protected Animator _animator;
 
-    public float pheight;
-    public float pwidth;
-    public float mapHeight;
-    public int[] Playerpos = { 1, 1 };
-    public int[,] Map = { {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-                                     {-1,0,0,0,0,0,0,0,0,-1},
-                                     {-1,0,0,0,0,0,0,0,0,-1},
-                                     {-1,0,0,0,0,0,0,0,0,-1},
-                                     {-1,1,0,0,0,0,0,0,0,-1},
-                                     {-1,1,0,0,0,0,0,1,0,-1},
-                                     {-1,1,1,0,0,0,1,1,1,-1},
-                                     {-1,1,1,1,0,1,1,1,1,-1},
-                                     {-1,1,1,1,1,1,1,1,1,-1},
-                                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},};
     public virtual void Init(string pNickName, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp)
     {
         nickName = pNickName;
@@ -99,12 +89,6 @@ public class cCharacter : MonoBehaviour
         maxDashCoolDown = 4.0f;
         dashCoolDown = maxDashCoolDown;
         isJetPackOn = false;
-
-        pheight = 171.84f;
-        pwidth = 61.52f;
-        mapHeight = 1800f;
-        originObj.transform.position = new Vector2(Playerpos[1] * 180, mapHeight - Playerpos[0] * 180);
-        Debug.Log("init done");
     }
     
     public float GetMaxHp() { return maxHp; }
@@ -118,6 +102,15 @@ public class cCharacter : MonoBehaviour
             curHp = maxHp;
 
         SetHp();
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        if (cUtil._tileMng != null && tileMng == null)
+            tileMng = cUtil._tileMng;
+        
+        if(tileMng != null)
+            tileMng.CheckCanGroundTile(this);
     }
 
     public void DecreaseHP(float pAmount)

@@ -32,12 +32,6 @@ public class cTileMng : MonoBehaviour
     private Tilemap tileMap_canHit;
     Vector3Int[] cellPos;
 
-    public GameObject player;
-    public cPlayer scr_player;
-
-    private int isUpBlocked_123;
-    private int isGrounded_123;
-
     Tile? tempTile;
     private TileBase canHitTile_100;
     private TileBase canHitTile_60;
@@ -46,29 +40,11 @@ public class cTileMng : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.Find("DungeonNormalScene").
-            transform.Find("Canvas_main").Find("Player").gameObject;
-        scr_player = player.transform.GetChild(0).GetComponent<cPlayer>();
         tileMap_canHit = this.transform.GetChild(0).GetComponent<Tilemap>();
         tileMap_cannotHit = this.transform.GetChild(1).GetComponent<Tilemap>();
         tempTile = null;
 
         SetEntireTiles();
-    }
-
-    private void FixedUpdate()
-    {
-        isUpBlocked_123 = 0;
-        isGrounded_123 = 0;
-
-        CheckTiles(tileMap_canHit);
-        CheckTiles(tileMap_cannotHit);
-
-        if (isUpBlocked_123.Equals(0))
-            scr_player.isUpBlocked = false;
-        if (isGrounded_123.Equals(0))        
-            scr_player.isGrounded = false;
-        
     }
 
     public void CheckAttackedTile(Vector3 pWorldPos, float pDamage)
@@ -112,21 +88,37 @@ public class cTileMng : MonoBehaviour
             dic_canHit[convertedWorldPos] = tempTileToUse;
         }
     }
+
+    public void CheckCanGroundTile(cCharacter pObj)
+    {
+        pObj.isUpBlocked_123 = 0;
+        pObj.isGrounded_123 = 0;
+
+        CheckTiles(tileMap_canHit, pObj);
+        CheckTiles(tileMap_cannotHit, pObj);
+
+        if (pObj.isUpBlocked_123.Equals(0))
+            pObj.isUpBlocked = false;
+        if (pObj.isGrounded_123.Equals(0))
+            pObj.isGrounded = false;
+    }
     
-    private void CheckTiles(Tilemap pTileMap)
+    private void CheckTiles(Tilemap pTileMap, cCharacter pObj)
     {
         pTileMap.RefreshAllTiles();
+        Transform originT = pObj.originObj.transform;
+        BoxCollider2D originRt = pObj.rt;
 
         cellPos = new Vector3Int[]
             {
-                new Vector3Int((int)player.transform.position.x, (int)player.transform.position.y + 150, 0),
-                new Vector3Int((int)player.transform.position.x + 25, (int)player.transform.position.y + 150, 0),
-                new Vector3Int((int)player.transform.position.x + 60, (int)player.transform.position.y, 0),
-                new Vector3Int((int)player.transform.position.x + 25, (int)player.transform.position.y - 150, 0),
-                new Vector3Int((int)player.transform.position.x, (int)player.transform.position.y - 150, 0),
-                new Vector3Int((int)player.transform.position.x - 25, (int)player.transform.position.y - 150, 0),
-                new Vector3Int((int)player.transform.position.x - 60, (int)player.transform.position.y, 0),
-                new Vector3Int((int)player.transform.position.x - 25, (int)player.transform.position.y + 150, 0),
+                new Vector3Int((int)originT.position.x, (int)originT.position.y + 150, 0),
+                new Vector3Int((int)originT.position.x + 25, (int)originT.position.y + 150, 0),
+                new Vector3Int((int)originT.position.x + 60, (int)originT.position.y, 0),
+                new Vector3Int((int)originT.position.x + 25, (int)originT.position.y - 150, 0),
+                new Vector3Int((int)originT.position.x, (int)originT.position.y - 150, 0),
+                new Vector3Int((int)originT.position.x - 25, (int)originT.position.y - 150, 0),
+                new Vector3Int((int)originT.position.x - 60, (int)originT.position.y, 0),
+                new Vector3Int((int)originT.position.x - 25, (int)originT.position.y + 150, 0),
             };
 
         for(int i = 0; i < cellPos.Length; i++)
@@ -138,53 +130,53 @@ public class cTileMng : MonoBehaviour
             if (t_tile != null)
             {
                 pTileMap.SetTileFlags(worldToCellPos, TileFlags.None);
-                //pTileMap.SetColor(worldToCellPos, Color.red);         
+                pTileMap.SetColor(worldToCellPos, Color.red);         
 
                 switch(i)
                 {
                     //위쪽 충돌
                     case 0:
-                        isUpBlocked_123 += 1;
+                        pObj.isUpBlocked_123 += 1;
                         //충돌하였다면..
-                        if (player.transform.position.y + scr_player.rt.size.y * 0.5f> pTileMap.CellToWorld(worldToCellPos).y)
+                        if (originT.position.y + originRt.size.y * 0.5f> pTileMap.CellToWorld(worldToCellPos).y)
                         {
-                            scr_player.isUpBlocked = true;
-                            player.gameObject.transform.position = new Vector3(
-                                player.transform.position.x,
-                                pTileMap.CellToWorld(worldToCellPos).y - scr_player.rt.size.y * 0.5f,                                
-                                player.transform.position.z
+                            pObj.isUpBlocked = true;
+                            pObj.originObj.transform.position = new Vector3(
+                                originT.position.x,
+                                pTileMap.CellToWorld(worldToCellPos).y - originRt.size.y * 0.5f,
+                                originT.position.z
                                 );
                         }
                         break;
                     //오른쪽 위 충돌
                     case 1:
-                        isUpBlocked_123 += 1;
+                        pObj.isUpBlocked_123 += 1;
                         //충돌하였다면..
-                        if (player.transform.position.x + scr_player.rt.size.x * 0.5f > pTileMap.CellToWorld(worldToCellPos).x &&
-                           player.transform.position.y + scr_player.rt.size.y * 0.5f > pTileMap.CellToWorld(worldToCellPos).y)
+                        if (originT.position.x + originRt.size.x * 0.5f > pTileMap.CellToWorld(worldToCellPos).x &&
+                           originT.position.y + originRt.size.y * 0.5f > pTileMap.CellToWorld(worldToCellPos).y)
                         {
-                            float distX = Mathf.Abs((player.transform.position.x + scr_player.rt.size.x * 0.5f) -
+                            float distX = Mathf.Abs((originT.position.x + originRt.size.x * 0.5f) -
                                 pTileMap.CellToWorld(worldToCellPos).x);
-                            float distY = Mathf.Abs((player.transform.position.y + scr_player.rt.size.y * 0.5f) -
+                            float distY = Mathf.Abs((originT.position.y + originRt.size.y * 0.5f) -
                                 pTileMap.CellToWorld(worldToCellPos).y);
 
                             //가로 면적이 크다면 아래로
                             if (distX > distY)
                             {
-                                scr_player.isUpBlocked = true;
-                                player.gameObject.transform.position = new Vector3(
-                                    player.transform.position.x,
-                                    pTileMap.CellToWorld(worldToCellPos).y - scr_player.rt.size.y * 0.5f,
-                                    player.transform.position.z
+                                pObj.isUpBlocked = true;
+                                pObj.originObj.transform.position = new Vector3(
+                                    originT.position.x,
+                                    pTileMap.CellToWorld(worldToCellPos).y - originRt.size.y * 0.5f,
+                                    originT.position.z
                                     );
                             }
                             //세로 면적이 크다면 왼쪽으로
                             else
                             {
-                                player.gameObject.transform.position = new Vector3(
-                                pTileMap.CellToWorld(worldToCellPos).x - scr_player.rt.size.x * 0.5f,
-                                player.transform.position.y,
-                                player.transform.position.z
+                                pObj.originObj.transform.position = new Vector3(
+                                pTileMap.CellToWorld(worldToCellPos).x - originRt.size.x * 0.5f,
+                                originT.position.y,
+                                originT.position.z
                                 );
                             }
                         }
@@ -192,92 +184,92 @@ public class cTileMng : MonoBehaviour
                     //오른쪽 충돌
                     case 2:
                         //충돌하였다면..
-                        if(player.transform.position.x + scr_player.rt.size.x * 0.5f > pTileMap.CellToWorld(worldToCellPos).x)
+                        if(originT.position.x + originRt.size.x * 0.5f > pTileMap.CellToWorld(worldToCellPos).x)
                         {
-                            player.gameObject.transform.position = new Vector3(
-                                pTileMap.CellToWorld(worldToCellPos).x - scr_player.rt.size.x * 0.5f,
-                                player.transform.position.y,
-                                player.transform.position.z
+                            pObj.originObj.transform.position = new Vector3(
+                                pTileMap.CellToWorld(worldToCellPos).x - originRt.size.x * 0.5f,
+                                originT.position.y,
+                                originT.position.z
                                 );
                         }
                         break;
                     //오른쪽 아래 충돌
                     case 3:
-                        isGrounded_123 += 1;
+                        pObj.isGrounded_123 += 1;
                         //충돌하였다면..
-                        if (player.transform.position.x + scr_player.rt.size.x * 0.5f > pTileMap.CellToWorld(worldToCellPos).x &&
-                           player.transform.position.y - scr_player.rt.size.y * 0.5f < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
+                        if (originT.position.x + originRt.size.x * 0.5f > pTileMap.CellToWorld(worldToCellPos).x &&
+                           originT.position.y - originRt.size.y * 0.5f < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
                         {
-                            float distX = Mathf.Abs((player.transform.position.x + scr_player.rt.size.x * 0.5f) -
+                            float distX = Mathf.Abs((originT.position.x + originRt.size.x * 0.5f) -
                                 pTileMap.CellToWorld(worldToCellPos).x);
-                            float distY = Mathf.Abs((player.transform.position.y - scr_player.rt.size.y * 0.5f) -
+                            float distY = Mathf.Abs((originT.position.y - originRt.size.y * 0.5f) -
                                (pTileMap.CellToWorld(worldToCellPos).y + tileSize));
 
                             //가로 면적이 크다면 위로
                             if (distX > distY)
                             {
-                                scr_player.isGrounded = true;
-                                player.gameObject.transform.position = new Vector3(
-                                    player.transform.position.x,
-                                    (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + scr_player.rt.size.y * 0.5f,
-                                    player.transform.position.z
+                                pObj.isGrounded = true;
+                                pObj.originObj.transform.position = new Vector3(
+                                    originT.position.x,
+                                    (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + originRt.size.y * 0.5f,
+                                    originT.position.z
                                     );
                             }
                             //세로 면적이 크다면 왼쪽으로
                             else
                             {
-                                player.gameObject.transform.position = new Vector3(
-                                  pTileMap.CellToWorld(worldToCellPos).x - scr_player.rt.size.x * 0.5f,
-                                  player.transform.position.y,
-                                  player.transform.position.z
+                                pObj.originObj.transform.position = new Vector3(
+                                  pTileMap.CellToWorld(worldToCellPos).x - originRt.size.x * 0.5f,
+                                  originT.position.y,
+                                  originT.position.z
                                   );
                             }
                         }
                         break;
                     //아래쪽 충돌
                     case 4:
-                        isGrounded_123 += 1;
+                        pObj.isGrounded_123 += 1;
                         //충돌하였다면..
-                        if (player.transform.position.y - scr_player.rt.size.y * 0.5f < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
+                        if (originT.position.y - originRt.size.y * 0.5f < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
                         {
                             Debug.Log("GROUNDED");
-                            scr_player.isGrounded = true;
-                            player.gameObject.transform.position = new Vector3(
-                                player.transform.position.x,
-                                (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + scr_player.rt.size.y * 0.5f,
-                                player.transform.position.z
+                            pObj.isGrounded = true;
+                            pObj.originObj.transform.position = new Vector3(
+                                originT.position.x,
+                                (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + originRt.size.y * 0.5f,
+                                originT.position.z
                                 );
                         }
                         break;
                     //왼쪽 아래 충돌
                     case 5:
-                        isGrounded_123 += 1;
+                        pObj.isGrounded_123 += 1;
                         //충돌하였다면..
-                        if (player.transform.position.x - scr_player.rt.size.x * 0.5f < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
-                           player.transform.position.y - scr_player.rt.size.y * 0.5f < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
+                        if (originT.position.x - originRt.size.x * 0.5f < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
+                           originT.position.y - originRt.size.y * 0.5f < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
                         {
-                            float distX = Mathf.Abs((player.transform.position.x - scr_player.rt.size.x * 0.5f) -
+                            float distX = Mathf.Abs((originT.position.x - originRt.size.x * 0.5f) -
                                 (pTileMap.CellToWorld(worldToCellPos).x + tileSize));
-                            float distY = Mathf.Abs((player.transform.position.y - scr_player.rt.size.y * 0.5f) -
+                            float distY = Mathf.Abs((originT.position.y - originRt.size.y * 0.5f) -
                                (pTileMap.CellToWorld(worldToCellPos).y + tileSize));
 
                             //가로 면적이 크다면 위로
                             if (distX > distY)
                             {
-                                scr_player.isGrounded = true;
-                                player.gameObject.transform.position = new Vector3(
-                                    player.transform.position.x,
-                                    (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + scr_player.rt.size.y * 0.5f,
-                                    player.transform.position.z
+                                pObj.isGrounded = true;
+                                pObj.originObj.transform.position = new Vector3(
+                                    originT.position.x,
+                                    (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + originRt.size.y * 0.5f,
+                                    originT.position.z
                                     );
                             }
                             //세로 면적이 크다면 오른쪽으로
                             else
                             {
-                                player.gameObject.transform.position = new Vector3(
-                                (pTileMap.CellToWorld(worldToCellPos).x + tileSize) + scr_player.rt.size.x * 0.5f,
-                                player.transform.position.y,
-                                player.transform.position.z
+                                pObj.originObj.transform.position = new Vector3(
+                                (pTileMap.CellToWorld(worldToCellPos).x + tileSize) + originRt.size.x * 0.5f,
+                                originT.position.y,
+                                originT.position.z
                                 );
                             }
                         }
@@ -285,44 +277,44 @@ public class cTileMng : MonoBehaviour
                     //왼쪽 충돌
                     case 6:
                         //충돌하였다면..
-                        if (player.transform.position.x - scr_player.rt.size.x * 0.5f < (pTileMap.CellToWorld(worldToCellPos).x + tileSize))
+                        if (originT.position.x - originRt.size.x * 0.5f < (pTileMap.CellToWorld(worldToCellPos).x + tileSize))
                         {
-                            player.gameObject.transform.position = new Vector3(
-                                (pTileMap.CellToWorld(worldToCellPos).x +tileSize) + scr_player.rt.size.x * 0.5f,
-                                player.transform.position.y,
-                                player.transform.position.z
+                            pObj.originObj.transform.position = new Vector3(
+                                (pTileMap.CellToWorld(worldToCellPos).x +tileSize) + originRt.size.x * 0.5f,
+                                originT.position.y,
+                                originT.position.z
                                 );
                         }
                         break;
                     //왼쪽 위 충돌
                     case 7:
-                        isUpBlocked_123 += 1;
+                        pObj.isUpBlocked_123 += 1;
                         //충돌하였다면..
-                        if (player.transform.position.x - scr_player.rt.size.x * 0.5f < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
-                           player.transform.position.y + scr_player.rt.size.y * 0.5f > pTileMap.CellToWorld(worldToCellPos).y)
+                        if (originT.position.x - originRt.size.x * 0.5f < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
+                           originT.position.y + originRt.size.y * 0.5f > pTileMap.CellToWorld(worldToCellPos).y)
                         {
-                            float distX = Mathf.Abs((player.transform.position.x - scr_player.rt.size.x * 0.5f) -
+                            float distX = Mathf.Abs((originT.position.x - originRt.size.x * 0.5f) -
                                 (pTileMap.CellToWorld(worldToCellPos).x + tileSize));
-                            float distY = Mathf.Abs((player.transform.position.y + scr_player.rt.size.y * 0.5f) -
+                            float distY = Mathf.Abs((originT.position.y + originRt.size.y * 0.5f) -
                                (pTileMap.CellToWorld(worldToCellPos).y));
 
                             //가로 면적이 크다면 아래로
                             if (distX > distY)
                             {
-                                scr_player.isUpBlocked = true;
-                                player.gameObject.transform.position = new Vector3(
-                                    player.transform.position.x,
-                                    pTileMap.CellToWorld(worldToCellPos).y - scr_player.rt.size.y * 0.5f,
-                                    player.transform.position.z
+                                pObj.isUpBlocked = true;
+                                pObj.originObj.transform.position = new Vector3(
+                                    originT.position.x,
+                                    pTileMap.CellToWorld(worldToCellPos).y - originRt.size.y * 0.5f,
+                                    originT.position.z
                                     );
                             }
                             //세로 면적이 크다면 오른쪽으로
                             else
                             {
-                                player.gameObject.transform.position = new Vector3(
-                                (pTileMap.CellToWorld(worldToCellPos).x + tileSize) + scr_player.rt.size.x * 0.5f,
-                                player.transform.position.y,
-                                player.transform.position.z
+                                pObj.originObj.transform.position = new Vector3(
+                                (pTileMap.CellToWorld(worldToCellPos).x + tileSize) + originRt.size.x * 0.5f,
+                                originT.position.y,
+                                originT.position.z
                                 );
                             }
                         }
@@ -331,8 +323,6 @@ public class cTileMng : MonoBehaviour
             }
         }
         //========for문 종료========//
-        if (isUpBlocked_123.Equals(0))
-            scr_player.isUpBlocked = false;
     }
 
     private void SetEntireTiles()
@@ -359,6 +349,7 @@ public class cTileMng : MonoBehaviour
         canHitTile_30 = tileMap_canHit.GetTile(new Vector3Int(-5, -3, 0));
 
         Debug.Log(dic_canHit.Count);
-        scr_player.tileMng = this;
+
+        cUtil._tileMng = this;
     }
 }

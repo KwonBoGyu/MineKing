@@ -19,8 +19,6 @@ public class cPlayer : cCharacter
     private float speedUpTime;
     private float speedUpAmount;
 
-    public cTileMng tileMng;
-
     public bool GetIsOnRope() { return isOnRope; }
     public bool GetIsAttatchedOnRope() { return isAttatchedOnRope; }
     public void SetIsAttatchedOnRope(bool pBool)
@@ -80,8 +78,10 @@ public class cPlayer : cCharacter
 
     
     
-    public void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
+
         originObj.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
         _animator.SetBool("isGrounded", isGrounded);

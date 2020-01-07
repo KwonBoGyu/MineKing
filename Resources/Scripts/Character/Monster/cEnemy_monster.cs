@@ -80,8 +80,10 @@ public class cEnemy_monster : cCharacter
         dp = GameObject.Find("Canvas_main").transform.GetChild(0).GetComponent<cDungeonNormal_processor>();
     }
 
-    public void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
+
         if(isDead.Equals(false))
         {
             SetGravity();
