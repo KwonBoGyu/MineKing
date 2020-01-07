@@ -11,6 +11,7 @@ public class cPlayerInfo
     public cItem_equip[] item_equip;
     public cItem_use[] item_use;
     public cItem_etc[] item_etc;
+    public int money;
 
     #region 생성자
     public cPlayerInfo(string pNickName, float pMoveSpeed, float pAttackSpeed, float pDamage,
@@ -91,5 +92,7 @@ public class cPlayerInfo
             item_etc[i] = new cItem_etc(inventory.GetItemEtc()[i]._name, inventory.GetItemEtc()[i].price, inventory.GetItemEtc()[i].amount,
                 inventory.GetItemEtc()[i].kind, inventory.GetItemEtc()[i].kindNum);
         }
+
+        money = inventory.GetMoney();
     }
 }

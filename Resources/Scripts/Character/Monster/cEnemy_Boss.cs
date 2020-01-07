@@ -65,7 +65,7 @@ public class cEnemy_Boss : cCharacter
                 {
                     Debug.Log("Get Upgrade Item");
                     cItem pEtc;
-                    citemTable.GetItemInfo(out pEtc, 4);
+                    citemTable.GetItemInfo(out pEtc, 102);
                     cUtil._user.GetInventory().GetItemEtc().Add((cItem_etc)pEtc);
                 }
             }
