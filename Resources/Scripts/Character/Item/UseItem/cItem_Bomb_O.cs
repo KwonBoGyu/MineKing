@@ -2,33 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cItem_Bomb : MonoBehaviour
+public class cItem_Bomb_O : MonoBehaviour
 {
     private float timer;
     private bool isTimerOn;
     private bool isExplodeOn;
     private IEnumerator SetBombCoroutine;
     public void SetTimer(float pTimer) { timer = pTimer; }
-
-    public cItem_Bomb()
+    void Start()
     {
-        timer = 3.0f;
         isTimerOn = false;
         isExplodeOn = false;
         SetBombCoroutine = SetBomb();
     }
-    
+
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(isTimerOn)
+        if (isTimerOn)
         {
             StopCoroutine(SetBombCoroutine);
         }
-        
-        if(collision.transform.tag.Equals("Tilemap_rock"))
+
+        if (collision.transform.tag.Equals("Tilemap_rock"))
         {
             StartCoroutine("SetBomb");
-            if(isExplodeOn)
+            if (isExplodeOn)
             {
                 Destroy(collision.gameObject);
                 isExplodeOn = false;

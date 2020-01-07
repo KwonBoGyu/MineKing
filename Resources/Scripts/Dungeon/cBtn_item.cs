@@ -4,15 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public enum ITEM
-{
-    BOMB,
-    ROPE,
-    SANDBAG,
-    POTION_SPEED,
-    POTION_HP,
-    NONE
-}
 
 public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -32,7 +23,7 @@ public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void Start()
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 3; i >=0; i--)
             items[i] = (ITEM)i;
 
         cor_buttonDown = ButtonDown();
@@ -68,29 +59,30 @@ public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         //아이템 사용
         else
         {
-            switch (items[0])
-            {
-                case ITEM.BOMB:
-                    Debug.Log("bomb");
-                    scr_player.SetBomb();
-                    break;
-                case ITEM.ROPE:
-                    Debug.Log("rope");
-                    scr_player.SetRope();
-                    break;
-                case ITEM.SANDBAG:
-                    Debug.Log("sandbag");
-                    scr_player.SetSandBag();
-                    break;
-                case ITEM.POTION_HP:
-                    Debug.Log("pt_hp");
-                    scr_player.UseHpPotion();
-                    break;
-                case ITEM.POTION_SPEED:
-                    Debug.Log("pt_sp");
-                    scr_player.UseSpeedPotion();
-                    break;
-            }
+            scr_player.UseItem(items[0]);
+            //switch (items[0])
+            //{
+            //    case ITEM.BOMB:
+            //        Debug.Log("bomb");
+            //        scr_player.SetBomb();
+            //        break;
+            //    case ITEM.ROPE:
+            //        Debug.Log("rope");
+            //        scr_player.SetRope();
+            //        break;
+            //    case ITEM.SANDBAG:
+            //        Debug.Log("sandbag");
+            //        scr_player.SetSandBag();
+            //        break;
+            //    case ITEM.POTION_HP:
+            //        Debug.Log("pt_hp");
+            //        scr_player.UseHpPotion();
+            //        break;
+            //    case ITEM.POTION_SPEED:
+            //        Debug.Log("pt_sp");
+            //        scr_player.UseSpeedPotion();
+            //        break;
+            //}
         }
     }
 

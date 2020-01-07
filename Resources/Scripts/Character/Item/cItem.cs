@@ -2,6 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ITEM
+{
+    BOMB,
+    ROPE,
+    SANDBAG,
+    POTION_SPEED,
+    POTION_HP,
+    NONE
+}
+
 [System.Serializable]
 public class cItem : MonoBehaviour
 {

@@ -43,8 +43,18 @@ public class cInventory : MonoBehaviour
 
     public void Init()
     {
+        //아이템 순서 고정
         l_itemEquip = new List<cItem_equip>();
-        l_itemUse = new List<cItem_use>();
+        l_itemUse = new List<cItem_use>
+        {
+            //순서 절대 바꾸지 말 것!!
+            //순서 : cItem class Enum 순서
+        new cItem_Bomb("Bomb", 1, 10, 1, 1),
+        new cItem_Rope("Rope", 1, 10, 1, 1),
+        new cItem_SandBag("SandBag", 1, 10, 1, 1),
+        new cItem_Potion_speed("speedPotion", 1, 10, 1, 1),
+        new cItem_Potion_hp("hpPotion", 1, 10, 1, 1)
+        };
         l_itemEtc = new List<cItem_etc>();
     }
 }
