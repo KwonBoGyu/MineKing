@@ -60,7 +60,6 @@ public class cJoystick : MonoBehaviour
                 Jump();
             }
         }
-<<<<<<< HEAD
         //대쉬
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -73,11 +72,6 @@ public class cJoystick : MonoBehaviour
             {
                 scr_player.Attack_front();                
             }
-=======
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            scr_player.StartSpeedUp(100.0f, 3.0f);
->>>>>>> ad1a998ea032c6642e840e5b266f9fff114279e7
         }
 
         ////제트팩 ON
@@ -244,72 +238,11 @@ public class cJoystick : MonoBehaviour
 
     private void CalcDir(int pDir)
     {
-<<<<<<< HEAD
         switch(pDir)
         {
             //UP
             case 0:
                 scr_player.SetDir(Vector3.up, CHARDIRECTION.UP);
-=======
-        padX = pos.x - this.transform.position.x;
-        padY = pos.y - this.transform.position.y;
-        padAngle = Mathf.Atan2(padY, padX);
-
-        //RIGHT
-        if (padAngle <= cUtil.pi / 8 && padAngle >= -cUtil.pi / 8)
-        {
-            scr_player.SetDir(Vector3.right, CHARDIRECTION.RIGHT);
-            _player.transform.localScale = new Vector3(1, 1, 1);
-
-            scr_player.LookUp(false);
-            scr_player.LookDown(false);
-
-            //달리기
-            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                 scr_player.GetStatus() != CHARACTERSTATUS.DASH)
-            {
-                scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                
-                if (scr_player.isRightBlocked)
-                {
-                    scr_player.SetCurMoveSpeed(0);
-                }
-                else
-                {
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
-                }
-            }
-        }
-        //UPRIGHT
-        else if (padAngle < cUtil.pi * 3 / 8 && padAngle > cUtil.pi / 8)
-        {
-            scr_player.SetDir(Vector3.right, CHARDIRECTION.UPRIGHT);
-            _player.transform.localScale = new Vector3(1, 1, 1);
-            scr_player.LookUp(false);
-            scr_player.LookDown(false);
-
-            //달리기
-            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                 scr_player.GetStatus() != CHARACTERSTATUS.DASH)
-            {
-                scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                
-                if (scr_player.isRightBlocked)
-                {
-                    scr_player.SetCurMoveSpeed(0);
-                }
-                else
-                {
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
-                }
-            }
-        }
-        //UP
-        else if (padAngle < cUtil.pi * 5 / 8 && padAngle >= cUtil.pi * 3 / 8)
-        {
-            scr_player.SetDir(Vector3.up, CHARDIRECTION.UP);
-            scr_player.LookDown(false);
->>>>>>> ad1a998ea032c6642e840e5b266f9fff114279e7
 
                 //예외처리
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
@@ -328,7 +261,6 @@ public class cJoystick : MonoBehaviour
                         scr_player.SetCurMoveSpeed(0);
                     }
                 }
-<<<<<<< HEAD
                 break;
             //RIGHT
             case 1:
@@ -338,84 +270,6 @@ public class cJoystick : MonoBehaviour
                 //달리기
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
                      scr_player.GetStatus() != CHARACTERSTATUS.DASH)
-=======
-            }
-        }
-        //UPLEFT
-        else if (padAngle < cUtil.pi * 7 / 8 && padAngle > cUtil.pi * 5 / 8)
-        {
-            scr_player.SetDir(Vector3.left, CHARDIRECTION.UPLEFT);
-            _player.transform.localScale = new Vector3(-1, 1, 1);
-            scr_player.LookUp(false);
-            scr_player.LookDown(false);
-
-            //달리기
-            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                 scr_player.GetStatus() != CHARACTERSTATUS.DASH)
-            {
-                scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                
-                if (scr_player.isLeftBlocked)
-                {
-                    scr_player.SetCurMoveSpeed(0);
-                }
-                else
-                {
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
-                }
-            }
-        }
-        //LEFT
-        else if (padAngle >= cUtil.pi * 7 / 8 || padAngle <= -cUtil.pi * 7 / 8)
-        {
-            scr_player.SetDir(Vector3.left, CHARDIRECTION.LEFT);
-            _player.transform.localScale = new Vector3(-1, 1, 1);
-
-            scr_player.LookUp(false);
-            scr_player.LookDown(false);
-
-            //왼쪽 이동
-            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                scr_player.GetStatus() != CHARACTERSTATUS.DASH)
-            {
-                scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                
-                if (scr_player.isLeftBlocked)
-                {
-                    scr_player.SetCurMoveSpeed(0);
-                }
-                else
-                {
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
-                }
-            }
-        }
-        //DOWNLEFT
-        else if (padAngle < -cUtil.pi * 5 / 8 && padAngle > -cUtil.pi * 7 / 8)
-        {
-            scr_player.SetDir(Vector3.left, CHARDIRECTION.DOWNLEFT);
-
-            _player.transform.localScale = new Vector3(-1, 1, 1);
-
-            scr_player.LookUp(false);
-            if(scr_player.isGrounded.Equals(false))
-                scr_player.LookDown(false);
-
-            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                 scr_player.GetStatus() != CHARACTERSTATUS.DASH)
-            {
-                
-                if (scr_player.isLeftBlocked)
-                {
-                    scr_player.SetCurMoveSpeed(0);
-                }
-                else
-                {
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
-                }
-
-                if (scr_player.isGrounded.Equals(true))
->>>>>>> ad1a998ea032c6642e840e5b266f9fff114279e7
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());         
@@ -439,7 +293,6 @@ public class cJoystick : MonoBehaviour
                         scr_player.SetCurMoveSpeed(0);
                     }
                 }
-<<<<<<< HEAD
                 break;
             //LEFT
             case 3:
@@ -449,36 +302,6 @@ public class cJoystick : MonoBehaviour
                 //왼쪽 이동
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
                     scr_player.GetStatus() != CHARACTERSTATUS.DASH)
-=======
-            }
-        }
-        //DOWNRIGHT
-        else if (padAngle < -cUtil.pi * 1 / 8 && padAngle > -cUtil.pi * 3 / 8)
-        {
-            scr_player.SetDir(Vector3.right, CHARDIRECTION.DOWNRIGHT);
-            _player.transform.localScale = new Vector3(1, 1, 1);
-
-            scr_player.LookUp(false);
-            if (scr_player.isGrounded.Equals(false))
-                scr_player.LookDown(false);
-
-            //기어가기
-            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                 scr_player.GetStatus() != CHARACTERSTATUS.DASH && 
-                 scr_player.isGrounded.Equals(true))
-            {
-                
-                if (scr_player.isRightBlocked)
-                {
-                    scr_player.SetCurMoveSpeed(0);
-                }
-                else
-                {
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed() / 2.0f);
-                }
-
-                if (scr_player.isGrounded.Equals(true))
->>>>>>> ad1a998ea032c6642e840e5b266f9fff114279e7
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());

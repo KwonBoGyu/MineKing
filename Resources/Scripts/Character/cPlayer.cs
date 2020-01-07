@@ -51,14 +51,9 @@ public class cPlayer : cCharacter
         attackBoxPos[2] = new Vector3(22, -128, 0);
         attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
-<<<<<<< HEAD
         status = CHARACTERSTATUS.NONE;
         StartCoroutine("Jump");
         Attack_front();
-=======
-        //if(cUtil._user.GetPlayer() != null)
-        //    cUtil._user.SetPlayer(this);
->>>>>>> ad1a998ea032c6642e840e5b266f9fff114279e7
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)
