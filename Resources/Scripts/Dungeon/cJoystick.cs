@@ -96,7 +96,7 @@ public class cJoystick : MonoBehaviour
 
 #endif
         ////////////////////////////////안드로이드///////////////////////////////////
-        if (scr_player.isGrounded.Equals(true))
+        if (scr_player.isGrounded||scr_player.GetIsClimbing())
             jumpCount = 0;
 
         if (scr_player.GetStatus() == CHARACTERSTATUS.ATTACK)

@@ -304,8 +304,6 @@ public class cTileMng : MonoBehaviour
                         }
                         else if (originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize) + 1)
                         {
-                            Debug.Log(originTPos.y - originRtYLenHalf);
-                            Debug.Log((pTileMap.CellToWorld(worldToCellPos).y + tileSize));
                             pObj.notGrounded = false;
                         }
                         break;
