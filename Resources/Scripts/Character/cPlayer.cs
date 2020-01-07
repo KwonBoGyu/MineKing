@@ -20,7 +20,6 @@ public class cPlayer : cCharacter
     private float speedUpAmount;
 
     public cTileMng tileMng;
-    public cJoystick joystick;
 
     public bool GetIsOnRope() { return isOnRope; }
     public bool GetIsAttatchedOnRope() { return isAttatchedOnRope; }
@@ -121,21 +120,16 @@ public class cPlayer : cCharacter
     {
         _animator.SetTrigger("AttackFront");
         status = CHARACTERSTATUS.ATTACK;
-        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
-        
-
     }
     public void Attack_up()
     {
         _animator.SetTrigger("AttackUp");
         status = CHARACTERSTATUS.ATTACK;
-        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
     }
     public void Attack_down()
     {
         _animator.SetTrigger("AttackDown");
         status = CHARACTERSTATUS.ATTACK;
-        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
     }
 
     public void ActiveAttackBox(int pDir)
@@ -150,15 +144,13 @@ public class cPlayer : cCharacter
         else if (pDir == 2)
             attackBox.transform.localPosition = attackBoxPos[2];
 
-        attackBox.SetActive(true);
+        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
     }
     public void InactiveAttackBox()
     {
         attackBox.SetActive(false);
         status = CHARACTERSTATUS.NONE;
         isJumpAttack = false;
-        if (joystick.isDrag.Equals(true))
-            joystick.SetSwipeDistAfterAttack();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

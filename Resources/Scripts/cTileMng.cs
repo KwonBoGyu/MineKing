@@ -66,8 +66,9 @@ public class cTileMng : MonoBehaviour
 
         if (isUpBlocked_123.Equals(0))
             scr_player.isUpBlocked = false;
-        if (isGrounded_123.Equals(0))
+        if (isGrounded_123.Equals(0))        
             scr_player.isGrounded = false;
+        
     }
 
     public void CheckAttackedTile(Vector3 pWorldPos, float pDamage)
@@ -119,13 +120,13 @@ public class cTileMng : MonoBehaviour
         cellPos = new Vector3Int[]
             {
                 new Vector3Int((int)player.transform.position.x, (int)player.transform.position.y + 150, 0),
-                new Vector3Int((int)player.transform.position.x + 30, (int)player.transform.position.y + 150, 0),
+                new Vector3Int((int)player.transform.position.x + 25, (int)player.transform.position.y + 150, 0),
                 new Vector3Int((int)player.transform.position.x + 60, (int)player.transform.position.y, 0),
-                new Vector3Int((int)player.transform.position.x + 30, (int)player.transform.position.y - 150, 0),
+                new Vector3Int((int)player.transform.position.x + 25, (int)player.transform.position.y - 150, 0),
                 new Vector3Int((int)player.transform.position.x, (int)player.transform.position.y - 150, 0),
-                new Vector3Int((int)player.transform.position.x - 30, (int)player.transform.position.y - 150, 0),
+                new Vector3Int((int)player.transform.position.x - 25, (int)player.transform.position.y - 150, 0),
                 new Vector3Int((int)player.transform.position.x - 60, (int)player.transform.position.y, 0),
-                new Vector3Int((int)player.transform.position.x - 30, (int)player.transform.position.y + 150, 0),
+                new Vector3Int((int)player.transform.position.x - 25, (int)player.transform.position.y + 150, 0),
             };
 
         for(int i = 0; i < cellPos.Length; i++)
@@ -330,9 +331,6 @@ public class cTileMng : MonoBehaviour
             }
         }
         //========for문 종료========//
-
-        //if (isGrounded_123.Equals(0))
-        //    scr_player.isGrounded = false;
         if (isUpBlocked_123.Equals(0))
             scr_player.isUpBlocked = false;
     }

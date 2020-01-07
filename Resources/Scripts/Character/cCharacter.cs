@@ -157,6 +157,9 @@ public class cCharacter : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
 
+            if (status.Equals(CHARACTERSTATUS.ATTACK))
+                break;
+
             status = CHARACTERSTATUS.JUMP;
             isGrounded = false;
             currentHeight += 13f;

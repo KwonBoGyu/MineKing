@@ -27,16 +27,12 @@ public class cJoystick : MonoBehaviour
     private float padAngle;
 
     private Vector3 dragPos;
-    private Vector3 prevTouchPos;
-    private float minSwipeDist;
-    public float prevSwipeDist;
-    public float swipeDist;
 
 
     private void Start()
     {
-        rad = this.GetComponent<RectTransform>().sizeDelta.y * 0.2f;
-        defaultPos = joystick.transform.position;
+        rad = this.GetComponent<RectTransform>().sizeDelta.y * 0.3f;
+        defaultPos = this.transform.position;
         isDrag = false;
         scr_player = _player.transform.GetChild(0).GetComponent<cPlayer>();
         b_jump.onClick.AddListener(() => Jump());
@@ -46,7 +42,6 @@ public class cJoystick : MonoBehaviour
         scr_player.SetCurMoveSpeed(0);
         jumpCount = 0;
         keyTime = 0;
-        minSwipeDist = 110;
     }
 
     private void Update()
@@ -101,6 +96,8 @@ public class cJoystick : MonoBehaviour
 
 #endif
         ////////////////////////////////안드로이드///////////////////////////////////
+        if (scr_player.isGrounded.Equals(true))
+            jumpCount = 0;
 
         if (scr_player.GetStatus() == CHARACTERSTATUS.ATTACK)
             scr_player.SetCurMoveSpeed(0);
@@ -108,48 +105,47 @@ public class cJoystick : MonoBehaviour
         {
             if (isDrag.Equals(true))
             {
-                if (swipeDist > minSwipeDist)
+                //위
+                if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y > 0.7f)
                 {
-                    //위
-                    if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y > 0.7f)
-                    {
-                        CalcDir(0);
-                    }
-                    //오른
-                    else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
-                    {
-                        CalcDir(1);
-                    }
-                    //아래
-                    else if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y < -0.7f)
-                    {
-                        CalcDir(2);
-                    }
-                    //왼
-                    else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
-                    {
-                        CalcDir(3);
-                    }
-
-                    this.transform.position = dragPos;
-                    prevTouchPos = this.transform.position;
+                    CalcDir(0);
+                }
+                //오른
+                else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
+                {
+                    CalcDir(1);
+                }
+                //아래
+                else if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y < -0.7f)
+                {
+                    CalcDir(2);
+                }
+                //왼
+                else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
+                {
+                    CalcDir(3);
                 }
             }
         }
     }
-
-    public void SetSwipeDistAfterAttack()
-    {
-        swipeDist = prevSwipeDist;
-    }
-
+    
     public void PointerDown(BaseEventData _data)
     {
         PointerEventData d = _data as PointerEventData;
-        Vector3 pos = d.position;
-        prevTouchPos = d.position;
+        dragPos = d.position;
+        isDrag = true;
 
-        this.transform.position = pos;
+        //방향
+        joyDir = (dragPos - this.transform.position).normalized;
+        //조이스틱 이동
+        joystick.position = dragPos;
+        //이동 거리
+        float dist = (defaultPos - dragPos).magnitude;
+
+        if (dist > rad)
+        {
+            joystick.position = joyDir * rad + defaultPos;
+        }
     }
 
     public void Drag(BaseEventData _data)
@@ -158,12 +154,17 @@ public class cJoystick : MonoBehaviour
         dragPos = d.position;
         isDrag = true;
 
-        //스와이프 거리
-        swipeDist = (dragPos - prevTouchPos).magnitude;
-        if (swipeDist > minSwipeDist)
-            prevSwipeDist = swipeDist;
         //방향
-        joyDir = (dragPos - this.transform.position).normalized;        
+        joyDir = (dragPos - this.transform.position).normalized;         
+        //조이스틱 이동
+        joystick.position = dragPos;
+        //이동 거리
+        float dist = (defaultPos - dragPos).magnitude;
+
+        if(dist > rad)
+        {
+            joystick.position = joyDir * rad + defaultPos;
+        }
     }
 
     public void DragEnd()
