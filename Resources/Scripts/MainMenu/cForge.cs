@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cForge : cBuilding {
+public class cForge : cBuilding
+{
 
 }

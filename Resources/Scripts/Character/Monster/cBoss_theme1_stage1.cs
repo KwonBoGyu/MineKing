@@ -46,7 +46,7 @@ public class cBoss_theme1_stage1 : cEnemy_monster
             {
                 Debug.Log("Boss Key Dropped!");
                 cItem pEtc;
-                citemTable.GetItemInfo(out pEtc, 3);
+                citemTable.GetItemInfo(out pEtc, 101);
                 cUtil._user.GetInventory().GetItemEtc().Add((cItem_etc)pEtc);
             }
         }

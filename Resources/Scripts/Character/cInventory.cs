@@ -13,6 +13,20 @@ public class cInventory : MonoBehaviour
     //기타 아이템
     private List<cItem_etc> l_itemEtc;
     public List<cItem_etc> GetItemEtc() { return l_itemEtc; }
+    // 돈
+    private int money = 1000;
+    public int GetMoney() { return money; }
+    public void UseMoney(int pMoney)
+    {
+        if (pMoney > money)
+            Debug.Log("Not enough money.");
+        else
+            money -= pMoney;
+    }
+    public void EarnMoney(int pMoney)
+    {
+        money += pMoney;
+    }
 
     //보스 키 존재 여부
     public bool isBossKeyExist()
@@ -45,16 +59,13 @@ public class cInventory : MonoBehaviour
     {
         //아이템 순서 고정
         l_itemEquip = new List<cItem_equip>();
-        l_itemUse = new List<cItem_use>
+        l_itemUse = new List<cItem_use>();
+        for (int i = 0; i < 6; i++)
         {
-            //순서 절대 바꾸지 말 것!!
-            //순서 : cItem class Enum 순서
-        new cItem_Bomb("Bomb", 1, 10, 1, 1),
-        new cItem_Rope("Rope", 1, 10, 1, 1),
-        new cItem_SandBag("SandBag", 1, 10, 1, 1),
-        new cItem_Potion_speed("speedPotion", 1, 10, 1, 1),
-        new cItem_Potion_hp("hpPotion", 1, 10, 1, 1)
-        };
+            cItem pUse;
+            citemTable.GetItemInfo(out pUse, i+1);
+            l_itemUse.Add((cItem_use)pUse);
+        }
         l_itemEtc = new List<cItem_etc>();
     }
 }

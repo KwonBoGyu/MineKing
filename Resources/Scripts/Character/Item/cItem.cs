@@ -9,6 +9,7 @@ public enum ITEM
     SANDBAG,
     POTION_SPEED,
     POTION_HP,
+    TORCH,
     NONE
 }
 
@@ -19,7 +20,7 @@ public class cItem : MonoBehaviour
     public int price;
     public int kind;
     public int kindNum;
-
+    
     public cItem(string pName, int pPrice, int pKind, int pKindNum)
     {
         _name = pName;

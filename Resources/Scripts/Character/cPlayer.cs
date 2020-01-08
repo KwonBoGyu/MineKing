@@ -163,6 +163,7 @@ public class cPlayer : cCharacter
     {
         Debug.Log(rItem);
         inven.GetItemUse()[(int)rItem].UseItem();
+        inven.GetItemUse()[5].UseItem();
     }
 
     public void StartSpeedUp(float pAmount, float pTime)
