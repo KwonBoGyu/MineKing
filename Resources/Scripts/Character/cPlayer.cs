@@ -37,9 +37,9 @@ public class cPlayer : cCharacter
         speedUpTime = 0.0f;
         speedUpAmount = 0.0f;
         jumpHeight = 200.0f;
-        attackBoxPos[0] = new Vector3(18, 225, 0); 
-        attackBoxPos[1] = new Vector3(78, 2.08f, 0); 
-        attackBoxPos[2] = new Vector3(22, -128, 0);
+        attackBoxPos[0] = new Vector3(18, 225, -1.1f); 
+        attackBoxPos[1] = new Vector3(78, 2.08f, -1.1f); 
+        attackBoxPos[2] = new Vector3(22, -128, -1.1f);
         attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
         status = CHARACTERSTATUS.NONE;

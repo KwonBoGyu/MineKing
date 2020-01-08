@@ -51,9 +51,9 @@ public class cTileMng : MonoBehaviour
     public void CheckAttackedTile(Vector3 pWorldPos, float pDamage)
     {
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pWorldPos);
-        Vector3 convertedWorldPos = new Vector3(tileMap_canHit.CellToWorld(worldToCellPos).x,
-            tileMap_canHit.CellToWorld(worldToCellPos).y, 0);
-
+        Vector3 convertedWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
+        Debug.Log(pWorldPos);
+        Debug.Log(worldToCellPos);
         Debug.Log(convertedWorldPos);
         
         tempTile = dic_canHit[convertedWorldPos];
@@ -63,7 +63,6 @@ public class cTileMng : MonoBehaviour
         if (tempTile != null)
         {
             Debug.Log("타일 충돌");
-            tileMap_canHit.SetColor(worldToCellPos, Color.red);
 
             Tile tempTileToUse = dic_canHit[convertedWorldPos];
             tempTileToUse.hp -= pDamage;
@@ -141,8 +140,8 @@ public class cTileMng : MonoBehaviour
             
             if (t_tile != null)
             {
-                pTileMap.SetTileFlags(worldToCellPos, TileFlags.None);
-                pTileMap.SetColor(worldToCellPos, Color.red);         
+                //pTileMap.SetTileFlags(worldToCellPos, TileFlags.None);
+                //pTileMap.SetColor(worldToCellPos, Color.red);         
 
                 switch(i)
                 {
@@ -380,6 +379,7 @@ public class cTileMng : MonoBehaviour
             tile.hp = 10;
 
             dic_canHit.Add(tileMap_canHit.CellToWorld(localPlace), tile);
+            Debug.Log(tileMap_canHit.CellToWorld(localPlace));
         }
 
         canHitTile_100 = tileMap_canHit.GetTile(new Vector3Int(-5, -1, 0));
