@@ -154,7 +154,7 @@ public class cJoystick : MonoBehaviour
                 scr_player.SetIsClimbing(true);
             }
         }
-        else if (scr_player.isLeftBlocked)
+        if (scr_player.isLeftBlocked)
         {
             //왼
             if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
