@@ -27,6 +27,9 @@ public static class citemTable
             case 5:
                 pItem = new cItem_Potion_hp("체력포션", 100, 1, 1, 0);
                 return;
+            case 6:
+                pItem = new cItem_Torch("횃불", 100, 1, 1, 0);
+                return;
 
             // 임시
             case 100:

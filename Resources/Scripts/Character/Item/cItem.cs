@@ -9,6 +9,7 @@ public enum ITEM
     SANDBAG,
     POTION_SPEED,
     POTION_HP,
+    TORCH,
     NONE
 }
 

@@ -60,7 +60,7 @@ public class cInventory : MonoBehaviour
         //아이템 순서 고정
         l_itemEquip = new List<cItem_equip>();
         l_itemUse = new List<cItem_use>();
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             cItem pUse;
             citemTable.GetItemInfo(out pUse, i+1);
