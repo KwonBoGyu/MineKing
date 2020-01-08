@@ -29,7 +29,7 @@ public class cPlayer : cCharacter
         if(cUtil._user != null)
             inven = cUtil._user.GetInventory();
         rt = originObj.GetComponent<BoxCollider2D>();
-        defaultGravity = 300.0f;
+        defaultGravity = 500.0f;
         changingGravity = defaultGravity;
         isGrounded = false;
         isClimbing = false;
@@ -43,7 +43,6 @@ public class cPlayer : cCharacter
         attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
         status = CHARACTERSTATUS.NONE;
-        StartCoroutine("Jump");
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)
@@ -108,6 +107,10 @@ public class cPlayer : cCharacter
         else if (!isRightBlocked && !isLeftBlocked)
         {
             isClimbing = false;
+        }
+        else
+        {
+            changingGravity = defaultGravity;
         }
     }
        

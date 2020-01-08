@@ -35,6 +35,7 @@ public class cCharacter : MonoBehaviour
     protected float maxMoveSpeed;
     protected float dashMoveSpeed;
     protected const float dashTime = 0.5f;
+    protected const float jumpTime = 0.5f;
     protected float curMoveSpeed;
     protected float maxHp;
     protected float curHp;
@@ -156,19 +157,21 @@ public class cCharacter : MonoBehaviour
 
         bool goBreak = false;
 
-        if (!isGrounded && !isDoubleJump)
-            isDoubleJump = true;
-        else if (!isGrounded && isDoubleJump)
-            goBreak = true;
-
         if (isGrounded || isClimbing)
             isDoubleJump = false;
+
+        if (!isGrounded && !isDoubleJump && !isClimbing)
+            isDoubleJump = true;
+        else if (!isGrounded && isDoubleJump && !isClimbing)
+            goBreak = true;
 
         isClimbing = false;
         isGrounded = false;
         
+        float jumpTimer = 0;
+        float factor;
+
         float currentHeight = originObj.transform.position.y;
-        float maxHeight = originObj.transform.position.y + jumpHeight;        
 
         while (true)
         {
@@ -182,20 +185,23 @@ public class cCharacter : MonoBehaviour
 
             status = CHARACTERSTATUS.JUMP;
             isGrounded = false;
-            currentHeight += 13f;
+
+            factor = Mathf.PI * (jumpTimer / jumpTime)*0.5f;
+
             originObj.transform.position = new Vector3(originObj.transform.position.x,
-                currentHeight, originObj.transform.position.z);
+                currentHeight+jumpHeight*Mathf.Sin(factor), originObj.transform.position.z);
             
-            if (currentHeight >= maxHeight)
+            if (jumpTimer >= jumpTime)
             {
-                originObj.transform.position = new Vector2(originObj.transform.position.x, maxHeight);
+                changingGravity = defaultGravity;
                 break;
             }
             if (isUpBlocked == true)
             {
-                originObj.transform.position = new Vector2(originObj.transform.position.x, currentHeight - 15.0f);
+                changingGravity = defaultGravity;
                 break;
             }
+            jumpTimer += Time.deltaTime;
         }
 
         status = CHARACTERSTATUS.NONE;
@@ -284,8 +290,9 @@ public class cCharacter : MonoBehaviour
     
     public virtual void SetGravity()
     {
-        if (isGrounded == false)
+        if (!isGrounded&&!status.Equals(CHARACTERSTATUS.JUMP))
         {
+            Debug.Log("doing");
             originObj.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
             if (changingGravity <= 1500)
                 changingGravity *= 1.02f;

@@ -160,7 +160,7 @@ public class cTileMng : MonoBehaviour
                     //오른쪽 위 충돌
                     case 1:
                         //충돌하였다면..
-                        if (originTPos.x + originRtXLenHalf > pTileMap.CellToWorld(worldToCellPos).x &&
+                        if (originTPos.x + originRtXLenHalf > pTileMap.CellToWorld(worldToCellPos).x-1 &&
                            originTPos.y + originRtYLenHalf > pTileMap.CellToWorld(worldToCellPos).y)
                         {
                             float distX = Mathf.Abs((originTPos.x + originRtXLenHalf) -
@@ -195,7 +195,7 @@ public class cTileMng : MonoBehaviour
                     //오른쪽 충돌
                     case 2:                        
                         //충돌하였다면..
-                        if (originTPos.x + originRtXLenHalf >= pTileMap.CellToWorld(worldToCellPos).x)
+                        if (originTPos.x + originRtXLenHalf > pTileMap.CellToWorld(worldToCellPos).x-1)
                         {
                             pObj.notRightBlocked = false;
                             pObj.isRightBlocked = true;
@@ -209,7 +209,7 @@ public class cTileMng : MonoBehaviour
                     //오른쪽 아래 충돌
                     case 3:
                         //충돌하였다면..
-                        if (originTPos.x + originRtXLenHalf > pTileMap.CellToWorld(worldToCellPos).x &&
+                        if (originTPos.x + originRtXLenHalf > pTileMap.CellToWorld(worldToCellPos).x-1 &&
                            originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
                         {
                             float distX = Mathf.Abs((originTPos.x + originRtXLenHalf) -
@@ -251,8 +251,6 @@ public class cTileMng : MonoBehaviour
                         //충돌하였다면..
                         if (originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
                         {
-                            Debug.Log(originTPos.y - originRtYLenHalf);
-                            Debug.Log((pTileMap.CellToWorld(worldToCellPos).y + tileSize));
                             pObj.notGrounded = false;
                             pObj.isGrounded = true;
                             pObj.originObj.transform.position = new Vector3(
@@ -271,7 +269,7 @@ public class cTileMng : MonoBehaviour
                     //왼쪽 아래 충돌
                     case 5:
                         //충돌하였다면..
-                        if (originTPos.x - originRtXLenHalf < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
+                        if (originTPos.x - originRtXLenHalf < (pTileMap.CellToWorld(worldToCellPos).x + tileSize)+1 &&
                            originTPos.y - originRtYLenHalf < (pTileMap.CellToWorld(worldToCellPos).y + tileSize))
                         {
                             float distX = Mathf.Abs((originTPos.x - originRtXLenHalf) -
@@ -310,7 +308,7 @@ public class cTileMng : MonoBehaviour
                     //왼쪽 충돌
                     case 6:
                         //충돌하였다면..
-                        if (originTPos.x - originRtXLenHalf <= (pTileMap.CellToWorld(worldToCellPos).x + tileSize))
+                        if (originTPos.x - originRtXLenHalf < (pTileMap.CellToWorld(worldToCellPos).x + tileSize)+1)
                         {
                             pObj.notLeftBlocked = false;
                             pObj.isLeftBlocked = true;
@@ -324,7 +322,7 @@ public class cTileMng : MonoBehaviour
                     //왼쪽 위 충돌
                     case 7:
                         //충돌하였다면..
-                        if (originTPos.x - originRtXLenHalf < (pTileMap.CellToWorld(worldToCellPos).x + tileSize) &&
+                        if (originTPos.x - originRtXLenHalf < (pTileMap.CellToWorld(worldToCellPos).x + tileSize)+1 &&
                            originTPos.y + originRtYLenHalf > pTileMap.CellToWorld(worldToCellPos).y)
                         {
                             float distX = Mathf.Abs((originTPos.x - originRtXLenHalf) -
