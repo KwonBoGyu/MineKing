@@ -51,8 +51,11 @@ public class cTileMng : MonoBehaviour
     public void CheckAttackedTile(Vector3 pWorldPos, float pDamage)
     {
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pWorldPos);
-        Vector3 convertedWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
-                
+        Vector3 convertedWorldPos = new Vector3(tileMap_canHit.CellToWorld(worldToCellPos).x,
+            tileMap_canHit.CellToWorld(worldToCellPos).y, 0);
+
+        Debug.Log(convertedWorldPos);
+        
         tempTile = dic_canHit[convertedWorldPos];
         Debug.Log("어택");
 
@@ -383,7 +386,6 @@ public class cTileMng : MonoBehaviour
         canHitTile_60 = tileMap_canHit.GetTile(new Vector3Int(-5, -2, 0));
         canHitTile_30 = tileMap_canHit.GetTile(new Vector3Int(-5, -3, 0));
 
-        Debug.Log(dic_canHit.Count);
 
         cUtil._tileMng = this;
     }
