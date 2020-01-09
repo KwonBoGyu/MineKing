@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class cDungeonNormal_processor : MonoBehaviour
 {
     public GameObject _player;
+    public GameObject _enemy;
     private cPlayer _p;
     private cEnemy_monster _e;
     public GameObject _enemyPool;
@@ -92,11 +93,14 @@ public class cDungeonNormal_processor : MonoBehaviour
 
         //플레이어 초기화
         _p = _player.transform.GetChild(0).GetComponent<cPlayer>();
+        _e = _enemyPool.transform.GetChild(1).GetComponent<cMonster_stage1_slime>();
         //Debug.Log(cUtil._user.GetPlayerName());
         //_p.Init(cUtil._user.GetPlayerName(), cUtil._user.GetDamage(), 
         //    cUtil._user.GetMoveSpeed(), cUtil._user.GetHp());
 
-        _p.Init("asdf", 1, 250, 100, 100);
+        _p.Init("asdf", 40, 250, 100, 100);
+        _e.Init("Slime", 1, 250, 100, 100);
         _player.SetActive(true);
+        
     }   
 }

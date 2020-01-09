@@ -16,13 +16,12 @@ public class cWeapon : MonoBehaviour
 
         if (collision.tag.Equals("Enemy"))
         {
-            Debug.Log("yes");
             if(scr_player.GetStatus() == CHARACTERSTATUS.DASH_ATTACK)
             {
                 collision.GetComponent<cEnemy_monster>().ReduceHp(damage, GetComponentInParent<cPlayer>().GetDirection(), 10.0f);
             }
             else
-                collision.GetComponent<cEnemy_monster>().ReduceHp(damage, GetComponentInParent<cPlayer>().GetDirection());
+                collision.GetComponent<cMonster_stage1_slime>().ReduceHp(damage, GetComponentInParent<cPlayer>().GetDirection());
         }
 
         this.gameObject.SetActive(false);

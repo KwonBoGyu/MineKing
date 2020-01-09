@@ -82,6 +82,7 @@ public class cEnemy_monster : cCharacter
         attackBoxPos[0] = new Vector3(1.5f, 0f, 0f);
         attackBoxPos[2] = new Vector3(-1.5f, 0f, 0f);
         dp = GameObject.Find("Canvas_main").transform.GetChild(0).GetComponent<cDungeonNormal_processor>();
+        respawnCor = RespawnTimer();
     }
 
     protected override void FixedUpdate()
@@ -92,7 +93,12 @@ public class cEnemy_monster : cCharacter
         {
             SetGravity();
             Move();
-        }        
+        }
+
+        if(Input.GetKey(KeyCode.Y))
+        {
+            ReduceHp(10);
+        }
     }
     
     protected virtual void Move()
@@ -228,6 +234,7 @@ public class cEnemy_monster : cCharacter
         this.transform.localPosition = InitPos;
         isDead = false;
         curHp = maxHp;
+        curMoveSpeed = maxMoveSpeed;
         SetHp();
         Debug.Log("respawn");
     }
