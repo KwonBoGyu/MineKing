@@ -502,9 +502,9 @@ public class cTileMng : MonoBehaviour
             isTileExist(2, pCurPos).Equals(true) &&
             isTileExist(3, pCurPos).Equals(true))
             r_tileDir = TILEDIRECTION.UPRIGHT;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
+        else if (isTileExist(0, pCurPos).Equals(false) &&
             isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(true) &&
+            isTileExist(2, pCurPos).Equals(false) &&
             isTileExist(3, pCurPos).Equals(true))
             r_tileDir = TILEDIRECTION.RIGHT_PLUS;
         else if (isTileExist(0, pCurPos).Equals(true) &&
