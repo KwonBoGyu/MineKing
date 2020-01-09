@@ -55,7 +55,10 @@ public class cTileMng : MonoBehaviour
         Debug.Log(pWorldPos);
         Debug.Log(worldToCellPos);
         Debug.Log(convertedWorldPos);
-        
+
+        if (dic_canHit.ContainsKey(convertedWorldPos).Equals(false))
+            return;
+
         tempTile = dic_canHit[convertedWorldPos];
         Debug.Log("어택");
 

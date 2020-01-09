@@ -48,6 +48,12 @@ public static class cEnemyTable
                 int pRocks = Random.Range((int)0, (int)4);
                 es.Init("똘똘이", 1, 160, 100, 100, 0, pRocks);
                 return es;
+
+            // 슬라임
+            case 1:
+                pRocks = Random.RandomRange((int)0, (int)4);
+                es.Init("슬라임", 1, 160, 100, 100, 1, pRocks);
+                return es;
         }
         
         return es;

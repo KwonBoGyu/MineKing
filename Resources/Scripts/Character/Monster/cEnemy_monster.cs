@@ -22,12 +22,14 @@ public class cEnemy_monster : cCharacter
     public bool isInNoticeRange;
     public bool isInAttackRange;
     // (공격 행동시) 플레이어 위치
-    private Vector3 playerPos;
+    protected Vector3 playerPos;
     // 공격 쿨타임 관리 변수
     public float time;
     public float attackDelay;
+    // 리스폰 코루틴
+    protected IEnumerator respawnCor;
 
-    private cDungeonNormal_processor dp;
+    protected cDungeonNormal_processor dp;
         
     public virtual void Init(string pNickname, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp,
         int pId, int pRocks)
@@ -53,6 +55,8 @@ public class cEnemy_monster : cCharacter
         attackBoxPos[0] = new Vector3(1.5f, 0f, 0f);
         attackBoxPos[2] = new Vector3(-1.5f, 0f, 0f);
         dp = GameObject.Find("Canvas_main").transform.GetChild(0).GetComponent<cDungeonNormal_processor>();
+        respawnCor = RespawnTimer();
+        curMoveSpeed = maxMoveSpeed;
     }
 
     protected virtual void Init(enemyInitStruct pEs)
@@ -189,14 +193,14 @@ public class cEnemy_monster : cCharacter
             StartKnockBack(pDir, pVelocity);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            collision.transform.GetChild(0).GetComponent<cPlayer>().ReduceHp(damage);
-            Debug.Log("attacked by " + this.nickName);
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.tag == "Player")
+    //    {
+    //        collision.transform.GetChild(0).GetComponent<cPlayer>().ReduceHp(damage);
+    //        Debug.Log("attacked by " + this.nickName);
+    //    }
+    //}
 
     // 리스폰 관리
     IEnumerator RespawnTimer()
