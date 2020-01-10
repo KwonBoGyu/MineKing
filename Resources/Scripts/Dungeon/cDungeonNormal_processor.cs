@@ -97,8 +97,9 @@ public class cDungeonNormal_processor : MonoBehaviour
         //Debug.Log(cUtil._user.GetPlayerName());
         //_p.Init(cUtil._user.GetPlayerName(), cUtil._user.GetDamage(), 
         //    cUtil._user.GetMoveSpeed(), cUtil._user.GetHp());
-
+        
         _p.Init("asdf", 40, 250, 100, 100);
+        cUtil._user.SetPlayer(_p);
         _e.Init("Slime", 1, 250, 100, 100);
         _player.SetActive(true);
         

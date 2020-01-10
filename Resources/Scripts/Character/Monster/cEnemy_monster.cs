@@ -94,11 +94,6 @@ public class cEnemy_monster : cCharacter
             SetGravity();
             Move();
         }
-
-        if(Input.GetKey(KeyCode.Y))
-        {
-            ReduceHp(10);
-        }
     }
     
     protected virtual void Move()

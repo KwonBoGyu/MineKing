@@ -49,43 +49,47 @@ public class cMonster_stage1_slime : cEnemy_monster
             }
         }
         // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
-        else if (isInNoticeRange && !isInAttackRange)
+        else if (isInNoticeRange)
         {
-            playerPos = dp._player.transform.position;
-
-            if (bullet.activeSelf.Equals(false))
+            if (!isInAttackRange)
             {
-                bullet.SetActive(true);
-                bullet.GetComponent<cBullet>().SetDir(playerPos);
+                playerPos = dp._player.transform.position;
+
+                if (bullet.activeSelf.Equals(false))
+                {
+                    bullet.SetActive(true);
+                    bullet.GetComponent<cBullet>().SetDir(playerPos);
+                }
+            }
+            // 공격 범위 안에 들어온 경우
+            else
+            {
+                time += Time.deltaTime;
+                playerPos = dp._player.transform.position;
+                if (playerPos.x >= this.transform.position.x)
+                    dir = Vector3.right;
+                else if (playerPos.x < this.transform.position.x)
+                    dir = Vector3.left;
+
+                //쿨타임이 다 찼을 때 히트박스 활성화
+                if (time >= attackDelay)
+                {
+                    time = 0;
+                    if (dir == Vector3.right)
+                    {
+                        attackBox.transform.localPosition = attackBoxPos[0];
+                        attackBox.gameObject.SetActive(true);
+                    }
+                    else if (dir == Vector3.left)
+                    {
+                        attackBox.transform.localPosition = attackBoxPos[2];
+                        attackBox.gameObject.SetActive(true);
+                    }
+                }
             }
 
         }
-        // 공격 범위 안에 들어온 경우
-        else if (isInAttackRange)
-        {
-            time += Time.deltaTime;
-            playerPos = dp._player.transform.position;
-            if (playerPos.x >= this.transform.position.x)
-                dir = Vector3.right;
-            else if (playerPos.x < this.transform.position.x)
-                dir = Vector3.left;
-
-            //쿨타임이 다 찼을 때 히트박스 활성화
-            if (time >= attackDelay)
-            {
-                time = 0;
-                if (dir == Vector3.right)
-                {
-                    attackBox.transform.localPosition = attackBoxPos[0];
-                    attackBox.gameObject.SetActive(true);
-                }
-                else if (dir == Vector3.left)
-                {
-                    attackBox.transform.localPosition = attackBoxPos[2];
-                    attackBox.gameObject.SetActive(true);
-                }
-            }
-        }
+        
     }
 
     public void StartRespawn()
@@ -130,7 +134,7 @@ public class cMonster_stage1_slime : cEnemy_monster
                 // 분열        
                 clone1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), new Vector3(this.transform.position.x - 100f, this.transform.position.y, this.transform.position.z),
                     Quaternion.identity, this.transform);
-                clone1.transform.localScale = new Vector3(1,1,1);
+                clone1.transform.localScale = new Vector3(0.7f,0.7f,0.7f);
                 clone1.transform.position = new Vector3(clone1.transform.position.x, clone1.transform.position.y, clone1.transform.position.z + 1000f);
                 clone1.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone1", this.damage/2, 
                     this.maxMoveSpeed, this.maxHp/2, this.maxHp/2);
@@ -138,7 +142,7 @@ public class cMonster_stage1_slime : cEnemy_monster
                 
                 clone2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"),new Vector3(this.transform.position.x + 100f, this.transform.position.y, this.transform.position.z),
                     Quaternion.identity, this.transform);
-                clone2.transform.localScale = new Vector3(1,1,1);
+                clone2.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
                 clone2.transform.position = new Vector3(clone2.transform.position.x, clone2.transform.position.y, clone2.transform.position.z + 1000f);
                 clone2.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone2", this.damage / 2, 
                     this.maxMoveSpeed, this.maxHp / 2, this.maxHp / 2);
