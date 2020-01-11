@@ -48,8 +48,10 @@ public class cBullet : MonoBehaviour
 
         if (collision.gameObject.tag.Equals("Player"))
         {
-            Debug.Log("shot player");
-            collision.transform.GetChild(0).GetComponent<cPlayer>().
+            //Debug.Log("shot player");
+            Debug.Log("### : " + collision.gameObject.name);
+            //Debug.Log("### : " + collision.transform.GetChild(0).gameObject.name);
+            collision.transform.gameObject.GetComponent<cPlayer>().
                 ReduceHp(originMonster.GetComponent<cMonster_stage1_slime>().GetDamage(), dir);
         }
         else if (collision.gameObject.tag.Equals("Tile_canHit"))
