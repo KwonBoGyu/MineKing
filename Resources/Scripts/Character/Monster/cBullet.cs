@@ -32,7 +32,8 @@ public class cBullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //transform.Translate(dir * Time.deltaTime * speed);
+        if(dir != null)
+            transform.Translate(dir * Time.deltaTime * speed);
         distance = new Vector2(this.transform.position.x - originMonster.transform.position.x,
             this.transform.position.y - originMonster.transform.position.y).magnitude;
         // 총알 최대 범위 이상으로 벗어나면 소멸

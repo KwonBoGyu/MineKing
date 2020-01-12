@@ -45,8 +45,6 @@ public class cCharacter : MonoBehaviour
     protected float dashCoolDown; // 쿨다운 계산용 (변화)
     protected bool isJetPackOn;
     protected bool isClimbing;
-    public bool GetIsClimbing() { return isClimbing; }
-    public void SetIsClimbing(bool pbool) { isClimbing = pbool; }
     protected CHARACTERSTATUS status;
     protected CHARDIRECTION charDir;
     public CHARDIRECTION GetCharDir() { return charDir; }
@@ -78,6 +76,9 @@ public class cCharacter : MonoBehaviour
 
     private IEnumerator cor_knockBack;
     protected Animator _animator;
+
+    //이펙트
+    public ParticleSystem[] effects;
 
     public virtual void Init(string pNickName, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp)
     {
@@ -165,7 +166,7 @@ public class cCharacter : MonoBehaviour
         else if (!isGrounded && isDoubleJump && !isClimbing)
             goBreak = true;
 
-        isClimbing = false;
+        SetIsClimbing(false);
         isGrounded = false;
         
         float jumpTimer = 0;
@@ -176,7 +177,10 @@ public class cCharacter : MonoBehaviour
         while (true)
         {
             if(goBreak || isClimbing)
+            {
+
                 break;
+            }
 
             yield return new WaitForFixedUpdate();
 
@@ -395,5 +399,20 @@ public class cCharacter : MonoBehaviour
         }
 
         Debug.Log("넉백 종료");
+    }
+
+    public bool GetIsClimbing() { return isClimbing; }
+    public void SetIsClimbing(bool pbool)
+    {
+        if (isClimbing.Equals(pbool))        
+            return;        
+        
+        if (isClimbing.Equals(false))
+        {
+            _animator.SetTrigger("Crawl");
+        }
+            
+        isClimbing = pbool;
+        _animator.SetBool("isCrawl", isClimbing);
     }
 }

@@ -12,7 +12,10 @@ public class cUser : MonoBehaviour
     }
 
     public string GetPlayerName() { return _playerInfo.nickName; }
-    public cPlayer GetPlayer() { return _playerInfo.player; }
+    public cPlayer GetPlayer()
+    {
+        return _playerInfo.player;
+    }
     public void SetPlayer(cPlayer pP) { _playerInfo.player = pP; }
     public cInventory GetInventory() { return _playerInfo.inventory; }
 
@@ -38,7 +41,7 @@ public class cUser : MonoBehaviour
         //생성된 데이터가 없을 때
         if (_fileExist == false)
         {
-            _playerInfo = new cPlayerInfo("닉네임", 5, 1, 1, 1, null, null, null);
+            _playerInfo = new cPlayerInfo("asdf", 40, 250, 100, 100);
             SaveUserData();
             Debug.Log("Initialized Done - CreatedInitData");
         }

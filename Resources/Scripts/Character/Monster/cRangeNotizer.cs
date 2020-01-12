@@ -16,10 +16,11 @@ public class cRangeNotizer : MonoBehaviour
         if (collision.tag == "Player")
         {
             Debug.Log("플레이어 인식 ");
-            Ray2D ray = new Ray2D(this.gameObject.transform.position,
-                cUtil._user.GetPlayer().originObj.transform.position - this.gameObject.transform.position);
+            Vector3 dir = (cUtil._player.originObj.transform.position - this.gameObject.transform.position).normalized;
+            Ray ray = new Ray(this.gameObject.transform.position,
+                dir);
             RaycastHit2D[] hit = Physics2D.RaycastAll(ray.origin, ray.direction, radius);
-            Debug.DrawRay(ray.origin, ray.direction * radius, new Color(255, 0, 0));
+            Debug.DrawRay(ray.origin, ray.direction * radius * 2, Color.red);
 
             for (int i = 0; i < hit.Length; i++)
             {

@@ -12,14 +12,14 @@ public class cPlayer : cCharacter
     public bool isJumpAttack;
     public int jumpAttackPoint;
     private bool isJumpAniDone;
-
-    
+        
     private bool isSpeedUp;
     private float speedUpTime;
     private float speedUpAmount;
 
-    
-
+    //이펙트
+    private bool landEffectPlayed;
+       
     public override void Init(string pNickName, float pDamage, float pMoveSpeed, float pMaxHp, float pCurHp)
     {
         base.Init(pNickName, pDamage, pMoveSpeed, pMaxHp, pCurHp);
@@ -77,13 +77,22 @@ public class cPlayer : cCharacter
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
         _animator.SetBool("isGrounded", isGrounded);
 
-        if (isGrounded.Equals(false) && isJumpAniDone.Equals(false))
+        if (isGrounded.Equals(false) && isJumpAniDone.Equals(false) 
+            && isClimbing.Equals(false))
         {
             _animator.SetTrigger("jumping");
             isJumpAniDone = true;
+            landEffectPlayed = false;
         }
         else if(isGrounded.Equals(true))
+        {
+            if (landEffectPlayed.Equals(false))
+            {
+                effects[0].Play();
+                landEffectPlayed = true;
+            }
             isJumpAniDone = false;
+        }
 
         if(dir.Equals(Vector3.up))
             _animator.SetInteger("Direction", 0);
@@ -106,7 +115,7 @@ public class cPlayer : cCharacter
         }
         else if (!isRightBlocked && !isLeftBlocked)
         {
-            isClimbing = false;
+            SetIsClimbing(false);
         }
         else
         {
@@ -116,16 +125,22 @@ public class cPlayer : cCharacter
        
     public void Attack_front()
     {
+        if (isClimbing.Equals(true))
+            return;
         _animator.SetTrigger("AttackFront");
         status = CHARACTERSTATUS.ATTACK;
     }
     public void Attack_up()
     {
+        if (isClimbing.Equals(true))
+            return;
         _animator.SetTrigger("AttackUp");
         status = CHARACTERSTATUS.ATTACK;
     }
     public void Attack_down()
     {
+        if (isClimbing.Equals(true))
+            return;
         _animator.SetTrigger("AttackDown");
         status = CHARACTERSTATUS.ATTACK;
     }

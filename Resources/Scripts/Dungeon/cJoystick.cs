@@ -99,6 +99,11 @@ public class cJoystick : MonoBehaviour
         if (scr_player.isGrounded||scr_player.GetIsClimbing())
             jumpCount = 0;
 
+        if (scr_player.isGrounded.Equals(true))
+        {
+            scr_player.SetIsClimbing(false);
+        }
+
         if (scr_player.GetStatus() == CHARACTERSTATUS.ATTACK)
             scr_player.SetCurMoveSpeed(0);
         else
@@ -146,7 +151,8 @@ public class cJoystick : MonoBehaviour
         {
             joystick.position = joyDir * rad + defaultPos;
         }
-        if(scr_player.isRightBlocked)
+        //기어오르기
+        if(scr_player.isRightBlocked && scr_player.isGrounded.Equals(false))
         {
             //오른
             if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
@@ -154,7 +160,7 @@ public class cJoystick : MonoBehaviour
                 scr_player.SetIsClimbing(true);
             }
         }
-        if (scr_player.isLeftBlocked)
+        if (scr_player.isLeftBlocked && scr_player.isGrounded.Equals(false))
         {
             //왼
             if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
@@ -210,7 +216,7 @@ public class cJoystick : MonoBehaviour
         if (scr_player.isUpBlocked.Equals(true))
             return;
 
-        if (scr_player.isGrounded == true || jumpCount < 2)
+        if (scr_player.isGrounded.Equals(true) || jumpCount < 2)
         {
             scr_player.StartCoroutine("Jump");
             if (jumpCount >= 2)
@@ -273,6 +279,7 @@ public class cJoystick : MonoBehaviour
                     //벽에 안붙어있을때
                     else
                     {
+                        scr_player.SetIsClimbing(false);
                         scr_player.SetCurMoveSpeed(0);
                     }
                 }
@@ -290,7 +297,8 @@ public class cJoystick : MonoBehaviour
 
                 //달리기
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                     scr_player.GetStatus() != CHARACTERSTATUS.DASH)
+                     scr_player.GetStatus() != CHARACTERSTATUS.DASH && 
+                     scr_player.GetIsClimbing().Equals(false))
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());         
@@ -314,6 +322,7 @@ public class cJoystick : MonoBehaviour
                     else
                     {
                         scr_player.SetCurMoveSpeed(0);
+                        scr_player.SetIsClimbing(false);
                     }
                 }
                 break;
@@ -328,7 +337,8 @@ public class cJoystick : MonoBehaviour
 
                 //왼쪽 이동
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                    scr_player.GetStatus() != CHARACTERSTATUS.DASH)
+                    scr_player.GetStatus() != CHARACTERSTATUS.DASH &&
+                     scr_player.GetIsClimbing().Equals(false))
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());

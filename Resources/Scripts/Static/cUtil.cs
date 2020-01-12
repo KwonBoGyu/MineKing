@@ -8,6 +8,7 @@ public static class cUtil
     public static cSceneManager _sm;
     public static cUser _user;
     public static cTileMng _tileMng;
+    public static cPlayer _player;
     
     public const float pi = 3.141592f;
 
