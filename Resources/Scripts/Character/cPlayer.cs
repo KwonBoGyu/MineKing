@@ -81,6 +81,8 @@ public class cPlayer : cCharacter
             && isClimbing.Equals(false))
         {
             _animator.SetTrigger("jumping");
+            if (status != CHARACTERSTATUS.DASH)
+                status = CHARACTERSTATUS.JUMP;
             isJumpAniDone = true;
             landEffectPlayed = false;
         }
@@ -157,7 +159,14 @@ public class cPlayer : cCharacter
         else if (pDir == 2)
             attackBox.transform.localPosition = attackBoxPos[2];
 
-        tileMng.CheckAttackedTile(attackBox.transform.position, damage);
+        if(tileMng.CheckAttackedTile(attackBox.transform.position, damage).Equals(true))
+        {
+            effects[1].transform.position = attackBox.transform.position;
+            effects[1].transform.localScale = new Vector3(originObj.transform.localScale.x,
+                effects[1].transform.localScale.y, effects[1].transform.localScale.z);
+            effects[1].Play();
+        }
+        
     }
     public void InactiveAttackBox()
     {
