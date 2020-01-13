@@ -81,10 +81,11 @@ public class cPlayer : cCharacter
             && isClimbing.Equals(false))
         {
             _animator.SetTrigger("jumping");
-            if (status != CHARACTERSTATUS.DASH)
-                status = CHARACTERSTATUS.JUMP;
+            if (status.Equals(CHARACTERSTATUS.ATTACK))
+                status = CHARACTERSTATUS.NONE;
             isJumpAniDone = true;
             landEffectPlayed = false;
+            sm.StopRunningEffect();
         }
         else if(isGrounded.Equals(true))
         {
@@ -125,6 +126,21 @@ public class cPlayer : cCharacter
         }
     }
        
+    public void ChargeStart()
+    {
+        _animator.SetTrigger("isCharging");
+    }
+    public void ChargeOn()
+    {
+        _animator.SetBool("ChargeDone", true);
+        status = CHARACTERSTATUS.ATTACK;
+    }
+    public void ChargeFail()
+    {
+        _animator.SetTrigger("ChargeFail");
+        status = CHARACTERSTATUS.NONE;
+    }
+
     public void Attack_front()
     {
         if (isClimbing.Equals(true))
@@ -165,6 +181,7 @@ public class cPlayer : cCharacter
             effects[1].transform.localScale = new Vector3(originObj.transform.localScale.x,
                 effects[1].transform.localScale.y, effects[1].transform.localScale.z);
             effects[1].Play();
+            sm.playAxeEffect();
         }
         
     }
@@ -173,6 +190,7 @@ public class cPlayer : cCharacter
         attackBox.SetActive(false);
         status = CHARACTERSTATUS.NONE;
         isJumpAttack = false;
+        _animator.SetBool("ChargeDone", false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

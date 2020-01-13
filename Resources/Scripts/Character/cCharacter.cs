@@ -80,6 +80,9 @@ public class cCharacter : MonoBehaviour
     //이펙트
     public ParticleSystem[] effects;
 
+    //사운드
+    public cSoundMng sm;
+
     public virtual void Init(string pNickName, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp)
     {
         nickName = pNickName;
@@ -174,11 +177,12 @@ public class cCharacter : MonoBehaviour
 
         float currentHeight = originObj.transform.position.y;
 
+
+        sm.playEffect(1);
         while (true)
         {
             if(goBreak || isClimbing)
             {
-
                 break;
             }
 
@@ -296,7 +300,7 @@ public class cCharacter : MonoBehaviour
     {
         if (!isGrounded&&!status.Equals(CHARACTERSTATUS.JUMP))
         {
-            Debug.Log("doing");
+            Debug.Log("GRAVITY ADAPTED");
             originObj.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
             if (changingGravity <= 1500)
                 changingGravity *= 1.02f;

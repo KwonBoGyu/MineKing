@@ -57,8 +57,7 @@ public class cTileMng : MonoBehaviour
     private TileBase[] canHitTile_100;
     private TileBase[] canHitTile_60;
     private TileBase[] canHitTile_30;
-
-
+        
     private void Start()
     {
         tileMap_canHit = this.transform.GetChild(0).GetComponent<Tilemap>();
@@ -73,14 +72,10 @@ public class cTileMng : MonoBehaviour
         bool isChecked = false;
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pWorldPos);
         Vector3 convertedWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
-        tempTile = dic_canHit[convertedWorldPos];
 
         //해당 위치에 타일이 있다면
-        if (tempTile != null)
-        {
-            UpdateAttackedTile(convertedWorldPos);
-            isChecked = true;
-        }
+        isChecked = UpdateAttackedTile(convertedWorldPos);
+
         return isChecked;
     }
 
@@ -419,8 +414,9 @@ public class cTileMng : MonoBehaviour
         cUtil._tileMng = this;
     }
 
-    private void UpdateAttackedTile(Vector3 pCurPos)
+    private bool UpdateAttackedTile(Vector3 pCurPos)
     {
+        bool isChecked = false;
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
         Vector3 cellToWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
         Tile tempTileToUse;
@@ -433,15 +429,19 @@ public class cTileMng : MonoBehaviour
         Debug.Log(dic_canHit[cellToWorldPos].dir);
         Debug.Log("ATTACKED" + " : " + dic_canHit[cellToWorldPos].hp);
 
+        if(dic_canHit[cellToWorldPos].hp == 0)
+        {
+            isChecked = true;
+        }
         UpdateTile(cellToWorldPos);
 
         if (dic_canHit[cellToWorldPos].hp <= 0)
         {
             tempTileToUse.hp = 0;
+                
             tileMap_canHit.SetTile(worldToCellPos, null);
-
             Vector3 tempPos = Vector3.zero;
-
+            
             if (isTileExist(0, cellToWorldPos).Equals(true))
             {
                 tempPos = new Vector3(cellToWorldPos.x, cellToWorldPos.y + tileSize, cellToWorldPos.z);
@@ -463,8 +463,10 @@ public class cTileMng : MonoBehaviour
                 UpdateTile(tempPos);
             }
         }
+        else
+            isChecked = true;
 
-
+        return isChecked;
     }
 
     private void UpdateTile(Vector3 pCurPos)
@@ -475,19 +477,23 @@ public class cTileMng : MonoBehaviour
 
         tempTileToUse = dic_canHit[cellToWorldPos];
         tempTileToUse.dir = GetTileDirection(cellToWorldPos);
-
-        if (tempTileToUse.hp <= 3)
+        
+        if(tempTileToUse.hp > 0)
         {
-            tileMap_canHit.SetTile(worldToCellPos, canHitTile_30[(int)tempTileToUse.dir - 1]);
+            if (tempTileToUse.hp <= 3)
+            {
+                tileMap_canHit.SetTile(worldToCellPos, canHitTile_30[(int)tempTileToUse.dir - 1]);
+            }
+            else if (tempTileToUse.hp <= 6)
+            {
+                tileMap_canHit.SetTile(worldToCellPos, canHitTile_60[(int)tempTileToUse.dir - 1]);
+            }
+            else if (tempTileToUse.hp <= 10)
+            {
+                tileMap_canHit.SetTile(worldToCellPos, canHitTile_100[(int)tempTileToUse.dir - 1]);
+            }
         }
-        else if (tempTileToUse.hp <= 6)
-        {
-            tileMap_canHit.SetTile(worldToCellPos, canHitTile_60[(int)tempTileToUse.dir - 1]);
-        }
-        else
-        {
-            tileMap_canHit.SetTile(worldToCellPos, canHitTile_100[(int)tempTileToUse.dir - 1]);
-        }
+        
         dic_canHit[cellToWorldPos] = tempTileToUse;
     }
 
@@ -603,10 +609,17 @@ public class cTileMng : MonoBehaviour
                 calcPos = new Vector3(pCurPos.x - tileSize, pCurPos.y, pCurPos.z);
                 break;
         }
-
+        
         TileBase[] tempTile = new TileBase[2]
-        { tileMap_canHit.GetTile(tileMap_canHit.WorldToCell(calcPos)),
-        tileMap_cannotHit.GetTile(tileMap_cannotHit.WorldToCell(calcPos))};
+        {
+            tileMap_canHit.GetTile(tileMap_canHit.WorldToCell(calcPos)),
+            tileMap_cannotHit.GetTile(tileMap_cannotHit.WorldToCell(calcPos))
+        };
+
+        if (pDir == 3)
+        {
+            Debug.Log(tempTile[0] + " " + tempTile[1]);
+        }
 
         if (tempTile[0] != null || tempTile[1] != null)
             t = true;

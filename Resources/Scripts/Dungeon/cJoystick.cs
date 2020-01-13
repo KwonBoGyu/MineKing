@@ -198,6 +198,7 @@ public class cJoystick : MonoBehaviour
 
         scr_player.SetCurMoveSpeed(0);
         scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
+        scr_player.sm.StopRunningEffect();
     }
 
     public void PointerUp(BaseEventData _data)
@@ -209,6 +210,7 @@ public class cJoystick : MonoBehaviour
 
         scr_player.SetCurMoveSpeed(0);
         scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
+        scr_player.sm.StopRunningEffect();
     }
 
     private void Jump()
@@ -301,7 +303,9 @@ public class cJoystick : MonoBehaviour
                      scr_player.GetIsClimbing().Equals(false))
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
-                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());         
+                    scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                    if(scr_player.isGrounded.Equals(true))
+                        scr_player.sm.playRunningEffect();
                 }
                 break;
             //DOWN
@@ -342,6 +346,8 @@ public class cJoystick : MonoBehaviour
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
+                    if (scr_player.isGrounded.Equals(true))
+                        scr_player.sm.playRunningEffect();
                 }
                 break;
         }        

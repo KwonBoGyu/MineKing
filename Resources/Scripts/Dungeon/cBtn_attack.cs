@@ -55,8 +55,17 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         StopCoroutine(cor_keepPointerDown);
 
+        //차지공격
+        if(img_gageBar.fillAmount > 0.5f && isChargingOn.Equals(true))
+        {
+            scr_player.ChargeOn();
+        }
+        else if (img_gageBar.fillAmount < 0.5f && isChargingOn.Equals(true))
+        {
+            scr_player.ChargeFail();
+        }
         //일반 연속 공격
-        if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && chargeTimer < 0.2f)
+        else if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && chargeTimer < 0.20f)
         {
             //점프 공격
             if (scr_player.isGrounded.Equals(false))
@@ -105,7 +114,8 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 if (chargeStartTimer > 0.2f)
                 {
                     isChargingOn = true;
-                    img_gageBar.transform.parent.gameObject.SetActive(true);                    
+                    img_gageBar.transform.parent.gameObject.SetActive(true);
+                    scr_player.ChargeStart();
                 }
             }
             //차지 시작
