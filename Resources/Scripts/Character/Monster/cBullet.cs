@@ -7,8 +7,8 @@ public class cBullet : MonoBehaviour
     public GameObject originMonster;
     private CircleCollider2D rangeCollider;
     private float attackRange;
-    private float speed;
-    private Vector3 dir;
+    public float speed;
+    public Vector3 dir;
     private float distance;
 
     private void Start()
@@ -23,17 +23,19 @@ public class cBullet : MonoBehaviour
     {
         this.transform.position = originMonster.transform.position;
     }
-
+    
     // 플레이어와 몬스터 위치 비교해서 총알 발사 방향 설정
     public void SetDir(Vector3 pDir)
     {
         dir = new Vector2(pDir.x - originMonster.transform.position.x,pDir.y - originMonster.transform.position.y).normalized;
     }
-
+    
     private void FixedUpdate()
     {
-        if(dir != null)
+        if (dir != null)
+        {
             transform.Translate(dir * Time.deltaTime * speed);
+        }
         distance = new Vector2(this.transform.position.x - originMonster.transform.position.x,
             this.transform.position.y - originMonster.transform.position.y).magnitude;
         // 총알 최대 범위 이상으로 벗어나면 소멸
@@ -49,9 +51,7 @@ public class cBullet : MonoBehaviour
 
         if (collision.gameObject.tag.Equals("Player"))
         {
-            //Debug.Log("shot player");
             Debug.Log("### : " + collision.gameObject.name);
-            //Debug.Log("### : " + collision.transform.GetChild(0).gameObject.name);
             collision.transform.gameObject.GetComponent<cPlayer>().
                 ReduceHp(originMonster.GetComponent<cMonster_stage1_slime>().GetDamage(), dir);
         }

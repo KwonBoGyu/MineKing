@@ -13,6 +13,9 @@ public class cMonster_stage1_slime : cEnemy_monster
 
     public bool isClone1Dead;
     public bool isClone2Dead;
+
+    private float maxBulletCoolDown;
+    private float curBulletCoolDown;
     
     public cMonster_stage1_slime()
     {
@@ -23,6 +26,22 @@ public class cMonster_stage1_slime : cEnemy_monster
     {
         Init(cEnemyTable.SetMonsterInfo(0));
         curMoveSpeed = maxMoveSpeed;
+        maxBulletCoolDown = 4.0f;
+        curBulletCoolDown = maxBulletCoolDown;
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        if (curBulletCoolDown < maxBulletCoolDown)
+        {
+            curBulletCoolDown += Time.deltaTime;
+        }
+        else if ( curBulletCoolDown >= maxBulletCoolDown)
+        {
+            curBulletCoolDown = maxBulletCoolDown;
+        }
     }
 
     public void Split()
@@ -49,7 +68,7 @@ public class cMonster_stage1_slime : cEnemy_monster
             }
         }
         // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
-        else if (isInNoticeRange)
+        else if (isInNoticeRange && curBulletCoolDown == maxBulletCoolDown)
         {
             if (!isInAttackRange)
             {
@@ -59,6 +78,10 @@ public class cMonster_stage1_slime : cEnemy_monster
                 {
                     bullet.SetActive(true);
                     bullet.GetComponent<cBullet>().SetDir(playerPos);
+                }
+                else
+                {
+                    curBulletCoolDown = 0;
                 }
             }
             // 공격 범위 안에 들어온 경우

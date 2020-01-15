@@ -363,8 +363,17 @@ public class cCharacter : MonoBehaviour
     {
         float velocity = pVelocity; // 넉백 속도
 
-        Vector3 attackerDir = pDir;
+        Vector3 attackerDir;
         Vector3 currentPos = originObj.transform.position;
+        
+        if (pDir.x <= 0)
+        {
+            attackerDir = Vector3.left;
+        }
+        else
+        {
+            attackerDir = Vector3.right;
+        }
 
         while (true)
         {
