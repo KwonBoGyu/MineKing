@@ -1,7 +1,16 @@
 fileFormatVersion: 2
-guid: b13557ac573cd4c4ba27db3be63cd448
+guid: ccc458137f0f1dc41acec3ec7587673e
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -2103897762254117899
+    second: tempTile_0
+  - first:
+      213: -6083863942496608597
+    second: tempTile_1
+  - first:
+      213: -6924793552299154404
+    second: tempTile_2
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,12 +49,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 2
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -104,11 +113,74 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: tempTile_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 360
+        height: 360
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff31324607c9adf4bafd60a7726898d7
+      internalID: -2103897762254117899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tempTile_1
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 0
+        width: 360
+        height: 360
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc24a7b52a2ec2f4fb92023282ebe9e3
+      internalID: -6083863942496608597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tempTile_2
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 0
+        width: 360
+        height: 360
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1afa3caff699b648b78315711a70133
+      internalID: -6924793552299154404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 77c15e35ea51b0341ae521246437663d
+    spriteID: 1abf318e79902224e9b06c9f7f33c525
     internalID: 0
     vertices: []
     indices: 

@@ -420,7 +420,6 @@ public class cTileMng : MonoBehaviour
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
         Vector3 cellToWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
         Tile tempTileToUse;
-        
         tempTileToUse = dic_canHit[cellToWorldPos];
         tempTileToUse.dir = GetTileDirection(cellToWorldPos);
         tempTileToUse.hp -= 1;
@@ -431,6 +430,7 @@ public class cTileMng : MonoBehaviour
 
         if(dic_canHit[cellToWorldPos].hp == 0)
         {
+            Debug.Log(isChecked + "HP IS ZERO");
             isChecked = true;
         }
         UpdateTile(cellToWorldPos);
@@ -438,10 +438,10 @@ public class cTileMng : MonoBehaviour
         if (dic_canHit[cellToWorldPos].hp <= 0)
         {
             tempTileToUse.hp = 0;
-                
+
             tileMap_canHit.SetTile(worldToCellPos, null);
             Vector3 tempPos = Vector3.zero;
-            
+
             if (isTileExist(0, cellToWorldPos).Equals(true))
             {
                 tempPos = new Vector3(cellToWorldPos.x, cellToWorldPos.y + tileSize, cellToWorldPos.z);
@@ -452,19 +452,22 @@ public class cTileMng : MonoBehaviour
                 tempPos = new Vector3(cellToWorldPos.x + tileSize, cellToWorldPos.y, cellToWorldPos.z);
                 UpdateTile(tempPos);
             }
-            if (isTileExist(2, cellToWorldPos).Equals(true))
-            {
-                tempPos = new Vector3(cellToWorldPos.x, cellToWorldPos.y - tileSize, cellToWorldPos.z);
-                UpdateTile(tempPos);
-            }
             if (isTileExist(3, cellToWorldPos).Equals(true))
             {
                 tempPos = new Vector3(cellToWorldPos.x - tileSize, cellToWorldPos.y, cellToWorldPos.z);
                 UpdateTile(tempPos);
+                return isChecked;
+            }
+            if (isTileExist(2, cellToWorldPos).Equals(true))
+            {
+                tempPos = new Vector3(cellToWorldPos.x, cellToWorldPos.y - tileSize, cellToWorldPos.z);
+                UpdateTile(tempPos);
+                return isChecked;
             }
         }
         else
             isChecked = true;
+
 
         return isChecked;
     }
@@ -609,7 +612,12 @@ public class cTileMng : MonoBehaviour
                 calcPos = new Vector3(pCurPos.x - tileSize, pCurPos.y, pCurPos.z);
                 break;
         }
-        
+
+        if (pDir == 3)
+        {
+            Debug.Log(tileMap_canHit.WorldToCell(calcPos));
+        }
+
         TileBase[] tempTile = new TileBase[2]
         {
             tileMap_canHit.GetTile(tileMap_canHit.WorldToCell(calcPos)),
