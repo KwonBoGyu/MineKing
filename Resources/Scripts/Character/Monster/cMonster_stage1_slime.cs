@@ -7,6 +7,7 @@ public class cMonster_stage1_slime : cEnemy_monster
     // 분열된 횟수
     public bool isSplited;
     public GameObject bullet;
+    public cBulletManager bulletMng;
 
     private GameObject clone1;
     private GameObject clone2;
@@ -72,12 +73,9 @@ public class cMonster_stage1_slime : cEnemy_monster
         {
             if (!isInAttackRange)
             {
-                playerPos = dp._player.transform.position;
-
                 if (bullet.activeSelf.Equals(false))
                 {
-                    bullet.SetActive(true);
-                    bullet.GetComponent<cBullet>().SetDir(playerPos);
+                    bulletMng.SetBullet(BULLET_TYPE.NORMAL);
                 }
                 else
                 {

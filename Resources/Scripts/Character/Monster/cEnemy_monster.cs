@@ -28,6 +28,10 @@ public class cEnemy_monster : cCharacter
     public float attackDelay;
     // 리스폰 코루틴
     protected IEnumerator respawnCor;
+    // 원거리 공격 데미지
+    protected float rangeDamage;
+    // 투사체 관리 스크립트
+    public cBulletManager bulletMng;
 
     protected cDungeonNormal_processor dp;
         

@@ -44,7 +44,7 @@ public class cEnemy_Boss : cEnemy_monster
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        //Move();
+        Move();
     }
 
     //private void Move()

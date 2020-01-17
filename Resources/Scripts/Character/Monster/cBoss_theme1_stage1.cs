@@ -57,13 +57,27 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        Move();
+    }
+
+    private void MoveAttack()
+    {
+
+    }
+
+    private void RangeAttack()
+    {
+
+    }
+
+    private void LiquidAttack()
+    {
+
     }
 
     protected override void Move()
     {
         curSkillTime += Time.deltaTime;
-        playerPos = cUtil._user.transform.position;
+        playerPos = dp._player.transform.position;
 
         if (this.gameObject.transform.position.x > playerPos.x)
         {
@@ -113,7 +127,6 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
                 }
                 else
                 {
-                    Debug.Log("moving");
                     this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
                 }
                 break;
