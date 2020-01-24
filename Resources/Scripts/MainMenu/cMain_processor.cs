@@ -5,17 +5,32 @@ using UnityEngine.UI;
 
 public class cMain_processor : MonoBehaviour
 {
-    public GameObject obj_mainFrame;
-    public Button b_mainFrameExit;
+    //메인 애니메이터
+    public Animator animator_main;
+    //사운드 매니저
+    public cSoundMng _sm;
 
+    //메인 프레임
+    public GameObject obj_mainFrame;
+    //메인 프레임 닫기 버튼
+    public Button[] b_mainFrameExit;
+
+    //각 요소별 제어 스크립트
     public cStore _store;
     public cForge _forge;
     public cDungeon _dungeon;
 
+    //임시 디버깅
     public Button b_temp1;
     public Button b_temp2;
     public Button b_temp3;
 
+    //재화
+    public Text t_gold;
+    public Text t_rock;
+    public Text t_dia;
+
+    //현재 창 인덱스
     private int currentWindowNum;
 
     void Start()
@@ -25,13 +40,16 @@ public class cMain_processor : MonoBehaviour
         _store.b_click.onClick.AddListener(() => OnBuilingButtonClicked(0));
         _forge.b_click.onClick.AddListener(() => OnBuilingButtonClicked(1));
         _dungeon.b_click.onClick.AddListener(() => OnBuilingButtonClicked(2));
-        b_mainFrameExit.onClick.AddListener(() => OnMainFrameExit());
+        for(byte i = 0; i < b_mainFrameExit.Length; i++)
+            b_mainFrameExit[i].onClick.AddListener(() => OnMainFrameExit());
 
         //임시 디버깅
         //b_temp1.onClick.AddListener(() => AddItem(0));
         //b_temp2.onClick.AddListener(() => AddItem(1));
         //b_temp3.onClick.AddListener(() => AddItem(2));
+
     }
+
 
     //임시 디버깅용 아이템 추가
     //private void AddItem(int pKind)
@@ -73,9 +91,16 @@ public class cMain_processor : MonoBehaviour
     
     private void OnBuilingButtonClicked(int pChar)
     {
-        //같은 창이라면 리턴, 창이 떠있는데 다른 버튼 클릭하면 안됨
-        if (currentWindowNum == pChar || currentWindowNum != -1)
+        //창이 떠있는데 다른 버튼 클릭하면 리턴
+        if (currentWindowNum != -1)
             return;
+        //같은 창이라면 exit
+        if(currentWindowNum.Equals(pChar))
+        {
+            OnMainFrameExit();
+            return;
+        }
+        
         
         obj_mainFrame.SetActive(true);
 
@@ -84,14 +109,20 @@ public class cMain_processor : MonoBehaviour
             //상점
             case 0:
                 {
-                    _store.obj_content.SetActive(true);
-                    _store.ActiveWindow();
+                    _sm.playEffect(0);
+                    animator_main.SetTrigger("StoreOn");
                 }
                     break;
             //대장간
-            case 1: _forge.obj_content.SetActive(true); break;
+            case 1:
+                _sm.playEffect(0);
+                animator_main.SetTrigger("IronOn");
+                break;
             //던전
-            case 2: _dungeon.obj_content.SetActive(true); break;
+            case 2:
+                _sm.playEffect(0);
+                animator_main.SetTrigger("DungeonOn");
+                break;
         }
 
         currentWindowNum = pChar;
@@ -99,11 +130,24 @@ public class cMain_processor : MonoBehaviour
 
     private void OnMainFrameExit()
     {
-        _store.obj_content.SetActive(false);
-        _forge.obj_content.SetActive(false);
-        _dungeon.obj_content.SetActive(false);
-
-        obj_mainFrame.SetActive(false);
+        switch (currentWindowNum)
+        {
+            //상점
+            case 0:                
+                    _sm.playEffect(0);
+                    animator_main.SetTrigger("StoreOff");                
+                break;
+            //대장간
+            case 1:
+                _sm.playEffect(0);
+                animator_main.SetTrigger("IronOff");
+                break;
+            //던전
+            case 2:
+                _sm.playEffect(0);
+                animator_main.SetTrigger("DungeonOff");
+                break;
+        }
         currentWindowNum = -1;
     }
 	

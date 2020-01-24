@@ -15,7 +15,7 @@ public class cSoundMng : MonoBehaviour
             _as[2].clip = _clips[0];
 
         _as[2].volume = 0.3f;
-        _as[2].pitch = 1.07f;
+        _as[2].pitch = 0.95f;
         _as[2].loop = false;
         _as[2].Play();
     }

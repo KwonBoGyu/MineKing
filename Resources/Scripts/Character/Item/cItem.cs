@@ -14,7 +14,7 @@ public enum ITEM
 }
 
 [System.Serializable]
-public class cItem : MonoBehaviour
+public class cItem
 {
     public string _name;
     public int price;

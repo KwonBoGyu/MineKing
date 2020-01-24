@@ -24,7 +24,4 @@ public static class cUtil
         pObj.transform.localPosition = new Vector3(0, 0, 0);
         pObj.transform.localScale = new Vector3(1, 1, 1);
     }
-
-    
-    
 }

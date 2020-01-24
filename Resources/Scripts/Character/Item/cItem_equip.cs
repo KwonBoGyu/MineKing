@@ -6,18 +6,18 @@ using UnityEngine;
 public class cItem_equip : cItem
 {
     public float damage;
-    public float defense;
+    public float maxHp;
     public int hitLevel;
     public float attackSpeed;
     public float drainValue;
 
     #region 생성자
     public cItem_equip(string pName, int pPrice, int pKind, int pKindNum,
-        float pDamage = 0, float pDefense = 0, int pHitLevel = 0, float pAttackSpeed = 0, float pDrainValue = 0)
+        float pDamage = 0, float pMaxHp = 0, int pHitLevel = 0, float pAttackSpeed = 0, float pDrainValue = 0)
         : base(pName, pPrice, pKind, pKindNum)
     {
         damage = pDamage;
-        defense = pDefense;
+        maxHp = pMaxHp;
         hitLevel = pHitLevel;
         attackSpeed = pAttackSpeed;
         drainValue = pDrainValue;
@@ -27,7 +27,7 @@ public class cItem_equip : cItem
         : base(pIe._name, pIe.price, pIe.kind, pIe.kindNum)
     {
         this.damage = pIe.damage;
-        this.defense = pIe.defense;
+        this.maxHp = pIe.maxHp;
         this.hitLevel = pIe.hitLevel;
         this.attackSpeed = pIe.attackSpeed;
         this.drainValue = pIe.drainValue;

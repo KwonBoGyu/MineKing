@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class cUser : MonoBehaviour
 {
-    private cPlayerInfo _playerInfo;
+    public cPlayerInfo _playerInfo;
     
     void Start()
     {
@@ -24,6 +24,7 @@ public class cUser : MonoBehaviour
     {
         _playerInfo.SyncData();
         cSaveLoad.SaveData("saves", _playerInfo);
+        Debug.Log("SAVED");
     }
 
     public void LoadUserData()
@@ -41,14 +42,26 @@ public class cUser : MonoBehaviour
         //생성된 데이터가 없을 때
         if (_fileExist == false)
         {
-            _playerInfo = new cPlayerInfo("asdf", 40, 250, 100, 100);
+            cGold money = new cGold();
+            cRock rock = new cRock();
+            cDia dia = new cDia();
+            cJewerly[] jewerly = new cJewerly[5];
+            for (byte i = 0; i < jewerly.Length; i++)
+                jewerly[i] = new cJewerly();
+            cSoul[] soul = new cSoul[4];
+            for (byte i = 0; i < soul.Length; i++)
+                soul[i] = new cSoul();
+
+            _playerInfo = new cPlayerInfo("이름입니다.", 40, 250, 100, 100, this.GetComponent<cInventory>(), 
+                money, rock, dia, jewerly, soul);
+
             SaveUserData();
             Debug.Log("Initialized Done - CreatedInitData");
         }
         //기존 데이터가 있으면..
         else
         {
-            _playerInfo = new cPlayerInfo(cSaveLoad.LoadData<cPlayerInfo>("saves"));
+            _playerInfo = new cPlayerInfo(cSaveLoad.LoadData<cPlayerInfo>("saves"), this.GetComponent<cInventory>());
             Debug.Log("Initialized Done - Data Exists");
         }        
     }

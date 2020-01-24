@@ -110,7 +110,7 @@ public class cSceneManager : MonoBehaviour
         op.allowSceneActivation = false;
         _loadingImg.SetActive(true);
         Image _progressBar = _loadingImg.transform.Find("progressBar").GetComponent<Image>();
-                
+
         while (op.isDone == false)
         {
             yield return null;
@@ -123,7 +123,7 @@ public class cSceneManager : MonoBehaviour
                 op.allowSceneActivation = true;
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(1.0f);
             _progressBar.fillAmount = 0.0f;
             _loadingImg.SetActive(false);
         }

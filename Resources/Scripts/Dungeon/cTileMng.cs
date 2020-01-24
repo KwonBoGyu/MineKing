@@ -117,7 +117,7 @@ public class cTileMng : MonoBehaviour
                 new Vector3Int((int)originTPos.x - 24, (int)originTPos.y + 150, 0),
             };
 
-        for (int i = 0; i < cellPos.Length; i++)
+        for (short i = 0; i < cellPos.Length; i++)
         {
             Vector3Int worldToCellPos = pTileMap.WorldToCell(cellPos[i]);
             TileBase t_tile = pTileMap.GetTile(worldToCellPos);
@@ -403,7 +403,7 @@ public class cTileMng : MonoBehaviour
         canHitTile_100 = new TileBase[15];
         canHitTile_60 = new TileBase[15];
         canHitTile_30 = new TileBase[15];
-        for (int i = 0; i < 15; i++)
+        for (byte i = 0; i < 15; i++)
         {
             canHitTile_100[i] = tileMap_canHit.GetTile(new Vector3Int(-18 + i, -1, 0));
             canHitTile_60[i] = tileMap_canHit.GetTile(new Vector3Int(-18 + i, -2, 0));

@@ -16,7 +16,7 @@ public class cItem_Torch : cItem_use
 
         Transform tempT = cUtil._user.GetPlayer().transform;
 
-        GameObject torch = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Item_Torch"), tempT.position,
-            Quaternion.identity, tempT.parent.transform.parent);
+        //GameObject torch = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Item_Torch"), tempT.position,
+        //    Quaternion.identity, tempT.parent.transform.parent);
     }
 }

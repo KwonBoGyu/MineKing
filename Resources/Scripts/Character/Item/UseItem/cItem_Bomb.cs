@@ -20,8 +20,8 @@ public class cItem_Bomb : cItem_use
 
         Transform tempT = cUtil._user.GetPlayer().transform;
 
-        GameObject bomb = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Item_Bomb"), tempT.position,
-            Quaternion.identity, tempT.parent.transform.parent);
-        bomb.GetComponent<cItem_Bomb_O>().SetTimer(bombTime);
+        //GameObject bomb = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Item_Bomb"), tempT.position,
+        //    Quaternion.identity, tempT.parent.transform.parent);
+        //bomb.GetComponent<cItem_Bomb_O>().SetTimer(bombTime);
     }
 }

@@ -67,6 +67,6 @@ public class cItem_SandBag : cItem_use
             position = new Vector2(rayDown.collider.transform.position.x, rayDown.collider.transform.position.y) + new Vector2(0, 360.0f);
         }
 
-        GameObject rope = Instantiate(sandBagPreFab, position, Quaternion.identity);
+        //GameObject rope = Instantiate(sandBagPreFab, position, Quaternion.identity);
     }
 }
