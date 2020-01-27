@@ -13,6 +13,11 @@ public class cForge : cBuilding
     private float originX;
     private float movedX;
 
+    //하위 객체들
+    public cForge_jewerly forge_jewerly;
+    public cForge_axe forge_axe;
+    public cForge_skill forge_skill;
+
     private void Start()
     {
         originX = -478.1f;
@@ -36,6 +41,24 @@ public class cForge : cBuilding
         }
 
         curFrameIdx = pNum;
+        switch (pNum)
+        {
+            //보석추출
+            case 0:
+                //forge_jewerly.UpdateValues();
+                break;
+
+            //강화
+            case 1:
+
+                break;
+
+            //스킬
+            case 2:
+
+                break;
+        }
+
         for (short i = 0; i < b_Frame.Length; i++)
         {
             if(i.Equals(curFrameIdx))
@@ -46,6 +69,7 @@ public class cForge : cBuilding
 
                 obj_Frame[i].SetActive(true);
                 b_Frame[i].transform.parent.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+                Debug.Log("asdf");
                 continue;
             }
 

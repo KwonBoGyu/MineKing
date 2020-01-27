@@ -43,11 +43,12 @@ public class cMain_processor : MonoBehaviour
         for(byte i = 0; i < b_mainFrameExit.Length; i++)
             b_mainFrameExit[i].onClick.AddListener(() => OnMainFrameExit());
 
+        UpdateValues();
+
         //임시 디버깅
         //b_temp1.onClick.AddListener(() => AddItem(0));
         //b_temp2.onClick.AddListener(() => AddItem(1));
         //b_temp3.onClick.AddListener(() => AddItem(2));
-
     }
 
 
@@ -151,4 +152,11 @@ public class cMain_processor : MonoBehaviour
         currentWindowNum = -1;
     }
 	
+    public void UpdateValues()
+    {
+        t_gold.text = cUtil._user._playerInfo.inventory.GetMoney().GetValueToString();
+        t_rock.text = cUtil._user._playerInfo.inventory.GetRock().GetValueToString();
+        t_dia.text = cUtil._user._playerInfo.inventory.GetDia().GetValueToString();
+    }
+
 }

@@ -7,6 +7,7 @@ public class cPlayerInfo
 {
     public string nickName;
     public cPlayer player;
+    public cAxe weapon;
     public cInventory inventory;
     public cItem_equip[] item_equip;
     public cItem_use[] item_use;
@@ -18,10 +19,12 @@ public class cPlayerInfo
     public cSoul[] soul;
 
     #region 생성자
-    public cPlayerInfo(string pNickName, float pMoveSpeed, float pAttackSpeed, float pDamage,
-        float pHp, cInventory pInventory, cGold pMoney, cRock pRock, cDia pDia, cJewerly[] pJewerly, cSoul[] pSoul,
+    public cPlayerInfo(string pNickName, cAxe pAxe, cInventory pInventory, 
+        cGold pMoney, cRock pRock, cDia pDia, cJewerly[] pJewerly, cSoul[] pSoul,
         cItem_equip[] pItem_equip = null, cItem_use[] pItem_use = null, cItem_etc[] pItem_etc = null)
     {
+        weapon = new cAxe(pAxe);        
+
         inventory = pInventory;
         inventory.Init();
 
@@ -57,6 +60,8 @@ public class cPlayerInfo
 
     public cPlayerInfo(cPlayerInfo pPi, cInventory pInventory)
     {
+        weapon = new cAxe(pPi.weapon);
+
         inventory = pInventory;
         inventory.Init();
 
