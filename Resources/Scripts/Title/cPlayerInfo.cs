@@ -17,13 +17,18 @@ public class cPlayerInfo
     public cDia dia;
     public cJewerly[] jewerly;
     public cSoul[] soul;
+    public byte[] skillLevel; //0 : 대쉬, 1 : 시야증가, 2 : 차지강화, 3 : 점프강화
 
     #region 생성자
-    public cPlayerInfo(string pNickName, cAxe pAxe, cInventory pInventory, 
+    public cPlayerInfo(string pNickName, cAxe pAxe, byte[] pSkillLevel,cInventory pInventory, 
         cGold pMoney, cRock pRock, cDia pDia, cJewerly[] pJewerly, cSoul[] pSoul,
         cItem_equip[] pItem_equip = null, cItem_use[] pItem_use = null, cItem_etc[] pItem_etc = null)
     {
-        weapon = new cAxe(pAxe);        
+        weapon = new cAxe(pAxe);
+
+        skillLevel = new byte[4];
+        for (byte i = 0; i < skillLevel.Length; i++)
+            skillLevel[i] = pSkillLevel[i];
 
         inventory = pInventory;
         inventory.Init();
@@ -61,6 +66,9 @@ public class cPlayerInfo
     public cPlayerInfo(cPlayerInfo pPi, cInventory pInventory)
     {
         weapon = new cAxe(pPi.weapon);
+        skillLevel = new byte[4];
+        for (byte i = 0; i < skillLevel.Length; i++)
+            skillLevel[i] = pPi.skillLevel[i];
 
         inventory = pInventory;
         inventory.Init();

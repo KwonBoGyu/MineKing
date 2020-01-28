@@ -9,7 +9,7 @@ public class cUser : MonoBehaviour
     
     void Start()
     {
-        saveString = "save2";
+        saveString = "save3";
         LoadUserData();
     }
 
@@ -44,6 +44,7 @@ public class cUser : MonoBehaviour
         //생성된 데이터가 없을 때
         if (_fileExist == false)
         {
+            //재화 초기화
             cGold money = new cGold();
             cRock rock = new cRock();
             cDia dia = new cDia();
@@ -54,10 +55,16 @@ public class cUser : MonoBehaviour
             for (byte i = 0; i < soul.Length; i++)
                 soul[i] = new cSoul();
 
+            //무기 레벨 초기화
             short axeLevel = 1;
             cAxe tAxe = new cAxe(cWeaponTable.GetAxeInfo(axeLevel));
 
-            _playerInfo = new cPlayerInfo("이름입니다.", tAxe, this.GetComponent<cInventory>(), 
+            //스킬레벨 초기화
+            byte[] skillLevel = new byte[4];
+            for (byte i = 0; i < 4; i++)
+                skillLevel[i] = 0;
+
+            _playerInfo = new cPlayerInfo("이름입니다.", tAxe, skillLevel,this.GetComponent<cInventory>(), 
                 money, rock, dia, jewerly, soul);
 
             SaveUserData();

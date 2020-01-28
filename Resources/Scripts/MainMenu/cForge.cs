@@ -45,17 +45,17 @@ public class cForge : cBuilding
         {
             //보석추출
             case 0:
-                //forge_jewerly.UpdateValues();
+                forge_jewerly.UpdateValues();
                 break;
 
             //강화
             case 1:
-
+                forge_axe.UpdateValues();
                 break;
 
             //스킬
             case 2:
-
+                forge_skill.UpdateValues();
                 break;
         }
 
