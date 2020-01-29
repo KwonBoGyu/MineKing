@@ -75,7 +75,7 @@ public class cMonster_stage1_slime : cEnemy_monster
             {
                 if (bullet.activeSelf.Equals(false))
                 {
-                    bulletMng.SetBullet(BULLET_TYPE.NORMAL);
+                    bulletMng.SetBullet(0);
                 }
                 else
                 {

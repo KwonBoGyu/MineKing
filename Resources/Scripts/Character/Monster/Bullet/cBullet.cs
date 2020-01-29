@@ -27,8 +27,8 @@ public class cBullet : MonoBehaviour
         rangeCollider = originMonster.transform.GetChild(1).GetComponent<CircleCollider2D>();
         attackRange = rangeCollider.radius;
         damage = originMonster.GetComponent<cEnemy_monster>().GetDamage();
-        changingGravity = 500f;
-        defaultGravity = 1000f;
+        changingGravity = 200f;
+        defaultGravity = 400f;
 
         splitCount = 0;
         explodeOn = false;
@@ -38,6 +38,8 @@ public class cBullet : MonoBehaviour
     private void OnEnable()
     {
         this.transform.position = originMonster.transform.position;
+        this.transform.localScale = new Vector3(1, 1, 1);
+        changingGravity = 200f;
     }
 
     public void SetType(BULLET_TYPE pType)
@@ -46,8 +48,8 @@ public class cBullet : MonoBehaviour
 
         switch (pType)
         {
-            case BULLET_TYPE.TRIPLE:
-                speed = 500f;
+            case BULLET_TYPE.NORMAL:
+                speed = 300f;
                 break;
                 
             case BULLET_TYPE.SPLIT:
@@ -55,7 +57,7 @@ public class cBullet : MonoBehaviour
                 break;
                 
             case BULLET_TYPE.GRENADE:
-                speed = 400f;
+                speed = 500f;
                 break;
         }
     }
@@ -66,27 +68,27 @@ public class cBullet : MonoBehaviour
         {
             transform.Translate(dir * Time.deltaTime * speed);
 
-            if(isGravityOn)
+            if (isGravityOn)
             {
                 SetGravity();
             }
         }
 
-        distance = new Vector2(this.transform.position.x - originMonster.transform.position.x,
-            this.transform.position.y - originMonster.transform.position.y).magnitude;
-        // 총알 최대 범위 이상으로 벗어나면 소멸
-        if (distance >= attackRange)
-        {
-            this.gameObject.SetActive(false);
-        }
+        //distance = new Vector2(this.transform.position.x - originMonster.transform.position.x,
+        //    this.transform.position.y - originMonster.transform.position.y).magnitude;
+        //// 총알 최대 범위 이상으로 벗어나면 소멸
+        //if (distance >= attackRange)
+        //{
+        //    this.gameObject.SetActive(false);
+        //}
     }
 
     private void SetGravity()
     {
         this.gameObject.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
-        if (changingGravity <= 1000)
+        if (changingGravity <= defaultGravity)
             changingGravity *= 1.02f;
-        if (changingGravity > 1000)
+        if (changingGravity > defaultGravity)
             changingGravity = defaultGravity;
     }
 
@@ -111,22 +113,7 @@ public class cBullet : MonoBehaviour
                 }
                 break;
 
-            case BULLET_TYPE.TRIPLE:
-                if (collision.gameObject.tag.Equals("Player"))
-                {
-                    // 원거리 공격 데미지 나중에 변수 따로 선언해야 함
-                    cUtil._player.ReduceHp(damage, dir);
-                }
-                else if (collision.gameObject.tag.Equals("Tile_canHit"))
-                {
-                    this.gameObject.SetActive(false);
-                }
-                else if (collision.gameObject.tag.Equals("Tile_CannotHit"))
-                {
-                    this.gameObject.SetActive(false);
-                }
-                break;
-
+            // 벽 충돌시 분열하는 기능 추가 예정
             case BULLET_TYPE.SPLIT:
                 if (collision.gameObject.tag.Equals("Player"))
                 {
@@ -140,7 +127,14 @@ public class cBullet : MonoBehaviour
                     }
                     else
                     {
-                        dir = new Vector3(dir.x * -1, dir.y, dir.z);
+                        if (dir.y <= 0)
+                        {
+                            dir = new Vector3(dir.x, dir.y * -1, dir.z);
+                        }
+                        else
+                        {
+                            dir = new Vector3(dir.x * -1, dir.y, dir.z);
+                        }
                     }
                 }
                 else if (collision.gameObject.tag.Equals("Tile_cannotHit"))
@@ -151,7 +145,7 @@ public class cBullet : MonoBehaviour
                     }
                     else
                     {
-                        dir = new Vector3(dir.x * -1, dir.y, dir.z);
+
                     }
                 }
                 break;
@@ -161,28 +155,39 @@ public class cBullet : MonoBehaviour
                 {
                     if (explodeOn)
                     {
+                        Debug.Log("explode collide");
                         cUtil._player.ReduceHp(damage);
+                        this.gameObject.SetActive(false);
                     }
                 }
                 else if (collision.gameObject.tag.Equals("Tile_canHit"))
                 {
+                    Debug.Log("col1");
+                    speed = 0f;
+                    dir = Vector3.zero;
+                    isGravityOn = false;
                     StartCoroutine("SetGrenade");
                 }
                 else if (collision.gameObject.tag.Equals("Tile_cannotHit"))
                 {
+                    Debug.Log("col2");
+                    speed = 0f;
+                    dir = Vector3.zero;
+                    isGravityOn = false;
                     StartCoroutine("SetGrenade");
                 }
                 break;
         }
     }
-
+    
     IEnumerator SetGrenade()
     {
-        speed = 0f;
-        dir = Vector3.zero;
         yield return new WaitForSeconds(explodeTime);
-
         explodeOn = true;
         rangeCollider.radius = rangeCollider.radius * 3;
+        this.transform.localScale = new Vector3(3, 3, 3); // 이펙트 추가 예정
+
+        yield return new WaitForSeconds(0.3f);
+        this.gameObject.SetActive(false);
     }
 }

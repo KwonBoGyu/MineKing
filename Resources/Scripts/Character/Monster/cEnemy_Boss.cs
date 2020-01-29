@@ -15,15 +15,15 @@ public class cEnemy_Boss : cEnemy_monster
 
     public struct Pattern
     {
-        public int patternNum { get; set; }
-        public float coolTime { get; set; }
-        public float skillTime { get; set; }
+        public int patternNum { get; set; } // 패턴 고유 번호
+        public float coolTime { get; set; } // 스킬 쿨타임
+        public int patternCount { get; set; } // 스킬 실행 횟수
 
-        public Pattern(int pPatternNum, float pCoolTime, float pSkillTime)
+        public Pattern(int pPatternNum, float pCoolTime, int pPatternCount)
         {
             patternNum = pPatternNum;
             coolTime = pCoolTime;
-            skillTime = pSkillTime;
+            patternCount = pPatternCount;
         }
     }
 
@@ -92,7 +92,7 @@ public class cEnemy_Boss : cEnemy_monster
     {
         if (collision.tag == "Player")
         {
-            collision.transform.GetChild(0).GetComponent<cPlayer>().ReduceHp(damage);
+            cUtil._player.ReduceHp(damage);
 
             Debug.Log("attacked by " + this.nickName);
         }
