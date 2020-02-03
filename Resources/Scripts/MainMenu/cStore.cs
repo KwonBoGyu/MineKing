@@ -24,7 +24,13 @@ public class cStore : cBuilding
     //보석 value 오브젝트들
     public GameObject[] obj_jewerly;
 
+<<<<<<< HEAD
     public short curFrameIdx;
+=======
+    private short curFrameIdx;
+
+    private double updateTime; // 상점 가격 변동됐던 시각
+>>>>>>> dc0edf459b7e69ee584f47f79c3e4a77477b9b45
     
     private void Start()
     {
@@ -49,12 +55,62 @@ public class cStore : cBuilding
             int n = i;
             b_sell[i].onClick.AddListener(() => SellJewerly(n));
         }
+        updateTime = 0;
     }
 
     //★★★★★현재값 조정★★★★★
     private void UpdateCurValue()
     {
+        // 10분 주기로 변경
+        if (cUtil._titleSingleton.gameTime - updateTime >= 600.0)
+        {
+            updateTime = cUtil._titleSingleton.gameTime;
 
+            for (byte i = 0; i < jewerlyList.Length; i++)
+            {
+                cJewerly average = jewerlyList[i].jewerlyValue[0];
+                cJewerly now = jewerlyList[i].jewerlyValue[1];
+                short[] tempPrev = now.value;
+                short[] tempDiff;
+                
+                // 0:폭락, 1:하락, 2:유지, 3:상승, 4:급상승 결정
+                byte IncOrDec = (byte)Random.Range((int)0, (int)4);
+
+                now.value = average.value;
+                short changeAmount = now.value[(int)now.GetMaxIdx()];
+
+                switch (IncOrDec)
+                {
+                    case 0:
+                        changeAmount = (short)(changeAmount / 4);
+                        now.RemoveValue(now.GetMaxIdx(), changeAmount, false);
+                        break;
+                    case 1:
+                        changeAmount = (short)(changeAmount / 8);
+                        now.RemoveValue(now.GetMaxIdx(), changeAmount, false);
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        changeAmount = (short)(changeAmount / 8);
+                        now.AddValue(now.GetMaxIdx(), changeAmount);
+                        break;
+                    case 4:
+                        changeAmount = (short)(changeAmount / 4);
+                        now.AddValue(now.GetMaxIdx(), changeAmount);
+                        break;
+                }
+
+                tempDiff = now.value;
+
+                for (int j = 0; j < tempPrev.Length; j++)
+                {
+                    tempDiff[j] = (short)(tempDiff[j] - tempPrev[j]);
+                }
+
+                jewerlyList[i].jewerlyValue[2].value = tempDiff;
+            }
+        }
     }
 
     //보석 판매
