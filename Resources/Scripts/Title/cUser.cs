@@ -9,7 +9,7 @@ public class cUser : MonoBehaviour
     
     void Start()
     {
-        saveString = "save3";
+        saveString = "save4";
         LoadUserData();
     }
 
@@ -56,7 +56,7 @@ public class cUser : MonoBehaviour
                 soul[i] = new cSoul();
 
             //무기 레벨 초기화
-            short axeLevel = 1;
+            cProperty axeLevel = new cProperty("AxeLevel", 1);
             cAxe tAxe = new cAxe(cWeaponTable.GetAxeInfo(axeLevel));
 
             //스킬레벨 초기화

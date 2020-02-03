@@ -25,6 +25,6 @@ public class cItem_Potion_hp : cItem_use
     {
         base.UseItem();
 
-        cUtil._user.GetPlayer().IncreaseHP(cUtil._user.GetPlayer().GetMaxHp()*0.1f);
+        cUtil._user.GetPlayer().IncreaseHP(new cProperty("HP", (long)(cUtil._user.GetPlayer().GetMaxHp().value * 0.1f)));
     }
 }

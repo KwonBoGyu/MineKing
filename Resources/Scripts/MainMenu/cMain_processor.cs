@@ -135,8 +135,9 @@ public class cMain_processor : MonoBehaviour
         {
             //상점
             case 0:                
-                    _sm.playEffect(0);
-                    animator_main.SetTrigger("StoreOff");                
+                _sm.playEffect(0);
+                animator_main.SetTrigger("StoreOff");
+                _store.curFrameIdx = -1;
                 break;
             //대장간
             case 1:

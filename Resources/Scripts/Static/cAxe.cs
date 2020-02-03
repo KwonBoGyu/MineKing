@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class cAxe
 {
-    public short level;
+    public cProperty level;
     public cProperty damage;
     public cProperty hp;
     public cProperty value;
@@ -14,16 +14,16 @@ public class cAxe
 
     public cAxe()
     {
-        level = 0;
+        level = new cProperty("Level");
         damage = new cProperty("Damage");
         hp = new cProperty("Hp");
         value = new cProperty("Value");
         attackSpeed = 1.0f;
         AxeImgNum = 0;
     }
-    public cAxe(short pLevel, cProperty pDamage, cProperty pHp, cProperty pValue, float pAs, byte pImgNum)
+    public cAxe(cProperty pLevel, cProperty pDamage, cProperty pHp, cProperty pValue, float pAs, byte pImgNum)
     {
-        level = pLevel;
+        level = new cProperty(pLevel);
         damage = new cProperty(pDamage);
         hp = new cProperty(pHp);
         value = new cProperty(pValue);
@@ -32,7 +32,7 @@ public class cAxe
     }
     public cAxe(cAxe pAxe)
     {
-        level = pAxe.level;
+        level = new cProperty(pAxe.level);
         damage = new cProperty(pAxe.damage);
         hp = new cProperty(pAxe.hp);
         value = new cProperty(pAxe.value);

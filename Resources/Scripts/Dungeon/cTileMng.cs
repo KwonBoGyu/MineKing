@@ -31,16 +31,18 @@ public class cTileMng : MonoBehaviour
     {
         public Vector3Int location { get; set; }
         public TileBase tileBase;
-        public int level { get; set; }
-        public float hp { get; set; }
+        public cProperty level { get; set; }
+        public cProperty maxHp { get; set; }
+        public cProperty curHp { get; set; }
         public TILEDIRECTION dir { get; set; }
 
-        public Tile(Vector3Int pLocation, TileBase pTileBase, int pLevel, float pHp, TILEDIRECTION pDir)
+        public Tile(Vector3Int pLocation, TileBase pTileBase, cProperty pLevel, cProperty pMaxHp, cProperty pCurHp, TILEDIRECTION pDir)
         {
             location = pLocation;
             tileBase = pTileBase;
-            level = pLevel;
-            hp = pHp;
+            level = new cProperty(pLevel);
+            maxHp = new cProperty(pMaxHp);
+            curHp = new cProperty(pCurHp);
             dir = pDir;
         }
     }
@@ -67,14 +69,14 @@ public class cTileMng : MonoBehaviour
         SetEntireTiles();
     }
 
-    public bool CheckAttackedTile(Vector3 pWorldPos, float pDamage)
+    public bool CheckAttackedTile(Vector3 pWorldPos, cProperty pDamage, out float pCurHpPercent)
     {
         bool isChecked = false;
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pWorldPos);
         Vector3 convertedWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
 
         //해당 위치에 타일이 있다면
-        isChecked = UpdateAttackedTile(convertedWorldPos);
+        isChecked = UpdateAttackedTile(convertedWorldPos, pDamage, out pCurHpPercent);
 
         return isChecked;
     }
@@ -363,7 +365,12 @@ public class cTileMng : MonoBehaviour
             if (localPlace.x < 0)
                 continue;
 
-            Tile tile = new Tile(localPlace, tileMap_canHit.GetTile(localPlace), 1, 10, (TILEDIRECTION)0);
+            Tile tile = new Tile(localPlace, 
+                tileMap_canHit.GetTile(localPlace), 
+                new cProperty("Level", 1),
+                new cProperty("MaxHp", 10),
+                new cProperty("CurHp", 10), 
+                (TILEDIRECTION)0);
 
             dic_canHit.Add(tileMap_canHit.CellToWorld(localPlace), tile);
         }
@@ -414,91 +421,70 @@ public class cTileMng : MonoBehaviour
         cUtil._tileMng = this;
     }
 
-    private bool UpdateAttackedTile(Vector3 pCurPos)
+    private bool UpdateAttackedTile(Vector3 pCurPos, cProperty pDamage, out float pCurHpPercent)
     {
         bool isChecked = false;
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
         Vector3 cellToWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
+        if (dic_canHit[cellToWorldPos].curHp.value <= 0)
+        {
+            pCurHpPercent = 0;
+            return false;
+        }
+
         Tile tempTileToUse;
         tempTileToUse = dic_canHit[cellToWorldPos];
-        tempTileToUse.dir = GetTileDirection(cellToWorldPos);
-        tempTileToUse.hp -= 1;
+        tempTileToUse.curHp.value -= pDamage.value;
         dic_canHit[cellToWorldPos] = tempTileToUse;
+        pCurHpPercent = (float)tempTileToUse.curHp.value / (float)dic_canHit[cellToWorldPos].maxHp.value;
 
-        Debug.Log(dic_canHit[cellToWorldPos].dir);
-        Debug.Log("ATTACKED" + " : " + dic_canHit[cellToWorldPos].hp);
 
-        if(dic_canHit[cellToWorldPos].hp == 0)
+        if (tempTileToUse.curHp.value == 0)
         {
-            Debug.Log(isChecked + "HP IS ZERO");
             isChecked = true;
-        }
-        UpdateTile(cellToWorldPos);
-
-        if (dic_canHit[cellToWorldPos].hp <= 0)
-        {
-            tempTileToUse.hp = 0;
-
+            pCurHpPercent = 0;
             tileMap_canHit.SetTile(worldToCellPos, null);
-            Vector3 tempPos = Vector3.zero;
-
-            if (isTileExist(0, cellToWorldPos).Equals(true))
-            {
-                tempPos = new Vector3(cellToWorldPos.x, cellToWorldPos.y + tileSize, cellToWorldPos.z);
-                UpdateTile(tempPos);
-            }
-            if (isTileExist(1, cellToWorldPos).Equals(true))
-            {
-                tempPos = new Vector3(cellToWorldPos.x + tileSize, cellToWorldPos.y, cellToWorldPos.z);
-                UpdateTile(tempPos);
-            }
-            if (isTileExist(3, cellToWorldPos).Equals(true))
-            {
-                tempPos = new Vector3(cellToWorldPos.x - tileSize, cellToWorldPos.y, cellToWorldPos.z);
-                UpdateTile(tempPos);
-                return isChecked;
-            }
-            if (isTileExist(2, cellToWorldPos).Equals(true))
-            {
-                tempPos = new Vector3(cellToWorldPos.x, cellToWorldPos.y - tileSize, cellToWorldPos.z);
-                UpdateTile(tempPos);
-                return isChecked;
-            }
+        }
+        else if (tempTileToUse.curHp.value <= 0)
+        {
+            tempTileToUse.curHp.value = 0;
+            pCurHpPercent = 0;
+            isChecked = true;
+            tileMap_canHit.SetTile(worldToCellPos, null);
         }
         else
             isChecked = true;
 
-
         return isChecked;
     }
 
-    private void UpdateTile(Vector3 pCurPos)
-    {
-        Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
-        Vector3 cellToWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
-        Tile tempTileToUse;
+    //private void UpdateTile(Vector3 pCurPos)
+    //{
+    //    Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
+    //    Vector3 cellToWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
+    //    Tile tempTileToUse;
 
-        tempTileToUse = dic_canHit[cellToWorldPos];
-        tempTileToUse.dir = GetTileDirection(cellToWorldPos);
+    //    tempTileToUse = dic_canHit[cellToWorldPos];
+    //    tempTileToUse.dir = GetTileDirection(cellToWorldPos);
         
-        if(tempTileToUse.hp > 0)
-        {
-            if (tempTileToUse.hp <= 3)
-            {
-                tileMap_canHit.SetTile(worldToCellPos, canHitTile_30[(int)tempTileToUse.dir - 1]);
-            }
-            else if (tempTileToUse.hp <= 6)
-            {
-                tileMap_canHit.SetTile(worldToCellPos, canHitTile_60[(int)tempTileToUse.dir - 1]);
-            }
-            else if (tempTileToUse.hp <= 10)
-            {
-                tileMap_canHit.SetTile(worldToCellPos, canHitTile_100[(int)tempTileToUse.dir - 1]);
-            }
-        }
+    //    if(tempTileToUse.hp > 0)
+    //    {
+    //        if (tempTileToUse.hp <= 3)
+    //        {
+    //            tileMap_canHit.SetTile(worldToCellPos, canHitTile_30[(int)tempTileToUse.dir - 1]);
+    //        }
+    //        else if (tempTileToUse.hp <= 6)
+    //        {
+    //            tileMap_canHit.SetTile(worldToCellPos, canHitTile_60[(int)tempTileToUse.dir - 1]);
+    //        }
+    //        else if (tempTileToUse.hp <= 10)
+    //        {
+    //            tileMap_canHit.SetTile(worldToCellPos, canHitTile_100[(int)tempTileToUse.dir - 1]);
+    //        }
+    //    }
         
-        dic_canHit[cellToWorldPos] = tempTileToUse;
-    }
+    //    dic_canHit[cellToWorldPos] = tempTileToUse;
+    //}
 
     private TILEDIRECTION GetTileDirection(Vector3 pCurPos)
     {

@@ -100,16 +100,16 @@ public class cMonster_stage1_slime : cEnemy_monster
         }
     }
 
-    public override void ReduceHp(float pVal, Vector3 pDir, float pVelocity = 7.5f)
+    public override void ReduceHp(cProperty pVal, Vector3 pDir, float pVelocity = 7.5f)
     {
-        curHp -= pVal;
+        curHp.value -= pVal.value;
 
-        if (curHp <= 0)
+        if (curHp.value <= 0)
         {
-            curHp = 0;
+            curHp.value = 0;
             isDead = true;
             this.GetComponent<BoxCollider2D>().enabled = false;
-            this.curHp = this.maxHp;
+            this.curHp.value = this.maxHp.value;
             this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -1000f);
             
             // 이미 분열한 슬라임이라면
@@ -136,16 +136,22 @@ public class cMonster_stage1_slime : cEnemy_monster
                     Quaternion.identity, this.transform);
                 clone1.transform.localScale = new Vector3(0.7f,0.7f,0.7f);
                 clone1.transform.position = new Vector3(clone1.transform.position.x, clone1.transform.position.y, clone1.transform.position.z + 1000f);
-                clone1.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone1", this.damage/2, 
-                    this.maxMoveSpeed, this.maxHp/2, this.maxHp/2);
+                clone1.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone1", 
+                    new cProperty("Damage", this.damage.value / 2),
+                    this.maxMoveSpeed,
+                    new cProperty("MaxHp", this.maxHp.value / 2),
+                    new cProperty("CurHp", this.maxHp.value / 2));
                 clone1.GetComponent<cMonster_stage1_slime>().Split();
                 
                 clone2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"),new Vector3(this.transform.position.x + 100f, this.transform.position.y, this.transform.position.z),
                     Quaternion.identity, this.transform);
                 clone2.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
                 clone2.transform.position = new Vector3(clone2.transform.position.x, clone2.transform.position.y, clone2.transform.position.z + 1000f);
-                clone2.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone2", this.damage / 2, 
-                    this.maxMoveSpeed, this.maxHp / 2, this.maxHp / 2);
+                clone2.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone2",
+                    new cProperty("Damage", this.damage.value / 2),
+                    this.maxMoveSpeed,
+                    new cProperty("MaxHp", this.maxHp.value / 2),
+                    new cProperty("CurHp", this.maxHp.value / 2));
                 clone2.GetComponent<cMonster_stage1_slime>().Split();
             }
         }

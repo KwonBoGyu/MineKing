@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class cEnemy_AttckBox : MonoBehaviour
 {
-    private float damage;
+    private cProperty damage;
     
     private void Start()
     {
-        damage = this.transform.GetComponentInParent<cEnemy_monster>().GetDamage();
+        damage.value = this.transform.GetComponentInParent<cEnemy_monster>().GetDamage().value;
     }
     
     private void OnTriggerEnter2D(Collider2D collision)

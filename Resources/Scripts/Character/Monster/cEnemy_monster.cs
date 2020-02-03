@@ -14,8 +14,8 @@ public class cEnemy_monster : cCharacter
     protected int id;
     public int GetId() { return id; }
     //몬스터 광물 보유량
-    protected int rocks;
-    public int GetRocks() { return rocks; }
+    protected cProperty rocks;
+    public cProperty GetRocks() { return rocks; }
     //아이템 랜덤 드랍 확률
     private int per_BossKey = 100;
     // 플레이어 인식 여부, 공격 범위 인식 여부
@@ -31,8 +31,8 @@ public class cEnemy_monster : cCharacter
 
     protected cDungeonNormal_processor dp;
         
-    public virtual void Init(string pNickname, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp,
-        int pId, int pRocks)
+    public virtual void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
+        int pId, cProperty pRocks)
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
 
@@ -43,7 +43,7 @@ public class cEnemy_monster : cCharacter
         isGrounded = false;
         jumpHeight = 200.0f;
         id = pId;
-        rocks = pRocks;
+        rocks.value = pRocks.value;
         isDead = false;
         respawnTime = 5.0f;
         InitPos = this.transform.localPosition;
@@ -157,13 +157,13 @@ public class cEnemy_monster : cCharacter
         }
     }
 
-    public override void ReduceHp(float pVal)
+    public override void ReduceHp(cProperty pVal)
     {
-        curHp -= pVal;
+        curHp.value -= pVal.value;
         
-        if (curHp <= 0)
+        if (curHp.value <= 0)
         {
-            curHp = 0;
+            curHp.value = 0;
             isDead = true;
             this.GetComponent<BoxCollider2D>().enabled = false;
             // 리스폰 타이머 활성화
@@ -173,14 +173,14 @@ public class cEnemy_monster : cCharacter
     }
 
     // 공격자가 있는 경우 공격자가 바라보는 방향을 pDir로 받음
-    public override void ReduceHp(float pVal, Vector3 pDir, float pVelocity = 7.5f)
+    public override void ReduceHp(cProperty pVal, Vector3 pDir, float pVelocity = 7.5f)
     {
-        curHp -= pVal;
+        curHp.value -= pVal.value;
         
         // 체력이 0 이하로 떨어질 시 코루틴 중지, 리스폰 타이머 활성화
-        if (curHp <= 0)
+        if (curHp.value <= 0)
         {
-            curHp = 0;
+            curHp.value = 0;
             isDead = true;
             this.GetComponent<BoxCollider2D>().enabled = false;
             // 리스폰 타이머 활성화
@@ -190,7 +190,7 @@ public class cEnemy_monster : cCharacter
         SetHp();
 
         // 넉백
-        if (curHp > 0)
+        if (curHp.value > 0)
             StartKnockBack(pDir, pVelocity);
     }
 

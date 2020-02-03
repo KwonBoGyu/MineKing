@@ -8,13 +8,13 @@ public class cEnemy_Boss : cCharacter
     private int id;
     public int GetId() { return id; }
     //몬스터 광물 보유량
-    private int rocks;
-    public int GetRocks() { return rocks; }
+    private cProperty rocks;
+    public cProperty GetRocks() { return rocks; }
     //강화 아이템 랜덤 드랍 확률 (현재 100%)
     private int per_Upgrade = 100;
 
-    public void Init(string pNickname, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp,
-        int pId, int pRocks)
+    public void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
+        int pId, cProperty pRocks)
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
 
@@ -24,7 +24,7 @@ public class cEnemy_Boss : cCharacter
         isGrounded = false;
         jumpHeight = 200.0f;
         id = pId;
-        rocks = pRocks;
+        rocks.value = pRocks.value;
     }
 
     protected override void FixedUpdate()
@@ -49,13 +49,13 @@ public class cEnemy_Boss : cCharacter
         }
     }
 
-    public override void ReduceHp(float pVal)
+    public override void ReduceHp(cProperty pVal)
     {
-        curHp -= pVal;
+        curHp.value -= pVal.value;
 
-        if (curHp <= 0)
+        if (curHp.value <= 0)
         {
-            curHp = 0;
+            curHp.value = 0;
 
             if (cUtil._user.GetInventory().isBossKeyExist().Equals(false))
             {

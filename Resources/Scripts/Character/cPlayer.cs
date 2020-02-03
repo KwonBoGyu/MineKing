@@ -11,6 +11,7 @@ public class cPlayer : cCharacter
     public cInventory inven;
     public bool isJumpAttack;
     public int jumpAttackPoint;
+    public int jumpCount;
     private bool isJumpAniDone;
         
     private bool isSpeedUp;
@@ -20,7 +21,7 @@ public class cPlayer : cCharacter
     //이펙트
     private bool landEffectPlayed;
        
-    public override void Init(string pNickName, float pDamage, float pMoveSpeed, float pMaxHp, float pCurHp)
+    public override void Init(string pNickName, cProperty pDamage, float pMoveSpeed, cProperty pMaxHp, cProperty pCurHp)
     {
         base.Init(pNickName, pDamage, pMoveSpeed, pMaxHp, pCurHp);
 
@@ -124,6 +125,9 @@ public class cPlayer : cCharacter
         {
             changingGravity = defaultGravity;
         }
+
+        if (isGrounded || GetIsClimbing())
+            jumpCount = 0;
     }
        
     public void ChargeStart()
@@ -175,11 +179,14 @@ public class cPlayer : cCharacter
         else if (pDir == 2)
             attackBox.transform.localPosition = attackBoxPos[2];
 
-        if(tileMng.CheckAttackedTile(attackBox.transform.position, damage).Equals(true))
+        float t_tileHp = 0;
+
+        if(tileMng.CheckAttackedTile(attackBox.transform.position, damage, out t_tileHp).Equals(true))
         {
             effects[1].transform.position = attackBox.transform.position;
             effects[1].transform.localScale = new Vector3(originObj.transform.localScale.x,
                 effects[1].transform.localScale.y, effects[1].transform.localScale.z);
+
             effects[1].Play();
             sm.playAxeEffect();
         }
@@ -192,15 +199,7 @@ public class cPlayer : cCharacter
         isJumpAttack = false;
         _animator.SetBool("ChargeDone", false);
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-    }
-
+    
     public void UseItem(ITEM rItem)
     {
         Debug.Log(rItem);

@@ -5,33 +5,33 @@ using UnityEngine;
 public struct enemyInitStruct
 {
     public string nickName;
-    public int damage;
+    public cProperty damage;
     public float maxMoveSpeed;
-    public float maxHp;
-    public float curHp;
+    public cProperty maxHp;
+    public cProperty curHp;
     public int id;
-    public int rocks;
+    public cProperty rocks;
 
-    public enemyInitStruct(string pNickName, int pDmg, float pMaxMoveSpeed, float pMaxHp, float pCurHp, int pId, int pRocks)
+    public enemyInitStruct(string pNickName, cProperty pDmg, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp, int pId, cProperty pRocks)
     {
         nickName = pNickName;
-        damage = pDmg;
+        damage = new cProperty("Damage", pDmg.value);
         maxMoveSpeed = pMaxMoveSpeed;
-        maxHp = pMaxHp;
-        curHp = pCurHp;
+        maxHp = new cProperty("MaxHp", pMaxHp.value);
+        curHp = new cProperty("CurHp", pCurHp.value);
         id = pId;
-        rocks = pRocks;
+        rocks = new cProperty("Rocks", pRocks.value);
     }
 
-    public void Init(string pNickName, int pDmg, float pMaxMoveSpeed, float pMaxHp, float pCurHp, int pId, int pRocks)
+    public void Init(string pNickName, cProperty pDmg, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp, int pId, cProperty pRocks)
     {
         nickName = pNickName;
-        damage = pDmg;
+        damage = new cProperty("Damage", pDmg.value);
         maxMoveSpeed = pMaxMoveSpeed;
-        maxHp = pMaxHp;
-        curHp = pCurHp;
+        maxHp = new cProperty("MaxHp", pMaxHp.value);
+        curHp = new cProperty("CurHp", pCurHp.value);
         id = pId;
-        rocks = pRocks;
+        rocks = new cProperty("Rocks", pRocks.value);
     }
 }
 
@@ -40,19 +40,31 @@ public static class cEnemyTable
     public static enemyInitStruct SetMonsterInfo(int pMonsterId)
     {
         enemyInitStruct es = new enemyInitStruct();
-
+        int pRocks = 0;
         switch (pMonsterId)
         {
             //주석에 이름 필수 작성
             case 0:
-                int pRocks = Random.Range((int)0, (int)4);
-                es.Init("똘똘이", 1, 160, 100, 100, 0, pRocks);
+                pRocks = Random.Range((int)0, (int)4);
+                es.Init("똘똘이", 
+                    new cProperty("Damage", 1), 
+                    160,
+                    new cProperty("MaxHp", 10),
+                    new cProperty("CurHp", 10), 
+                    0,
+                    new cProperty("Rocks", pRocks));
                 return es;
 
             // 슬라임
             case 1:
-                pRocks = Random.RandomRange((int)0, (int)4);
-                es.Init("슬라임", 1, 160, 100, 100, 1, pRocks);
+                pRocks = Random.Range((int)0, (int)4);
+                es.Init("슬라임",
+                    new cProperty("Damage", 1),
+                    160,
+                    new cProperty("MaxHp", 10),
+                    new cProperty("CurHp", 10),
+                    0,
+                    new cProperty("Rocks", pRocks));
                 return es;
         }
         

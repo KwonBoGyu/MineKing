@@ -35,14 +35,14 @@ public class cPlayerInfo
 
         nickName = pNickName;
 
-        inventory.GetMoney().SetValue(pMoney.GetValue());
-        inventory.GetRock().SetValue(pRock.GetValue());
-        inventory.GetDia().SetValue(pDia.GetValue());
+        inventory.GetMoney().value = pMoney.value;
+        inventory.GetRock().value = pRock.value;
+        inventory.GetDia().value = pDia.value;
 
-        for (byte i = 0; i < pJewerly.Length; i++)        
-            inventory.GetJewerly()[i].SetValue(pJewerly[i].GetValue());     
+        for (byte i = 0; i < pJewerly.Length; i++)
+            inventory.GetJewerly()[i].value = pJewerly[i].value;
         for (byte i = 0; i < pSoul.Length; i++)
-            inventory.GetSoul()[i].SetValue(pSoul[i].GetValue());
+            inventory.GetSoul()[i].value = pSoul[i].value;
 
         if (pItem_equip != null)
         {
@@ -75,13 +75,14 @@ public class cPlayerInfo
 
         this.nickName = pPi.nickName;
 
-        inventory.GetMoney().SetValue(pPi.money.GetValue());
-        inventory.GetRock().SetValue(pPi.rock.GetValue());
-        inventory.GetDia().SetValue(pPi.dia.GetValue());
+        inventory.GetMoney().value = pPi.money.value;
+        inventory.GetRock().value = pPi.rock.value;
+        inventory.GetDia().value = pPi.dia.value;
+
         for (byte i = 0; i < pPi.jewerly.Length; i++)
-            inventory.GetJewerly()[i].SetValue(pPi.jewerly[i].GetValue());
+            inventory.GetJewerly()[i].value = pPi.jewerly[i].value;
         for (byte i = 0; i < pPi.soul.Length; i++)
-            inventory.GetSoul()[i].SetValue(pPi.soul[i].GetValue());
+            inventory.GetSoul()[i].value = pPi.soul[i].value;
 
         if (pPi.item_equip != null)
         {
@@ -116,13 +117,13 @@ public class cPlayerInfo
         for (byte i = 0; i < soul.Length; i++)
             soul[i] = new cSoul();
 
-        money.SetValue(inventory.GetMoney().GetValue());
-        rock.SetValue(inventory.GetRock().GetValue());
-        dia.SetValue(inventory.GetDia().GetValue());
-        for(byte i = 0; i < jewerly.Length; i++)
-            jewerly[i].SetValue(inventory.GetJewerly()[i].GetValue());
+        money.value = inventory.GetMoney().value;
+        rock.value = inventory.GetRock().value;
+        dia.value = inventory.GetDia().value;
+        for (byte i = 0; i < jewerly.Length; i++)
+            jewerly[i].value = inventory.GetJewerly()[i].value;
         for (byte i = 0; i < soul.Length; i++)
-            soul[i].SetValue(inventory.GetSoul()[i].GetValue());
+            soul[i].value = inventory.GetSoul()[i].value;
 
         item_equip = new cItem_equip[inventory.GetItemEquip().Count];
         for (byte i = 0; i < inventory.GetItemEquip().Count; i++)

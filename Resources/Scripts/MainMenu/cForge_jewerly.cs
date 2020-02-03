@@ -45,7 +45,7 @@ public class cForge_jewerly : MonoBehaviour
     private void ExtractRock()
     {
         //광석이 부족하다면 리턴
-        if(cUtil._user._playerInfo.inventory.GetRock().isZero().Equals(true))
+        if(cUtil._user._playerInfo.inventory.GetRock().value.Equals(0))
         {
             Debug.Log("광석이 부족합니다.");
             return;

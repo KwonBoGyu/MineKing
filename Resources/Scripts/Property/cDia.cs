@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class cDia : cProperty
 {
-    public cDia(string pName, short[] pValue)
+    public cDia(string pName, long pValue)
         :base(pName, pValue)
     {
     }

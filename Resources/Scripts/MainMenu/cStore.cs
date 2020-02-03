@@ -24,11 +24,11 @@ public class cStore : cBuilding
     //보석 value 오브젝트들
     public GameObject[] obj_jewerly;
 
-    private short curFrameIdx;
+    public short curFrameIdx;
     
     private void Start()
     {
-        curFrameIdx = 0;
+        curFrameIdx = -1;
         b_click.onClick.AddListener(() => ActiveFrame());
         
         jewerlyList = new StoreJewerlyList[5];
@@ -42,9 +42,9 @@ public class cStore : cBuilding
             }
 
             //평균값 초기화
-            jewerlyList[i].jewerlyValue[0].AddValue(i, 100);
+            jewerlyList[i].jewerlyValue[0].value += i * 1000 + 100;
             //현재값 초기화
-            jewerlyList[i].jewerlyValue[1].AddValue(i, 90);
+            jewerlyList[i].jewerlyValue[1].value +=i * 1000 + 100;
 
             int n = i;
             b_sell[i].onClick.AddListener(() => SellJewerly(n));
@@ -63,20 +63,11 @@ public class cStore : cBuilding
         //추가할 골드
         cGold tGold = new cGold();
         //추가 완료했냐
-        bool isDone = true;
+        long amount = cUtil._user._playerInfo.inventory.GetJewerly()[pChar].value;
 
-        //모두 팔 때까지 돌린다
-        while (true)
-        {
-            isDone = cUtil._user._playerInfo.inventory.GetJewerly()[pChar].RemoveValue(0, 1);
-            if (isDone.Equals(false))
-                break;
+        cUtil._user._playerInfo.inventory.GetJewerly()[pChar].value -= amount;
+        cUtil._user._playerInfo.inventory.GetMoney().value += jewerlyList[pChar].jewerlyValue[1].value * amount;
 
-            tGold.AddValue(jewerlyList[pChar].jewerlyValue[1]);
-        }
-
-        //유저 정보 업데이트
-        cUtil._user._playerInfo.inventory.GetMoney().AddValue(tGold);
         UpdateSellButton();
         UpdateMyValue();
     }
@@ -115,32 +106,44 @@ public class cStore : cBuilding
             //현재값
             obj_jewerly[i].transform.GetChild(3).GetComponent<Text>().text = jewerlyList[i].jewerlyValue[1].GetValueToString();
             //변동값
-            jewerlyList[i].jewerlyValue[2].SetValue(jewerlyList[i].jewerlyValue[1].GetValue());
-            bool isMinus = jewerlyList[i].jewerlyValue[2].RemoveValue(jewerlyList[i].jewerlyValue[0], true);
-            //변동값이 마이너스일 때
-            if (isMinus.Equals(true))
+            jewerlyList[i].jewerlyValue[2].value = jewerlyList[i].jewerlyValue[1].value - jewerlyList[i].jewerlyValue[0].value;
+            Debug.Log(jewerlyList[i].jewerlyValue[2].value);
+            //변동값이 플러스일 때
+            if (jewerlyList[i].jewerlyValue[2].value > 0)
             {
                 obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().text = "+";
                 obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().color = new Color((float)(150.0f / 255.0f), 1, 0);
             }
-            //변동값이 플러스일 때
-            else
+            //변동값이 마이너스일 때
+            else if(jewerlyList[i].jewerlyValue[2].value < 0)
             {
-                obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().text = "-";
+                obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().text = "";
                 obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().color = new Color(1, 0, 0);
             }            
+            else
+            {
+                obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().text = "";
+                obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().color = new Color(0.3f, 0.3f, 0.3f);
+            }
+
             obj_jewerly[i].transform.GetChild(4).GetComponent<Text>().text +=
                  jewerlyList[i].jewerlyValue[2].GetValueToString();
 
             //보유량
             obj_jewerly[i].transform.GetChild(5).GetComponent<Text>().text =
                 cUtil._user._playerInfo.inventory.GetJewerly()[i].GetValueToString();
-            Debug.Log("Store UpdateVaule complete");
         }
     }
 
     private void ActiveFrame()
     {
+        if (curFrameIdx.Equals(0))
+        {
+            Debug.Log("같은 프레임입니다.");
+            return;
+        }
+
+        curFrameIdx = 0;
         obj_content.SetActive(true);
 
         UpdateValue();

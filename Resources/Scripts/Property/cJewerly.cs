@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class cJewerly : cProperty
 {
-    public cJewerly(string pName, short[] pValue)
+    public cJewerly(string pName, long pValue)
         : base(pName, pValue)
     {
     }

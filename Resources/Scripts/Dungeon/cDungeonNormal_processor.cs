@@ -98,9 +98,17 @@ public class cDungeonNormal_processor : MonoBehaviour
         //_p.Init(cUtil._user.GetPlayerName(), cUtil._user.GetDamage(), 
         //    cUtil._user.GetMoveSpeed(), cUtil._user.GetHp());
         
-        _p.Init("asdf", 40, 250, 100, 100);
+        _p.Init("asdf", 
+            new cProperty("Damage", 2), 
+            250,
+            new cProperty("MaxHp", 100),
+            new cProperty("CurHp", 100));
         cUtil._player = _p;
-        _e.Init("Slime", 1, 250, 100, 100);
+        _e.Init("Slime",
+            new cProperty("Damage", 1),
+            250,
+            new cProperty("MaxHp", 10),
+            new cProperty("CurHp", 10));
         _player.SetActive(true);        
     }   
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class cWeapon : MonoBehaviour
 {
-    public float damage;
+    public cProperty damage;
     public cPlayer scr_player;
 
     private void OnTriggerEnter2D(Collider2D collision)

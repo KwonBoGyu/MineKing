@@ -31,14 +31,14 @@ public enum CHARDIRECTION
 public class cCharacter : MonoBehaviour
 {
     protected string nickName;
-    protected float damage;
+    protected cProperty damage;
     protected float maxMoveSpeed;
     protected float dashMoveSpeed;
     protected const float dashTime = 0.5f;
     protected const float jumpTime = 0.5f;
     protected float curMoveSpeed;
-    protected float maxHp;
-    protected float curHp;
+    protected cProperty maxHp;
+    protected cProperty curHp;
     protected float jumpHeight;
     protected bool isDoubleJump;
     protected float maxDashCoolDown; // 실제 대쉬 쿨다운
@@ -83,7 +83,7 @@ public class cCharacter : MonoBehaviour
     //사운드
     public cSoundMng sm;
 
-    public virtual void Init(string pNickName, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp)
+    public virtual void Init(string pNickName, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp)
     {
         nickName = pNickName;
         damage = pDamage;
@@ -102,15 +102,15 @@ public class cCharacter : MonoBehaviour
         isJetPackOn = false;
     }
     
-    public float GetMaxHp() { return maxHp; }
-    public float GetCurHP() { return curHp; }
-    public void IncreaseHP(float pAmount)
+    public cProperty GetMaxHp() { return maxHp; }
+    public cProperty GetCurHP() { return curHp; }
+    public void IncreaseHP(cProperty pAmount)
     {
-        if(curHp <= maxHp)
-            curHp += pAmount;
+        if(curHp.value <= maxHp.value)
+            curHp.value += pAmount.value;
 
-        if (curHp > maxHp)
-            curHp = maxHp;
+        if (curHp.value > maxHp.value)
+            curHp.value = maxHp.value;
 
         SetHp();
     }
@@ -124,19 +124,7 @@ public class cCharacter : MonoBehaviour
             tileMng.CheckCanGroundTile(this);
     }
 
-    public void DecreaseHP(float pAmount)
-    {
-        if (curHp <= 0)
-            return;
-        curHp -= pAmount;
-
-        if (curHp < 0)
-            curHp = 0;
-
-        SetHp();
-    }
-
-    public float GetDamage() { return damage; }
+    public cProperty GetDamage() { return damage; }
 
     public float GetDashCoolDown() { return dashCoolDown; }
     public float GetMaxDashCoolDown() { return maxDashCoolDown; }
@@ -311,46 +299,46 @@ public class cCharacter : MonoBehaviour
             changingGravity = defaultGravity;
     }
 
-    public virtual void ReduceHp(float pVal)
+    public virtual void ReduceHp(cProperty pVal)
     {
-        curHp -= pVal;
+        curHp.value -= pVal.value;
 
-        if (curHp < 0)
-            curHp = 0;
+        if (curHp.value < 0)
+            curHp.value = 0;
 
         SetHp();
     }
 
-    public virtual void ReduceHp(float pVal, Vector3 pDir, float pVelocity = 7.5f)
+    public virtual void ReduceHp(cProperty pVal, Vector3 pDir, float pVelocity = 7.5f)
     {
-        curHp -= pVal;
+        curHp.value -= pVal.value;
 
-        if (curHp < 0)
-            curHp = 0;
+        if (curHp.value < 0)
+            curHp.value = 0;
 
         SetHp();
 
-        if (curHp > 0)
+        if (curHp.value > 0)
             StartKnockBack(pDir, pVelocity);
 
         if (this.tag.Equals("Player"))
             _animator.SetTrigger("getHit");
     }
 
-    public void RestoreHp(float pVal, bool toFool)
+    public void RestoreHp(cProperty pVal, bool toFool)
     {
         if (toFool)
-            curHp = maxHp;
+            curHp.value = maxHp.value;
         else
-            curHp += pVal;
+            curHp.value += pVal.value;
 
-        if (curHp > maxHp)
-            curHp = maxHp;
+        if (curHp.value > maxHp.value)
+            curHp.value = maxHp.value;
     }
 
     protected void SetHp()
     {
-        img_curHp.fillAmount = curHp / maxHp;
+        img_curHp.fillAmount = (float)curHp.value / (float)maxHp.value;
     }
 
     protected void StartKnockBack(Vector3 pDir, float pVelocity = 7.5f)

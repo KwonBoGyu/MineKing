@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class cSoul : cProperty
 {
-    public cSoul(string pName, short[] pValue)
+    public cSoul(string pName, long pValue)
         :base(pName, pValue)
     {
     }

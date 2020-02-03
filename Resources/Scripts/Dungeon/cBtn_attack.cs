@@ -8,6 +8,8 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public cPlayer scr_player;
     public Image img_gageBar;
+    public Text t_gagePercent;
+    public ParticleSystem p_gageEffect;
     private float minChargePoint;
     private float maxChargePoint;
     private float chargeStartTimer;
@@ -25,8 +27,8 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         comboPoint = 0;
         chargeTimer = 0;
         cor_keepPointerDown = KeepPointerDown();
-        minChargePoint = 0.61f;
-        maxChargePoint = 0.88f;
+        minChargePoint = 0;
+        maxChargePoint = 2.0f;
         img_gageBar.fillAmount = minChargePoint;
         img_gageBar.transform.parent.gameObject.SetActive(false);
         minSwipeDist = 70;
@@ -65,7 +67,7 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             scr_player.ChargeFail();
         }
         //일반 연속 공격
-        else if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && chargeTimer < 0.20f)
+        else if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && isChargingOn.Equals(false))
         {
             //점프 공격
             if (scr_player.isGrounded.Equals(false))
@@ -95,6 +97,8 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         chargeTimer = 0;
         chargeStartTimer = 0;
         img_gageBar.fillAmount = minChargePoint;
+        p_gageEffect.transform.position = new Vector3(
+    img_gageBar.transform.position.x, p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
         img_gageBar.transform.parent.gameObject.SetActive(false);
 
         
@@ -111,7 +115,7 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 Debug.Log("CHARGING START");
                 chargeStartTimer += Time.deltaTime;
 
-                if (chargeStartTimer > 0.2f)
+                if (chargeStartTimer > 0.5f)
                 {
                     isChargingOn = true;
                     img_gageBar.transform.parent.gameObject.SetActive(true);
@@ -124,7 +128,11 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 chargeTimer += Time.deltaTime;
                 Debug.Log("CHARGING");
                 //범위 0.2
-                img_gageBar.fillAmount = minChargePoint + (maxChargePoint - minChargePoint) * chargeTimer;
+                img_gageBar.fillAmount = chargeTimer / maxChargePoint;
+                t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
+                p_gageEffect.transform.position = new Vector3(
+                    img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().sizeDelta.x /2 * img_gageBar.fillAmount,
+                    p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
             }
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class cRock : cProperty
 {
-    public cRock(string pName, short[] pValue)
+    public cRock(string pName, long pValue)
         : base(pName, pValue)
     {
     }

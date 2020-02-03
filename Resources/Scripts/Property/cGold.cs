@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class cGold : cProperty
 {
-    public cGold(string pName, short[] pValue)
+    public cGold(string pName, long pValue)
         : base(pName, pValue)
     {
     }

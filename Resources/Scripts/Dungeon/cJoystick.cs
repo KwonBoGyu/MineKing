@@ -8,10 +8,6 @@ public class cJoystick : MonoBehaviour
 {
     public Transform _player;
     public Transform joystick;
-    public Button b_attack;
-    public Button b_item;
-    public Button b_jump;
-    public Button b_dash;
 
     private cPlayer scr_player;
     private Vector3 defaultPos;
@@ -35,9 +31,6 @@ public class cJoystick : MonoBehaviour
         defaultPos = this.transform.position;
         isDrag = false;
         scr_player = _player.transform.GetChild(0).GetComponent<cPlayer>();
-        b_jump.onClick.AddListener(() => Jump());
-        b_dash.onClick.AddListener(() => Dash());
-        b_item.onClick.AddListener(() => Item());
         scr_player.SetDir(Vector2.right);
         scr_player.SetCurMoveSpeed(0);
         jumpCount = 0;
@@ -137,7 +130,7 @@ public class cJoystick : MonoBehaviour
     public void PointerDown(BaseEventData _data)
     {
         PointerEventData d = _data as PointerEventData;
-        dragPos = d.position;
+        dragPos = d.pointerCurrentRaycast.worldPosition;
         isDrag = true;
 
         //방향
@@ -173,7 +166,7 @@ public class cJoystick : MonoBehaviour
     public void Drag(BaseEventData _data)
     {
         PointerEventData d = _data as PointerEventData;
-        dragPos = d.position;
+        dragPos = d.pointerCurrentRaycast.worldPosition;
         isDrag = true;
 
         //방향
@@ -192,7 +185,7 @@ public class cJoystick : MonoBehaviour
     public void DragEnd()
     {
         joystick.localPosition = Vector3.zero;
-        this.transform.position = defaultPos;
+        //this.transform.position = defaultPos;
         joyDir = Vector3.zero;
         isDrag = false;
 
@@ -203,7 +196,7 @@ public class cJoystick : MonoBehaviour
 
     public void PointerUp(BaseEventData _data)
     {
-        this.transform.position = defaultPos;
+        //this.transform.position = defaultPos;
         joystick.localPosition = Vector3.zero;
         joyDir = Vector3.zero;
         isDrag = false;
@@ -241,16 +234,7 @@ public class cJoystick : MonoBehaviour
             }
         }
     }
-
-    private void Item()
-    {
-        //scr_player.SetRope();
-        //scr_player.SetSandBag();
-        //scr_player.SetBomb();
-        //scr_player.UseSpeedPotion();
-        //scr_player.UseHpPotion();
-    }
-
+        
     private void Attack()
     {
         if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
