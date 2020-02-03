@@ -9,7 +9,8 @@ public static class cUtil
     public static cUser _user;
     public static cTileMng _tileMng;
     public static cPlayer _player;
-    
+    public static cTitleSingleton _titleSingleton;
+
     public const float pi = 3.141592f;
 
     public static void SetInstanceInit(GameObject pObj, string pName = null, GameObject pParent = null, 
