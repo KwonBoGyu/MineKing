@@ -34,7 +34,7 @@ public class cCharacter : MonoBehaviour
     protected cProperty damage;
     protected float maxMoveSpeed;
     protected float dashMoveSpeed;
-    protected const float dashTime = 0.5f;
+    protected const float dashTime = 0.7f;
     protected const float jumpTime = 0.5f;
     protected float curMoveSpeed;
     protected cProperty maxHp;
@@ -88,7 +88,7 @@ public class cCharacter : MonoBehaviour
         nickName = pNickName;
         damage = pDamage;
         maxMoveSpeed = pMaxMoveSpeed;
-        dashMoveSpeed = maxMoveSpeed + 300;
+        dashMoveSpeed = maxMoveSpeed + 400;
         curMoveSpeed = 0;
         maxHp = pMaxHp;
         curHp = pCurHp;

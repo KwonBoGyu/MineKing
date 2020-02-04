@@ -4,27 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 
-public enum TILEDIRECTION
-{
-    NONE,
-    UP_PLUS,
-    UPRIGHT,
-    RIGHT_PLUS,
-    RIGHTDOWN,
-    DOWN_PLUS,
-    DOWNLEFT,
-    LEFT_PLUS,
-    LEFTUP,
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT,
-    HORIZONTAL,
-    VERTICAL,
-    SOLO,
-    BLOCKED
-}
-
 public class cTileMng : MonoBehaviour
 {
     public struct Tile
@@ -34,16 +13,14 @@ public class cTileMng : MonoBehaviour
         public cProperty level { get; set; }
         public cProperty maxHp { get; set; }
         public cProperty curHp { get; set; }
-        public TILEDIRECTION dir { get; set; }
 
-        public Tile(Vector3Int pLocation, TileBase pTileBase, cProperty pLevel, cProperty pMaxHp, cProperty pCurHp, TILEDIRECTION pDir)
+        public Tile(Vector3Int pLocation, TileBase pTileBase, cProperty pLevel, cProperty pMaxHp, cProperty pCurHp)
         {
             location = pLocation;
             tileBase = pTileBase;
             level = new cProperty(pLevel);
             maxHp = new cProperty(pMaxHp);
             curHp = new cProperty(pCurHp);
-            dir = pDir;
         }
     }
 
@@ -56,9 +33,7 @@ public class cTileMng : MonoBehaviour
     Vector3Int[] cellPos;
 
     Tile? tempTile;
-    private TileBase[] canHitTile_100;
-    private TileBase[] canHitTile_60;
-    private TileBase[] canHitTile_30;
+    public ParticleSystem effect_destroy;
         
     private void Start()
     {
@@ -369,55 +344,11 @@ public class cTileMng : MonoBehaviour
                 tileMap_canHit.GetTile(localPlace), 
                 new cProperty("Level", 1),
                 new cProperty("MaxHp", 10),
-                new cProperty("CurHp", 10), 
-                (TILEDIRECTION)0);
+                new cProperty("CurHp", 10));
 
             dic_canHit.Add(tileMap_canHit.CellToWorld(localPlace), tile);
         }
-
-
-        Tile tempTileToUse;
-        foreach (Vector3Int pos in tileMap_canHit.cellBounds.allPositionsWithin)
-        {
-            Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
-            Vector3 worldPos = tileMap_canHit.CellToWorld(localPlace);
-
-            if (!tileMap_canHit.HasTile(localPlace))
-                continue;
-            if (localPlace.x < 0)
-                continue;
-
-            if (dic_canHit.ContainsKey(worldPos).Equals(true))
-            {
-                tempTileToUse = dic_canHit[worldPos];
-                tempTileToUse.dir = GetTileDirection(worldPos);
-                dic_canHit[worldPos] = tempTileToUse;
-            }
-        }
-
-        foreach (Vector3Int pos in tileMap_canHit.cellBounds.allPositionsWithin)
-        {
-            Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
-            Vector3 worldPos = tileMap_canHit.CellToWorld(localPlace);
-
-            if (!tileMap_canHit.HasTile(localPlace))
-                continue;
-            if (localPlace.x < 0)
-                continue;
-        }
-
-        //18, -1, 0
-        canHitTile_100 = new TileBase[15];
-        canHitTile_60 = new TileBase[15];
-        canHitTile_30 = new TileBase[15];
-        for (byte i = 0; i < 15; i++)
-        {
-            canHitTile_100[i] = tileMap_canHit.GetTile(new Vector3Int(-18 + i, -1, 0));
-            canHitTile_60[i] = tileMap_canHit.GetTile(new Vector3Int(-18 + i, -2, 0));
-            canHitTile_30[i] = tileMap_canHit.GetTile(new Vector3Int(-18 + i, -3, 0));
-        }
-        
-
+               
         cUtil._tileMng = this;
     }
 
@@ -437,13 +368,15 @@ public class cTileMng : MonoBehaviour
         tempTileToUse.curHp.value -= pDamage.value;
         dic_canHit[cellToWorldPos] = tempTileToUse;
         pCurHpPercent = (float)tempTileToUse.curHp.value / (float)dic_canHit[cellToWorldPos].maxHp.value;
-
-
+        
         if (tempTileToUse.curHp.value == 0)
         {
             isChecked = true;
             pCurHpPercent = 0;
             tileMap_canHit.SetTile(worldToCellPos, null);
+            effect_destroy.gameObject.transform.position = new Vector3(cellToWorldPos.x + tileSize / 2,
+                cellToWorldPos.y + tileSize / 2, cellToWorldPos.z) ;
+            effect_destroy.Play();
         }
         else if (tempTileToUse.curHp.value <= 0)
         {
@@ -451,127 +384,14 @@ public class cTileMng : MonoBehaviour
             pCurHpPercent = 0;
             isChecked = true;
             tileMap_canHit.SetTile(worldToCellPos, null);
+            effect_destroy.gameObject.transform.position = new Vector3(cellToWorldPos.x + tileSize / 2,
+                cellToWorldPos.y + tileSize / 2, cellToWorldPos.z);
+            effect_destroy.Play();
         }
         else
             isChecked = true;
 
         return isChecked;
-    }
-
-    //private void UpdateTile(Vector3 pCurPos)
-    //{
-    //    Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
-    //    Vector3 cellToWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
-    //    Tile tempTileToUse;
-
-    //    tempTileToUse = dic_canHit[cellToWorldPos];
-    //    tempTileToUse.dir = GetTileDirection(cellToWorldPos);
-        
-    //    if(tempTileToUse.hp > 0)
-    //    {
-    //        if (tempTileToUse.hp <= 3)
-    //        {
-    //            tileMap_canHit.SetTile(worldToCellPos, canHitTile_30[(int)tempTileToUse.dir - 1]);
-    //        }
-    //        else if (tempTileToUse.hp <= 6)
-    //        {
-    //            tileMap_canHit.SetTile(worldToCellPos, canHitTile_60[(int)tempTileToUse.dir - 1]);
-    //        }
-    //        else if (tempTileToUse.hp <= 10)
-    //        {
-    //            tileMap_canHit.SetTile(worldToCellPos, canHitTile_100[(int)tempTileToUse.dir - 1]);
-    //        }
-    //    }
-        
-    //    dic_canHit[cellToWorldPos] = tempTileToUse;
-    //}
-
-    private TILEDIRECTION GetTileDirection(Vector3 pCurPos)
-    {
-        TILEDIRECTION r_tileDir = TILEDIRECTION.NONE;
-
-        if(isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(false))        
-            r_tileDir = TILEDIRECTION.UP_PLUS;
-        else if (isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.UPRIGHT;
-        else if (isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.RIGHT_PLUS;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.RIGHTDOWN;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(false))
-            r_tileDir = TILEDIRECTION.DOWN_PLUS;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(false))
-            r_tileDir = TILEDIRECTION.DOWNLEFT;
-        else if (isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(false))
-            r_tileDir = TILEDIRECTION.LEFT_PLUS;
-        else if (isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(false))
-            r_tileDir = TILEDIRECTION.LEFTUP;
-        else if (isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.UP;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.RIGHT;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.DOWN;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(false))
-            r_tileDir = TILEDIRECTION.LEFT;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(false))
-            r_tileDir = TILEDIRECTION.HORIZONTAL;
-        else if (isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.VERTICAL;
-        else if (isTileExist(0, pCurPos).Equals(false) &&
-            isTileExist(1, pCurPos).Equals(false) &&
-            isTileExist(2, pCurPos).Equals(false) &&
-            isTileExist(3, pCurPos).Equals(false))
-            r_tileDir = TILEDIRECTION.SOLO;
-        else if (isTileExist(0, pCurPos).Equals(true) &&
-            isTileExist(1, pCurPos).Equals(true) &&
-            isTileExist(2, pCurPos).Equals(true) &&
-            isTileExist(3, pCurPos).Equals(true))
-            r_tileDir = TILEDIRECTION.BLOCKED;
-
-        return r_tileDir;
     }
 
     private bool isTileExist(int pDir, Vector3 pCurPos)

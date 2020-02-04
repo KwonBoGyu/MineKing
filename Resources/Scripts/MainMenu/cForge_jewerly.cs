@@ -27,22 +27,22 @@ public class cForge_jewerly : MonoBehaviour
     //★★★★★확률 계산★★★★★
     private void CalculatePercent()
     {
-        byte maxIdx = cUtil._user.GetInventory().GetRock().GetMaxIdx();
-        short[] rocks = cUtil._user.GetInventory().GetRock().GetValue();
+        //byte maxIdx = cUtil._user.GetInventory().GetRock().GetMaxIdx();
+        //short[] rocks = cUtil._user.GetInventory().GetRock().GetValue();
         
-        // 보석 종류별
-        for (byte i = 0; i < 5; i++)
-        {
-            float percent = 0;
-            // 광석별 순회
-            for(byte j = 0; j < maxIdx; j++)
-            {
-                percent += percentTable[i] * rocks[j];
-            }
-            jewerlyPercent[i] = percent;
-            //소수점 1자리까지만
-            t_percent[i].text = string.Format("{0:F1}", jewerlyPercent[i]) + "%";
-        }
+        //// 보석 종류별
+        //for (byte i = 0; i < 5; i++)
+        //{
+        //    float percent = 0;
+        //    // 광석별 순회
+        //    for(byte j = 0; j < maxIdx; j++)
+        //    {
+        //        percent += percentTable[i] * rocks[j];
+        //    }
+        //    jewerlyPercent[i] = percent;
+        //    //소수점 1자리까지만
+        //    t_percent[i].text = string.Format("{0:F1}", jewerlyPercent[i]) + "%";
+        //}
     }
 
     //Value들 업데이트

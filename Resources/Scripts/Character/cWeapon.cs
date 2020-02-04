@@ -11,7 +11,7 @@ public class cWeapon : MonoBehaviour
     {
         if(collision.tag.Equals("Tilemap_rock"))
         {
-            Destroy(collision.gameObject);
+            Debug.Log(collision.gameObject.name);
         }
 
         if (collision.tag.Equals("Enemy"))

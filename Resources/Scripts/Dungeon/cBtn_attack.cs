@@ -15,7 +15,6 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private float chargeStartTimer;
     private bool isChargingOn;
 
-    private float minSwipeDist;
     private Vector2 prevTouchPos;
 
     private int comboPoint;
@@ -31,7 +30,6 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         maxChargePoint = 2.0f;
         img_gageBar.fillAmount = minChargePoint;
         img_gageBar.transform.parent.gameObject.SetActive(false);
-        minSwipeDist = 70;
     }
 
     public void OnPointerDown(PointerEventData eventData)

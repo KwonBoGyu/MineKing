@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class cPlayer : cCharacter
 {
     public cWeapon weapon;
+    public cFloatingText ft;
     public bool isDash;
     public cInventory inven;
     public bool isJumpAttack;
@@ -39,7 +40,7 @@ public class cPlayer : cCharacter
         speedUpAmount = 0.0f;
         jumpHeight = 200.0f;
         attackBoxPos[0] = new Vector3(18, 225, -1.1f); 
-        attackBoxPos[1] = new Vector3(78, 2.08f, -1.1f); 
+        attackBoxPos[1] = new Vector3(180, 2.08f, -1.1f); 
         attackBoxPos[2] = new Vector3(22, -128, -1.1f);
         attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
@@ -183,11 +184,22 @@ public class cPlayer : cCharacter
 
         if(tileMng.CheckAttackedTile(attackBox.transform.position, damage, out t_tileHp).Equals(true))
         {
-            effects[1].transform.position = attackBox.transform.position;
-            effects[1].transform.localScale = new Vector3(originObj.transform.localScale.x,
-                effects[1].transform.localScale.y, effects[1].transform.localScale.z);
+            byte i = 1;
 
-            effects[1].Play();
+            if (t_tileHp < 0.3f)
+                i = 3;
+            else if (t_tileHp < 0.7f)
+                i = 2;
+            else
+                i = 1;
+
+            effects[i].transform.position = attackBox.transform.position;
+            effects[i].transform.localScale = new Vector3(originObj.transform.localScale.x,
+                effects[i].transform.localScale.y, effects[i].transform.localScale.z);
+            effects[i].Play();
+                        
+            ft.DamageTextOn(damage.GetValueToString(), attackBox.transform.position);
+
             sm.playAxeEffect();
         }
         
