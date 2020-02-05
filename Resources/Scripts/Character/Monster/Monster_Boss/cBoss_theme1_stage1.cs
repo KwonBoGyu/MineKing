@@ -65,70 +65,7 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         {
             // 근접 공격 및 이동 패턴
             case 0:
-                if (curPatternCount > curPattern.patternCount)
-                {
-                    //Debug.Log("change Pattern");
-                    ChangePattern();
-                }
-                //Debug.Log("pattern1");
-                
-                if (timer >= curCoolTime)
-                {
-                    curPatternCount += 1;
-                }
-                else
-                {
-                    timer += Time.deltaTime;
-                    if (isInNoticeRange)
-                    {
-                        if (isInAttackRange)
-                        {
-                            time += Time.deltaTime;
-                            //쿨타임이 다 찼을 때 히트박스 활성화
-                            if (time >= attackDelay)
-                            {
-                                time = 0;
-                                if (dir == Vector3.right)
-                                {
-                                    attackBox.transform.localPosition = attackBoxPos[0];
-                                    attackBox.gameObject.SetActive(true);
-                                }
-                                else if (dir == Vector3.left)
-                                {
-                                    attackBox.transform.localPosition = attackBoxPos[2];
-                                    attackBox.gameObject.SetActive(true);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
-
-                        if (isRightBlocked == true)
-                        {
-                            isRightBlocked = false;
-                            dir = Vector3.left;
-                        }
-                        else if (isLeftBlocked == true)
-                        {
-                            isLeftBlocked = false;
-                            dir = Vector3.right;
-                        }
-                        else
-                        {
-                            if (this.gameObject.transform.position.x > playerPos.x)
-                            {
-                                dir = Vector3.left;
-                            }
-                            else
-                            {
-                                dir = Vector3.right;
-                            }
-                        }
-                    }
-                }
-
+                base.Move();
                 break;
 
             // 원거리 공격

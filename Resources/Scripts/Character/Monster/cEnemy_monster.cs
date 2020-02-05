@@ -23,18 +23,13 @@ public class cEnemy_monster : cCharacter
     public bool isInAttackRange;
     // (공격 행동시) 플레이어 위치
     protected Vector3 playerPos;
-    // 공격 쿨타임 관리 변수
-    public float time;
-    public float attackDelay;
     // 리스폰 코루틴
     protected IEnumerator respawnCor;
-    // 원거리 공격 데미지
-    protected float rangeDamage;
-    // 투사체 관리 스크립트
-    public cBulletManager bulletMng;
+    // 쿨타임 관리 변수
+    protected float attackCoolTime;
+    protected float curCoolTime;
+    protected bool isAttackReady;
 
-    protected cDungeonNormal_processor dp;
-        
     public virtual void Init(string pNickname, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp,
         int pId, int pRocks)
     {
@@ -54,13 +49,13 @@ public class cEnemy_monster : cCharacter
         isInNoticeRange = false;
         isInAttackRange = false;
         playerPos = Vector3.zero;
-        time = 0.7f;
-        attackDelay = 1.0f;
         attackBoxPos[0] = new Vector3(1.5f, 0f, 0f);
         attackBoxPos[2] = new Vector3(-1.5f, 0f, 0f);
-        dp = GameObject.Find("Canvas_main").transform.GetChild(0).GetComponent<cDungeonNormal_processor>();
         respawnCor = RespawnTimer();
         curMoveSpeed = maxMoveSpeed;
+        attackCoolTime = 3.0f;
+        curCoolTime = attackCoolTime;
+        isAttackReady = true;
     }
 
     protected virtual void Init(enemyInitStruct pEs)
@@ -81,30 +76,94 @@ public class cEnemy_monster : cCharacter
         isInNoticeRange = false;
         isInAttackRange = false;
         playerPos = Vector3.zero;
-        time = 0.7f;
-        attackDelay = 1.0f;
         attackBoxPos[0] = new Vector3(1.5f, 0f, 0f);
         attackBoxPos[2] = new Vector3(-1.5f, 0f, 0f);
-        dp = GameObject.Find("Canvas_main").transform.GetChild(0).GetComponent<cDungeonNormal_processor>();
         respawnCor = RespawnTimer();
+        curMoveSpeed = maxMoveSpeed;
+        attackCoolTime = 3.0f;
+        curCoolTime = attackCoolTime;
+        isAttackReady = true;
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
+        
         if(isDead.Equals(false))
         {
             SetGravity();
             Move();
         }
+
+        // 쿨타임 관리
+        // 공격이 준비되지 않았을 경우
+        if (isAttackReady.Equals(false))
+        {
+            curCoolTime += Time.deltaTime;
+        }
+        // 공격이 준비된 경우
+        else
+        {
+            curCoolTime = 0;
+        }
+
+        // 쿨타임 다 차면 공격 가능
+        if (curCoolTime >= attackCoolTime)
+        {
+            isAttackReady = true;
+            curCoolTime = 0;
+        }
     }
     
     protected virtual void Move()
     {
-        // idle
-        if (!isInNoticeRange)
+        // 인식 범위 내 진입
+        if (isInNoticeRange)
         {
+            // 쿨타임이 다 차면 공격
+            if (isAttackReady)
+            {
+                // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
+                if (!isInAttackRange)
+                {
+                    playerPos = cUtil._player.gameObject.transform.position;
+                    this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
+
+                    if (playerPos.x >= this.transform.position.x)
+                        dir = Vector3.right;
+
+                    else if (playerPos.x < this.transform.position.x)
+                        dir = Vector3.left;
+                }
+                // 공격 범위 안에 들어온 경우
+                else if (isInAttackRange)
+                {
+                    playerPos = cUtil._player.gameObject.transform.position;
+                    if (playerPos.x >= this.transform.position.x)
+                        dir = Vector3.right;
+                    else if (playerPos.x < this.transform.position.x)
+                        dir = Vector3.left;
+
+                    //쿨타임이 다 찼을 때 히트박스 활성화
+                    if (dir == Vector3.right)
+                    {
+                        attackBox.transform.localPosition = attackBoxPos[0];
+                        attackBox.gameObject.SetActive(true);
+                    }
+                    else if (dir == Vector3.left)
+                    {
+                        attackBox.transform.localPosition = attackBoxPos[2];
+                        attackBox.gameObject.SetActive(true);
+                    }
+                    isAttackReady = false;
+                }
+            }
+        }
+        // idle 상태
+        else if (!isInNoticeRange)
+        {
+            Debug.Log("dir : " + dir);
+            Debug.Log("curMoveSpeed : " + curMoveSpeed);
             this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
             //막히면 방향 바꿔준다.
             if (isRightBlocked == true)
@@ -116,47 +175,6 @@ public class cEnemy_monster : cCharacter
             {
                 isLeftBlocked = false;
                 dir = Vector3.right;
-            }
-        }
-        // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
-        else if (isInNoticeRange && !isInAttackRange)
-        {
-            playerPos = dp._player.transform.position;
-            this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
-
-            if (playerPos.x >= this.transform.position.x)
-                dir = Vector3.right;
-
-            else if (playerPos.x < this.transform.position.x)
-                dir = Vector3.left;
-        }
-        // 공격 범위 안에 들어온 경우
-        else if (isInAttackRange)
-        {
-            time += Time.deltaTime;
-            playerPos = dp._player.transform.position;
-            if (playerPos.x >= this.transform.position.x)
-                dir = Vector3.right;
-            else if (playerPos.x < this.transform.position.x)
-                dir = Vector3.left;
-
-            //쿨타임이 다 찼을 때 히트박스 활성화
-            if (time >= attackDelay)
-            {
-                Debug.Log("ADFADAD");
-                Debug.Log(dir);
-
-                time = 0;
-                if (dir == Vector3.right)
-                {
-                    attackBox.transform.localPosition = attackBoxPos[0];
-                    attackBox.gameObject.SetActive(true);
-                }
-                else if (dir == Vector3.left)
-                {
-                    attackBox.transform.localPosition = attackBoxPos[2];
-                    attackBox.gameObject.SetActive(true);
-                }
             }
         }
     }

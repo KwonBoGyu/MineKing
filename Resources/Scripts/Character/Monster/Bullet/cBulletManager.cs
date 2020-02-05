@@ -5,7 +5,6 @@ using UnityEngine;
 public enum BULLET_TYPE
 {
     NORMAL,
-    TRIPLE,
     SPLIT,
     GRENADE
 }
@@ -15,8 +14,7 @@ public class cBulletManager : MonoBehaviour
     public GameObject originMonster;
     public GameObject[] bullets;
     private Transform _player;
-
-    private float bulletTerm;
+    private float bulletTerm; // 발사체 발사 간격
 
     private void Start()
     {
@@ -56,12 +54,12 @@ public class cBulletManager : MonoBehaviour
         }
     }
 
-    // 발사
+    // 발사 코루틴
     IEnumerator Launch(int pBulletAmount, BULLET_TYPE pType, bool pIsGravity)
     {
         int idx = 0;
 
-        // 총알 pool에서 false상태인 총알 오브젝트를 검색해 활성화한다
+        // 총알 pool에서 false상태인 총알 오브젝트를 인덱스 오름차순으로 활성화
         for (int i = 0; i < bullets.Length; i++)
         {
             if (bullets[i].activeSelf.Equals(false))
@@ -71,22 +69,24 @@ public class cBulletManager : MonoBehaviour
             }
         }
         int amount = pBulletAmount + idx; // 반복 횟수를 위한 설정
+
+        // 활성화할 총알 개수만큼 반복
         while (idx < amount)
         {
             cBullet script = bullets[idx].GetComponent<cBullet>();
             bullets[idx].SetActive(true);
-            script.SetType(pType);
-            script.isGravityOn = pIsGravity;
+            script.SetType(pType); // 투사체 타입 설정
+            script.isGravityOn = pIsGravity; // 중력 적용 여부
 
             switch (pType)
             {
-                // 일반형
+                // 일반형 ( 플레이어 방향으로 발사 )
                 case BULLET_TYPE.NORMAL:
                     Vector3 tempDir = _player.position - originMonster.transform.position;
                     tempDir = tempDir.normalized;
                     script.dir = tempDir;
                     break;
-                // 수류탄형
+                // 수류탄형 ( 공중 랜덤한 방향으로 발사 )
                 case BULLET_TYPE.GRENADE:
                     float x = Random.Range(-0.6f, 0.5f);
                     float y = Random.Range(0.4f, 1.0f);
@@ -95,8 +95,8 @@ public class cBulletManager : MonoBehaviour
                 case BULLET_TYPE.SPLIT:
                     break;
             }
-
-            yield return new WaitForSeconds(bulletTerm);
+            
+            yield return new WaitForSeconds(bulletTerm); // 투사체간 발사 간격만큼 대기
             idx++;
         }
     }

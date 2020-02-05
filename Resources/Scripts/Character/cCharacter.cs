@@ -337,9 +337,9 @@ public class cCharacter : MonoBehaviour
             _animator.SetTrigger("getHit");
     }
 
-    public void RestoreHp(float pVal, bool toFool)
+    public void RestoreHp(float pVal, bool toFull)
     {
-        if (toFool)
+        if (toFull)
             curHp = maxHp;
         else
             curHp += pVal;

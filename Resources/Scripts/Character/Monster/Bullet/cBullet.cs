@@ -14,11 +14,12 @@ public class cBullet : MonoBehaviour
     public Vector3 dir;
     private float distance;
     public float damage;
-
+    // 중력 적용을 위한 변수
     private float changingGravity;
     private float defaultGravity;
-
+    // type : split인 경우 몇 번 분열했는지 카운트
     private int splitCount;
+    // type : grenade인 경우 폭발 관리를 위한 변수
     private bool explodeOn;
     private float explodeTime;
 
@@ -26,7 +27,7 @@ public class cBullet : MonoBehaviour
     {
         rangeCollider = originMonster.transform.GetChild(1).GetComponent<CircleCollider2D>();
         attackRange = rangeCollider.radius;
-        damage = originMonster.GetComponent<cEnemy_monster>().GetDamage();
+        damage = originMonster.GetComponent<cEnemy_Ranged>().GetBulletDamage();
         changingGravity = 200f;
         defaultGravity = 400f;
 
@@ -40,6 +41,7 @@ public class cBullet : MonoBehaviour
         this.transform.position = originMonster.transform.position;
         this.transform.localScale = new Vector3(1, 1, 1);
         changingGravity = 200f;
+        explodeOn = false;
     }
 
     public void SetType(BULLET_TYPE pType)
@@ -68,19 +70,21 @@ public class cBullet : MonoBehaviour
         {
             transform.Translate(dir * Time.deltaTime * speed);
 
+            // 중력이 적용되는 경우
             if (isGravityOn)
             {
                 SetGravity();
             }
         }
 
-        //distance = new Vector2(this.transform.position.x - originMonster.transform.position.x,
-        //    this.transform.position.y - originMonster.transform.position.y).magnitude;
-        //// 총알 최대 범위 이상으로 벗어나면 소멸
-        //if (distance >= attackRange)
-        //{
-        //    this.gameObject.SetActive(false);
-        //}
+        distance = new Vector2(this.transform.position.x - originMonster.transform.position.x,
+            this.transform.position.y - originMonster.transform.position.y).magnitude;
+
+        // 총알 최대 범위 이상으로 벗어나면 소멸
+        if (distance >= attackRange)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
     private void SetGravity()
@@ -94,14 +98,13 @@ public class cBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("collision");
         switch(type)
         {
             case BULLET_TYPE.NORMAL:
                 if (collision.gameObject.tag.Equals("Player"))
                 {
-                    // 원거리 공격 데미지 나중에 변수 따로 선언해야 함
                     cUtil._player.ReduceHp(damage, dir);
+                    this.gameObject.SetActive(false);
                 }
                 else if (collision.gameObject.tag.Equals("Tile_canHit"))
                 {
@@ -153,16 +156,15 @@ public class cBullet : MonoBehaviour
             case BULLET_TYPE.GRENADE:
                 if (collision.gameObject.tag.Equals("Player"))
                 {
+                    // 폭발한 상태일때 플레이어에게 닿은 경우
                     if (explodeOn)
                     {
-                        Debug.Log("explode collide");
                         cUtil._player.ReduceHp(damage);
                         this.gameObject.SetActive(false);
                     }
                 }
                 else if (collision.gameObject.tag.Equals("Tile_canHit"))
                 {
-                    Debug.Log("col1");
                     speed = 0f;
                     dir = Vector3.zero;
                     isGravityOn = false;
@@ -170,7 +172,6 @@ public class cBullet : MonoBehaviour
                 }
                 else if (collision.gameObject.tag.Equals("Tile_cannotHit"))
                 {
-                    Debug.Log("col2");
                     speed = 0f;
                     dir = Vector3.zero;
                     isGravityOn = false;
@@ -184,10 +185,10 @@ public class cBullet : MonoBehaviour
     {
         yield return new WaitForSeconds(explodeTime);
         explodeOn = true;
-        rangeCollider.radius = rangeCollider.radius * 3;
-        this.transform.localScale = new Vector3(3, 3, 3); // 이펙트 추가 예정
+        rangeCollider.radius = rangeCollider.radius * 3; // 충돌 범위 확장
+        this.transform.localScale = new Vector3(3, 3, 3); // 임시적 시각효과
 
         yield return new WaitForSeconds(0.3f);
-        this.gameObject.SetActive(false);
+        this.gameObject.SetActive(false); // 0.3초 후 삭제
     }
 }
