@@ -157,13 +157,13 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         }
     }
 
-    public override void ReduceHp(float pVal)
+    public override void ReduceHp(long pVal)
     {
-        curHp -= pVal;
+        curHp.value -= pVal;
 
-        if (curHp <= 0)
+        if (curHp.value <= 0)
         {
-            curHp = 0;
+            curHp.value = 0;
         }
 
         SetHp();
@@ -218,11 +218,11 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         GameObject slime1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), 
             new Vector3(this.gameObject.transform.position.x - 100f, 
             this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-        slime1.GetComponent<cMonster_stage1_slime>().Init("slime1", 1, 160, 100, 100);
+        slime1.GetComponent<cMonster_stage1_slime>().Init(cEnemyTable.SetMonsterInfo(1));
 
         GameObject slime2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), 
             new Vector3(this.gameObject.transform.position.x + 100f, 
             this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-        slime2.GetComponent<cMonster_stage1_slime>().Init("slime2", 1, 160, 100, 100);
+        slime2.GetComponent<cMonster_stage1_slime>().Init(cEnemyTable.SetMonsterInfo(1));
     }
 }

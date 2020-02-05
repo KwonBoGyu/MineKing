@@ -30,15 +30,10 @@ public class cEnemy_monster : cCharacter
     protected float curCoolTime;
     protected bool isAttackReady;
 
-<<<<<<< HEAD
     protected cDungeonNormal_processor dp;
         
     public virtual void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
         int pId, cProperty pRocks)
-=======
-    public virtual void Init(string pNickname, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp,
-        int pId, int pRocks)
->>>>>>> 2f22ded383e714599069cc24f63d77930936ee3f
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
 
@@ -65,7 +60,7 @@ public class cEnemy_monster : cCharacter
         isAttackReady = true;
     }
 
-    protected virtual void Init(enemyInitStruct pEs)
+    public virtual void Init(enemyInitStruct pEs)
     {
         base.Init(pEs.nickName, pEs.damage, pEs.maxMoveSpeed, pEs.maxHp, pEs.curHp);
 
@@ -186,9 +181,9 @@ public class cEnemy_monster : cCharacter
         }
     }
 
-    public override void ReduceHp(cProperty pVal)
+    public override void ReduceHp(long pVal)
     {
-        curHp.value -= pVal.value;
+        curHp.value -= pVal;
         
         if (curHp.value <= 0)
         {
@@ -202,9 +197,9 @@ public class cEnemy_monster : cCharacter
     }
 
     // 공격자가 있는 경우 공격자가 바라보는 방향을 pDir로 받음
-    public override void ReduceHp(cProperty pVal, Vector3 pDir, float pVelocity = 7.5f)
+    public override void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5f)
     {
-        curHp.value -= pVal.value;
+        curHp.value -= pVal;
         
         // 체력이 0 이하로 떨어질 시 코루틴 중지, 리스폰 타이머 활성화
         if (curHp.value <= 0)

@@ -24,11 +24,11 @@ public class cMonster_stage1_slime : cEnemy_Ranged
         attackCoolTime = 3.0f;
         curCoolTime = attackCoolTime;
         isAttackReady = true;
-        bulletDamage = damage / 2;
+        bulletDamage = (long)(damage.value * 0.5f);
 
         Init(cEnemyTable.SetMonsterInfo(1));
         curMoveSpeed = maxMoveSpeed;
-        bulletDamage = damage / 2;
+        bulletDamage = (long)(damage.value * 0.5f);
     }
 
     protected override void FixedUpdate()
@@ -49,9 +49,9 @@ public class cMonster_stage1_slime : cEnemy_Ranged
         }
     }
 
-    public override void ReduceHp(cProperty pVal, Vector3 pDir, float pVelocity = 7.5f)
+    public override void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5f)
     {
-        curHp.value -= pVal.value;
+        curHp.value -= pVal;
 
         if (curHp.value <= 0)
         {

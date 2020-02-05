@@ -299,9 +299,9 @@ public class cCharacter : MonoBehaviour
             changingGravity = defaultGravity;
     }
 
-    public virtual void ReduceHp(cProperty pVal)
+    public virtual void ReduceHp(long pVal)
     {
-        curHp.value -= pVal.value;
+        curHp.value -= pVal;
 
         if (curHp.value < 0)
             curHp.value = 0;
@@ -309,9 +309,9 @@ public class cCharacter : MonoBehaviour
         SetHp();
     }
 
-    public virtual void ReduceHp(cProperty pVal, Vector3 pDir, float pVelocity = 7.5f)
+    public virtual void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5f)
     {
-        curHp.value -= pVal.value;
+        curHp.value -= pVal;
 
         if (curHp.value < 0)
             curHp.value = 0;
@@ -325,17 +325,10 @@ public class cCharacter : MonoBehaviour
             _animator.SetTrigger("getHit");
     }
 
-<<<<<<< HEAD
     public void RestoreHp(cProperty pVal, bool toFool)
     {
         if (toFool)
             curHp.value = maxHp.value;
-=======
-    public void RestoreHp(float pVal, bool toFull)
-    {
-        if (toFull)
-            curHp = maxHp;
->>>>>>> 2f22ded383e714599069cc24f63d77930936ee3f
         else
             curHp.value += pVal.value;
 

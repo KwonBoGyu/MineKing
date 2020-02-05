@@ -7,14 +7,14 @@ public class cEnemy_Ranged : cEnemy_monster
     public cBulletManager bulletManager; // 투사체 관련 BulletManager에서 관리
 
     protected int bulletTypeNum; // 투사체 타입 변수 (cBulletManager의 SetBullet() 인자)
-    protected float bulletDamage; // 투사체 데미지
+    protected long bulletDamage; // 투사체 데미지
 
     public float GetBulletDamage() { return bulletDamage; }
 
     private void Start()
     {
         bulletTypeNum = 0;
-        bulletDamage = damage / 2;
+        bulletDamage = (long)(damage.value * 0.5f);
     }
 
     // 공격 쿨타임 관리

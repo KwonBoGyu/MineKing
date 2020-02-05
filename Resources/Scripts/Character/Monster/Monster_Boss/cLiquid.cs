@@ -6,6 +6,6 @@ public class cLiquid : MonoBehaviour
 {
     private void OnTriggerStay2D(Collider2D collision)
     {
-        cUtil._player.ReduceHp(cUtil._player.GetMaxHp() * 0.05f);
+        cUtil._player.ReduceHp((long)(cUtil._player.GetMaxHp().value * 0.05f));
     }
 }

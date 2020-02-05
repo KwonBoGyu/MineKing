@@ -2,6 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct Pattern
+{
+    public int patternNum { get; set; } // 패턴 고유 번호
+    public float coolTime { get; set; } // 스킬 쿨타임
+    public int patternCount { get; set; } // 스킬 실행 횟수
+
+    public Pattern(int pPatternNum, float pCoolTime, int pPatternCount)
+    {
+        patternNum = pPatternNum;
+        coolTime = pCoolTime;
+        patternCount = pPatternCount;
+    }
+}
+
 public class cEnemy_Boss : cEnemy_monster
 {
     //몬스터 id
@@ -13,27 +27,8 @@ public class cEnemy_Boss : cEnemy_monster
     //강화 아이템 랜덤 드랍 확률 (현재 100%)
     private int per_Upgrade = 100;
 
-<<<<<<< HEAD
-    public void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
+    public override void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
         int pId, cProperty pRocks)
-=======
-    public struct Pattern
-    {
-        public int patternNum { get; set; } // 패턴 고유 번호
-        public float coolTime { get; set; } // 스킬 쿨타임
-        public int patternCount { get; set; } // 스킬 실행 횟수
-
-        public Pattern(int pPatternNum, float pCoolTime, int pPatternCount)
-        {
-            patternNum = pPatternNum;
-            coolTime = pCoolTime;
-            patternCount = pPatternCount;
-        }
-    }
-
-    public void Init(string pNickname, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp,
-        int pId, int pRocks)
->>>>>>> 2f22ded383e714599069cc24f63d77930936ee3f
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
 
@@ -68,9 +63,9 @@ public class cEnemy_Boss : cEnemy_monster
     //    }
     //}
 
-    public override void ReduceHp(cProperty pVal)
+    public override void ReduceHp(long pVal)
     {
-        curHp.value -= pVal.value;
+        curHp.value -= pVal;
 
         if (curHp.value <= 0)
         {
@@ -97,7 +92,7 @@ public class cEnemy_Boss : cEnemy_monster
     {
         if (collision.tag == "Player")
         {
-            cUtil._player.ReduceHp(damage);
+            cUtil._player.ReduceHp(damage.value);
 
             Debug.Log("attacked by " + this.nickName);
         }

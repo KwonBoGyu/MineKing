@@ -9,7 +9,7 @@ public class cMonster_stage1_mouse : cEnemy_monster
         Init(cEnemyTable.SetMonsterInfo(0));
     }
 
-    protected override void Init(enemyInitStruct pEs)
+    public override void Init(enemyInitStruct pEs)
     {
         base.Init(pEs);
         respawnTime = 5.0f;

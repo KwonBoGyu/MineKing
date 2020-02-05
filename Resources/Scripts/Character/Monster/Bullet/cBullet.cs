@@ -103,7 +103,7 @@ public class cBullet : MonoBehaviour
             case BULLET_TYPE.NORMAL:
                 if (collision.gameObject.tag.Equals("Player"))
                 {
-                    cUtil._player.ReduceHp(damage, dir);
+                    cUtil._player.ReduceHp((long)damage, dir);
                     this.gameObject.SetActive(false);
                 }
                 else if (collision.gameObject.tag.Equals("Tile_canHit"))
@@ -120,7 +120,7 @@ public class cBullet : MonoBehaviour
             case BULLET_TYPE.SPLIT:
                 if (collision.gameObject.tag.Equals("Player"))
                 {
-                    cUtil._player.ReduceHp(damage / splitCount + 1);
+                    cUtil._player.ReduceHp((long)(damage / splitCount + 1));
                 }
                 else if (collision.gameObject.tag.Equals("Tile_canHit"))
                 {
@@ -159,7 +159,7 @@ public class cBullet : MonoBehaviour
                     // 폭발한 상태일때 플레이어에게 닿은 경우
                     if (explodeOn)
                     {
-                        cUtil._player.ReduceHp(damage);
+                        cUtil._player.ReduceHp((long)damage);
                         this.gameObject.SetActive(false);
                     }
                 }
