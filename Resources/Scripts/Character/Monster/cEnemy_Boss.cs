@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cEnemy_Boss : cCharacter
+public class cEnemy_Boss : cEnemy_monster
 {
     //몬스터 id
     private int id;
@@ -13,8 +13,27 @@ public class cEnemy_Boss : cCharacter
     //강화 아이템 랜덤 드랍 확률 (현재 100%)
     private int per_Upgrade = 100;
 
+<<<<<<< HEAD
     public void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
         int pId, cProperty pRocks)
+=======
+    public struct Pattern
+    {
+        public int patternNum { get; set; } // 패턴 고유 번호
+        public float coolTime { get; set; } // 스킬 쿨타임
+        public int patternCount { get; set; } // 스킬 실행 횟수
+
+        public Pattern(int pPatternNum, float pCoolTime, int pPatternCount)
+        {
+            patternNum = pPatternNum;
+            coolTime = pCoolTime;
+            patternCount = pPatternCount;
+        }
+    }
+
+    public void Init(string pNickname, float pDamage, float pMaxMoveSpeed, float pMaxHp, float pCurHp,
+        int pId, int pRocks)
+>>>>>>> 2f22ded383e714599069cc24f63d77930936ee3f
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
 
@@ -33,21 +52,21 @@ public class cEnemy_Boss : cCharacter
         Move();
     }
 
-    private void Move()
-    {
-        this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
-        //막히면 방향 바꿔준다.
-        if (isRightBlocked == true)
-        {
-            isRightBlocked = false;
-            dir = Vector3.left;
-        }
-        else if (isLeftBlocked == true)
-        {
-            isLeftBlocked = false;
-            dir = Vector3.right;
-        }
-    }
+    //private void Move()
+    //{
+    //    this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
+    //    //막히면 방향 바꿔준다.
+    //    if (isRightBlocked == true)
+    //    {
+    //        isRightBlocked = false;
+    //        dir = Vector3.left;
+    //    }
+    //    else if (isLeftBlocked == true)
+    //    {
+    //        isLeftBlocked = false;
+    //        dir = Vector3.right;
+    //    }
+    //}
 
     public override void ReduceHp(cProperty pVal)
     {
@@ -78,7 +97,7 @@ public class cEnemy_Boss : cCharacter
     {
         if (collision.tag == "Player")
         {
-            collision.transform.GetChild(0).GetComponent<cPlayer>().ReduceHp(damage);
+            cUtil._player.ReduceHp(damage);
 
             Debug.Log("attacked by " + this.nickName);
         }

@@ -21,7 +21,7 @@ public class cWeapon : MonoBehaviour
                 collision.GetComponent<cEnemy_monster>().ReduceHp(damage, GetComponentInParent<cPlayer>().GetDirection(), 10.0f);
             }
             else
-                collision.GetComponent<cMonster_stage1_slime>().ReduceHp(damage, GetComponentInParent<cPlayer>().GetDirection());
+                collision.GetComponent<cEnemy_monster>().ReduceHp(damage, GetComponentInParent<cPlayer>().GetDirection());
         }
 
         this.gameObject.SetActive(false);

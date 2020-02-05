@@ -108,7 +108,11 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
+<<<<<<< HEAD:Resources/Images/Main/img_black.png.meta
     spriteID: 962f53013685bec4099c101765f6ffc1
+=======
+    spriteID: 25fe8b53efe91c440afe01db57da5a37
+>>>>>>> 2f22ded383e714599069cc24f63d77930936ee3f:Resources/Images/Main/img_mainBackground.jpg.meta
     internalID: 0
     vertices: []
     indices: 

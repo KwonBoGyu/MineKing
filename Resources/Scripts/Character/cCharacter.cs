@@ -325,10 +325,17 @@ public class cCharacter : MonoBehaviour
             _animator.SetTrigger("getHit");
     }
 
+<<<<<<< HEAD
     public void RestoreHp(cProperty pVal, bool toFool)
     {
         if (toFool)
             curHp.value = maxHp.value;
+=======
+    public void RestoreHp(float pVal, bool toFull)
+    {
+        if (toFull)
+            curHp = maxHp;
+>>>>>>> 2f22ded383e714599069cc24f63d77930936ee3f
         else
             curHp.value += pVal.value;
 
@@ -351,8 +358,17 @@ public class cCharacter : MonoBehaviour
     {
         float velocity = pVelocity; // 넉백 속도
 
-        Vector3 attackerDir = pDir;
+        Vector3 attackerDir;
         Vector3 currentPos = originObj.transform.position;
+        
+        if (pDir.x <= 0)
+        {
+            attackerDir = Vector3.left;
+        }
+        else
+        {
+            attackerDir = Vector3.right;
+        }
 
         while (true)
         {

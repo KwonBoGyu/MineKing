@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cMonster_stage1_slime : cEnemy_monster
+public class cMonster_stage1_slime : cEnemy_Ranged
 {
     // 분열된 횟수
     public bool isSplited;
-    public GameObject bullet;
 
     private GameObject clone1;
     private GameObject clone2;
@@ -21,75 +20,25 @@ public class cMonster_stage1_slime : cEnemy_monster
 
     void Start()
     {
-        Init(cEnemyTable.SetMonsterInfo(0));
+        bulletTypeNum = 0; // 발사체 타입 : 일반형
+        attackCoolTime = 3.0f;
+        curCoolTime = attackCoolTime;
+        isAttackReady = true;
+        bulletDamage = damage / 2;
+
+        Init(cEnemyTable.SetMonsterInfo(1));
         curMoveSpeed = maxMoveSpeed;
+        bulletDamage = damage / 2;
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
     }
 
     public void Split()
     {
         isSplited = true;
-    }
-    
-    protected override void Move()
-    {
-        // idle
-        if (!isInNoticeRange)
-        {
-            this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
-            //막히면 방향 바꿔준다.
-            if (isRightBlocked == true)
-            {
-                isRightBlocked = false;
-                dir = Vector3.left;
-            }
-            else if (isLeftBlocked == true)
-            {
-                isLeftBlocked = false;
-                dir = Vector3.right;
-            }
-        }
-        // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
-        else if (isInNoticeRange)
-        {
-            if (!isInAttackRange)
-            {
-                playerPos = dp._player.transform.position;
-
-                if (bullet.activeSelf.Equals(false))
-                {
-                    bullet.SetActive(true);
-                    bullet.GetComponent<cBullet>().SetDir(playerPos);
-                }
-            }
-            // 공격 범위 안에 들어온 경우
-            else
-            {
-                time += Time.deltaTime;
-                playerPos = dp._player.transform.position;
-                if (playerPos.x >= this.transform.position.x)
-                    dir = Vector3.right;
-                else if (playerPos.x < this.transform.position.x)
-                    dir = Vector3.left;
-
-                //쿨타임이 다 찼을 때 히트박스 활성화
-                if (time >= attackDelay)
-                {
-                    time = 0;
-                    if (dir == Vector3.right)
-                    {
-                        attackBox.transform.localPosition = attackBoxPos[0];
-                        attackBox.gameObject.SetActive(true);
-                    }
-                    else if (dir == Vector3.left)
-                    {
-                        attackBox.transform.localPosition = attackBoxPos[2];
-                        attackBox.gameObject.SetActive(true);
-                    }
-                }
-            }
-
-        }
-        
     }
 
     public void StartRespawn()
@@ -116,7 +65,7 @@ public class cMonster_stage1_slime : cEnemy_monster
             if (isSplited)
             {
                 if(!this.transform.parent.GetComponent<cMonster_stage1_slime>().isClone1Dead)
-                {
+                {   
                     this.transform.parent.GetComponent<cMonster_stage1_slime>().isClone1Dead = true;
                     this.gameObject.SetActive(false);
                 }

@@ -17,7 +17,7 @@ public class cEnemy_AttckBox : MonoBehaviour
         // 히트박스 안에 플레이어가 있을 경우 
         if (collision.tag.Equals("Player"))
         {
-            collision.transform.GetChild(0).GetComponent<cPlayer>().ReduceHp(damage, this.transform.GetComponentInParent<cEnemy_monster>().GetDirection());
+            cUtil._player.ReduceHp(damage, this.transform.GetComponentInParent<cEnemy_monster>().GetDirection());
             Debug.Log("attacked by " + this.transform.GetComponentInParent<cEnemy_monster>().name);
 
             this.gameObject.SetActive(false);
