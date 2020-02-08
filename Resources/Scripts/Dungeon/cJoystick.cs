@@ -63,7 +63,7 @@ public class cJoystick : MonoBehaviour
         {
             if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
             {
-                scr_player.Attack_front();                
+                Attack();                
             }
         }
 
@@ -239,7 +239,15 @@ public class cJoystick : MonoBehaviour
     {
         if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
         {
-            scr_player.Attack_front();
+            if (scr_player.isGrounded.Equals(false) && scr_player.GetIsClimbing().Equals(false))
+                return;
+            
+            if (scr_player.GetDirection().Equals(Vector3.up))
+                scr_player.Attack_up();
+            else if (scr_player.GetDirection().Equals(Vector3.down) && scr_player.GetIsClimbing().Equals(false))
+                scr_player.Attack_down();
+            else
+                scr_player.Attack_front();
             scr_player.SetStatus(CHARACTERSTATUS.ATTACK);
         }
     }
@@ -291,6 +299,10 @@ public class cJoystick : MonoBehaviour
                     if(scr_player.isGrounded.Equals(true))
                         scr_player.sm.playRunningEffect();
                 }
+
+                if(scr_player.GetIsClimbing().Equals(true))
+                    scr_player.SetCurMoveSpeed(0);
+
                 break;
             //DOWN
             case 2:
@@ -299,6 +311,8 @@ public class cJoystick : MonoBehaviour
                 //예외처리
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
                 {
+                    scr_player.SetStatus(CHARACTERSTATUS.NONE);
+
                     //벽에 붙은 상태
                     if (scr_player.GetIsClimbing())
                     {
@@ -333,6 +347,9 @@ public class cJoystick : MonoBehaviour
                     if (scr_player.isGrounded.Equals(true))
                         scr_player.sm.playRunningEffect();
                 }
+
+                if (scr_player.GetIsClimbing().Equals(true))
+                    scr_player.SetCurMoveSpeed(0);
                 break;
         }        
     }

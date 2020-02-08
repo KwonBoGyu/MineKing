@@ -51,6 +51,7 @@ public class cCharacter : MonoBehaviour
     protected Vector3 dir;
     public GameObject originObj;
     public BoxCollider2D rt;
+    public int jumpCount;
 
     public cTileMng tileMng;
 
@@ -121,7 +122,9 @@ public class cCharacter : MonoBehaviour
             tileMng = cUtil._tileMng;
         
         if(tileMng != null)
-            tileMng.CheckCanGroundTile(this);
+        {
+            tileMng.CheckCanGroundTile(this);               
+        }
     }
 
     public cProperty GetDamage() { return damage; }
@@ -406,12 +409,14 @@ public class cCharacter : MonoBehaviour
     public void SetIsClimbing(bool pbool)
     {
         if (isClimbing.Equals(pbool))        
-            return;        
-        
+            return;
+
         if (isClimbing.Equals(false))
         {
             _animator.SetTrigger("Crawl");
         }
+        else
+            jumpCount = 0;
             
         isClimbing = pbool;
         _animator.SetBool("isCrawl", isClimbing);

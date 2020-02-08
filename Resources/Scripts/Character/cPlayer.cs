@@ -12,7 +12,6 @@ public class cPlayer : cCharacter
     public cInventory inven;
     public bool isJumpAttack;
     public int jumpAttackPoint;
-    public int jumpCount;
     private bool isJumpAniDone;
         
     private bool isSpeedUp;
@@ -40,8 +39,9 @@ public class cPlayer : cCharacter
         speedUpAmount = 0.0f;
         jumpHeight = 200.0f;
         attackBoxPos[0] = new Vector3(18, 225, -1.1f); 
-        attackBoxPos[1] = new Vector3(180, 2.08f, -1.1f); 
+        attackBoxPos[1] = new Vector3(180, 0, -1.1f); 
         attackBoxPos[2] = new Vector3(22, -128, -1.1f);
+        attackBoxPos[3] = new Vector3(180, 133, -1.1f);
         attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
         status = CHARACTERSTATUS.NONE;
@@ -148,15 +148,15 @@ public class cPlayer : cCharacter
 
     public void Attack_front()
     {
-        if (isClimbing.Equals(true))
-            return;
+        //if (isClimbing.Equals(true))
+        //    return;
         _animator.SetTrigger("AttackFront");
         status = CHARACTERSTATUS.ATTACK;
     }
     public void Attack_up()
     {
-        if (isClimbing.Equals(true))
-            return;
+        //if (isClimbing.Equals(true))
+        //    return;
         _animator.SetTrigger("AttackUp");
         status = CHARACTERSTATUS.ATTACK;
     }
@@ -175,7 +175,14 @@ public class cPlayer : cCharacter
             attackBox.transform.localPosition = attackBoxPos[0];
         //양옆
         else if (pDir == 1)
-            attackBox.transform.localPosition = attackBoxPos[1];
+        {
+            if(GetIsClimbing().Equals(true))
+            {
+                attackBox.transform.localPosition = attackBoxPos[3];
+            }
+            else
+                attackBox.transform.localPosition = attackBoxPos[1];
+        }
         //아래
         else if (pDir == 2)
             attackBox.transform.localPosition = attackBoxPos[2];

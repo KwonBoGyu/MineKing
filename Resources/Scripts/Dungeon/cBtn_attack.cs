@@ -51,7 +51,6 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         PointerEventData d = eventData as PointerEventData;
         float dist = (d.position - prevTouchPos).magnitude;
-        Vector2 swipeDir = (d.position - prevTouchPos).normalized;
 
         StopCoroutine(cor_keepPointerDown);
 
@@ -68,19 +67,24 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         else if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && isChargingOn.Equals(false))
         {
             //점프 공격
-            if (scr_player.isGrounded.Equals(false))
-            {
-                if (scr_player.jumpAttackPoint > 0)
-                    return;
+            //if (scr_player.isGrounded.Equals(false))
+            //{
+            //    if (scr_player.jumpAttackPoint > 0)
+            //        return;
 
-                scr_player.jumpAttackPoint += 1;
-                scr_player.isJumpAttack = true;
-            }
+            //    scr_player.jumpAttackPoint += 1;
+            //    scr_player.isJumpAttack = true;
+            //}
 
             if (scr_player.GetDirection().Equals(Vector3.up))
                 scr_player.Attack_up();
             else if (scr_player.GetDirection().Equals(Vector3.down))
-                scr_player.Attack_down();
+            {
+                if (scr_player.GetIsClimbing().Equals(false))
+                    scr_player.Attack_down();
+                else
+                    return;
+            }
             else
                 scr_player.Attack_front();
 
@@ -98,8 +102,6 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         p_gageEffect.transform.position = new Vector3(
     img_gageBar.transform.position.x, p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
         img_gageBar.transform.parent.gameObject.SetActive(false);
-
-        
     }
 
     IEnumerator KeepPointerDown()
