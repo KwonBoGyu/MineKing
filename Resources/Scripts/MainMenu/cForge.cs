@@ -69,7 +69,6 @@ public class cForge : cBuilding
 
                 obj_Frame[i].SetActive(true);
                 b_Frame[i].transform.parent.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-                Debug.Log("asdf");
                 continue;
             }
 

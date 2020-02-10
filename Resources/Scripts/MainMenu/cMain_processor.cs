@@ -19,12 +19,8 @@ public class cMain_processor : MonoBehaviour
     public cStore _store;
     public cForge _forge;
     public cDungeon _dungeon;
-
-    //임시 디버깅
-    public Button b_temp1;
-    public Button b_temp2;
-    public Button b_temp3;
-
+    public cBag _bag;
+    
     //재화
     public Text t_gold;
     public Text t_rock;
@@ -40,6 +36,7 @@ public class cMain_processor : MonoBehaviour
         _store.b_click.onClick.AddListener(() => OnBuilingButtonClicked(0));
         _forge.b_click.onClick.AddListener(() => OnBuilingButtonClicked(1));
         _dungeon.b_click.onClick.AddListener(() => OnBuilingButtonClicked(2));
+        _bag.b_click.onClick.AddListener(() => OnBuilingButtonClicked(3));
         for(byte i = 0; i < b_mainFrameExit.Length; i++)
             b_mainFrameExit[i].onClick.AddListener(() => OnMainFrameExit());
 
@@ -102,7 +99,6 @@ public class cMain_processor : MonoBehaviour
             return;
         }
         
-        
         obj_mainFrame.SetActive(true);
 
         switch (pChar)
@@ -123,6 +119,13 @@ public class cMain_processor : MonoBehaviour
             case 2:
                 _sm.playEffect(0);
                 animator_main.SetTrigger("DungeonOn");
+                break;
+            //가방
+            case 3:
+                _bag.OpenBag();
+                b_mainFrameExit[0].GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                b_mainFrameExit[5].gameObject.SetActive(true);
+                b_mainFrameExit[6].gameObject.SetActive(true);
                 break;
         }
 
@@ -148,6 +151,13 @@ public class cMain_processor : MonoBehaviour
             case 2:
                 _sm.playEffect(0);
                 animator_main.SetTrigger("DungeonOff");
+                break;
+            //가방
+            case 3:
+                _bag.obj_content.SetActive(false);
+                b_mainFrameExit[0].GetComponent<Image>().color = new Color(1, 1, 1, 0);
+                b_mainFrameExit[5].gameObject.SetActive(false);
+                b_mainFrameExit[6].gameObject.SetActive(false);
                 break;
         }
         currentWindowNum = -1;

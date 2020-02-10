@@ -54,7 +54,6 @@ public class cUser : MonoBehaviour
             cSoul[] soul = new cSoul[4];
             for (byte i = 0; i < soul.Length; i++)
                 soul[i] = new cSoul();
-
             //무기 레벨 초기화
             cProperty axeLevel = new cProperty("AxeLevel", 1);
             cAxe tAxe = new cAxe(cWeaponTable.GetAxeInfo(axeLevel));
@@ -64,7 +63,12 @@ public class cUser : MonoBehaviour
             for (byte i = 0; i < 4; i++)
                 skillLevel[i] = 0;
 
-            _playerInfo = new cPlayerInfo("이름입니다.", tAxe, skillLevel,this.GetComponent<cInventory>(), 
+            //퀵슬롯 아이템 넘버 초기화
+            short[] quickSlotItemNum = new short[4];
+            for (byte i = 0; i < 4; i++)
+                quickSlotItemNum[i] = -1;
+
+            _playerInfo = new cPlayerInfo("이름입니다.", tAxe, skillLevel, quickSlotItemNum, this.GetComponent<cInventory>(), 
                 money, rock, dia, jewerly, soul);
 
             SaveUserData();

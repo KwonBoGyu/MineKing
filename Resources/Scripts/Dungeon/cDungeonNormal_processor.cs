@@ -13,6 +13,11 @@ public class cDungeonNormal_processor : MonoBehaviour
     public GameObject _enemyPool;
     private GameObject curStageMap;
     public GameObject[] _stageMap;
+
+    public Button b_bag;
+    public Button[] b_exitBag;
+    public cBag _bag;
+
     
     void Start()
     {
@@ -109,6 +114,16 @@ public class cDungeonNormal_processor : MonoBehaviour
             250,
             new cProperty("MaxHp", 10),
             new cProperty("CurHp", 10));
-        _player.SetActive(true);        
+        _player.SetActive(true);
+
+        //ui
+        b_bag.onClick.AddListener(() => _bag.OpenBag());
+        for (byte i = 0; i < b_exitBag.Length; i++)
+            b_exitBag[i].onClick.AddListener(() => ExitBag());
     }   
+
+    private void ExitBag()
+    {
+        _bag.obj_content.SetActive(false);
+    }
 }

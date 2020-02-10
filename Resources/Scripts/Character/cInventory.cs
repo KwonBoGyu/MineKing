@@ -57,15 +57,14 @@ public class cInventory : MonoBehaviour
         //아이템 순서 고정
         l_itemEquip = new List<cItem_equip>();
         l_itemUse = new List<cItem_use>();
-        for (byte i = 0; i < 6; i++)
+        for (byte i = 0; i < 3; i++)
         {
             cItem pUse;
-            citemTable.GetItemInfo(out pUse, i+1);
+            citemTable.GetItemInfo(out pUse, i);
             l_itemUse.Add((cItem_use)pUse);
         }
         l_itemEtc = new List<cItem_etc>();
-
-        
+                
         money = new cGold();
         rock = new cRock();
         dia = new cDia();

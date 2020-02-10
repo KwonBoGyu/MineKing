@@ -18,17 +18,21 @@ public class cPlayerInfo
     public cJewerly[] jewerly;
     public cSoul[] soul;
     public byte[] skillLevel; //0 : 대쉬, 1 : 시야증가, 2 : 차지강화, 3 : 점프강화
+    public short[] quickSlotItemNum;
 
     #region 생성자
-    public cPlayerInfo(string pNickName, cAxe pAxe, byte[] pSkillLevel,cInventory pInventory, 
+    public cPlayerInfo(string pNickName, cAxe pAxe, byte[] pSkillLevel, short[] pQuickSlotItemNum,cInventory pInventory, 
         cGold pMoney, cRock pRock, cDia pDia, cJewerly[] pJewerly, cSoul[] pSoul,
         cItem_equip[] pItem_equip = null, cItem_use[] pItem_use = null, cItem_etc[] pItem_etc = null)
     {
         weapon = new cAxe(pAxe);
-
         skillLevel = new byte[4];
         for (byte i = 0; i < skillLevel.Length; i++)
             skillLevel[i] = pSkillLevel[i];
+
+        quickSlotItemNum = new short[4];
+        for (byte i = 0; i < quickSlotItemNum.Length; i++)
+            quickSlotItemNum[i] = pQuickSlotItemNum[i];
 
         inventory = pInventory;
         inventory.Init();
@@ -69,6 +73,10 @@ public class cPlayerInfo
         skillLevel = new byte[4];
         for (byte i = 0; i < skillLevel.Length; i++)
             skillLevel[i] = pPi.skillLevel[i];
+
+        quickSlotItemNum = new short[4];
+        for (byte i = 0; i < quickSlotItemNum.Length; i++)
+            quickSlotItemNum[i] = pPi.quickSlotItemNum[i];
 
         inventory = pInventory;
         inventory.Init();
@@ -128,23 +136,19 @@ public class cPlayerInfo
         item_equip = new cItem_equip[inventory.GetItemEquip().Count];
         for (byte i = 0; i < inventory.GetItemEquip().Count; i++)
         {
-            item_equip[i] = new cItem_equip(inventory.GetItemEquip()[i]._name, inventory.GetItemEquip()[i].price, inventory.GetItemEquip()[i].kind, 
-                inventory.GetItemEquip()[i].kindNum, inventory.GetItemEquip()[i].damage, inventory.GetItemEquip()[i].maxHp, 
-                inventory.GetItemEquip()[i].hitLevel, inventory.GetItemEquip()[i].attackSpeed, inventory.GetItemEquip()[i].drainValue);
+            item_equip[i] = new cItem_equip(inventory.GetItemEquip()[i]);
         }
 
         item_use = new cItem_use[inventory.GetItemUse().Count];
         for (byte i = 0; i < inventory.GetItemUse().Count; i++)
         {
-            item_use[i] = new cItem_use(inventory.GetItemUse()[i]._name, inventory.GetItemUse()[i].price, inventory.GetItemUse()[i].amount,
-                inventory.GetItemUse()[i].kind, inventory.GetItemUse()[i].kindNum);
+            item_use[i] = new cItem_use(inventory.GetItemUse()[i]);
         }
 
         item_etc = new cItem_etc[inventory.GetItemEtc().Count];
         for (byte i = 0; i < inventory.GetItemEtc().Count; i++)
         {
-            item_etc[i] = new cItem_etc(inventory.GetItemEtc()[i]._name, inventory.GetItemEtc()[i].price, inventory.GetItemEtc()[i].amount,
-                inventory.GetItemEtc()[i].kind, inventory.GetItemEtc()[i].kindNum);
+            item_etc[i] = new cItem_etc(inventory.GetItemEtc()[i]);
         }
     }
 }

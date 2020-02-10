@@ -151,6 +151,7 @@ public class cJoystick : MonoBehaviour
             if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
             {
                 scr_player.SetIsClimbing(true);
+                scr_player.jumpCount = 0;
             }
         }
         if (scr_player.isLeftBlocked && scr_player.isGrounded.Equals(false))
@@ -159,6 +160,7 @@ public class cJoystick : MonoBehaviour
             if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
             {
                 scr_player.SetIsClimbing(true);
+                scr_player.jumpCount = 0;
             }
         }
     }

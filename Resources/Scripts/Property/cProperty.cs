@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class cProperty
 {
-    public string _name { get; set; }
-    public long value { get; set; }
+    public string _name;
+    public long value;
 
     #region 생성자
     public cProperty(string pName, long pValue)
