@@ -10,8 +10,7 @@ public class cPlayer : cCharacter
     public cFloatingText ft;
     public bool isDash;
     public cInventory inven;
-    public bool isJumpAttack;
-    public int jumpAttackPoint;
+    public cUseManager useMng; // 아이템 사용 관리 클래스
     private bool isJumpAniDone;
         
     private bool isSpeedUp;
@@ -28,20 +27,22 @@ public class cPlayer : cCharacter
         _animator = this.GetComponent<Animator>();
         originObj = this.transform.parent.gameObject;
         if(cUtil._user != null)
+        {
             inven = cUtil._user.GetInventory();
+        }
         rt = originObj.GetComponent<BoxCollider2D>();
         defaultGravity = 500.0f;
         changingGravity = defaultGravity;
-        isGrounded = false;
+        SetIsGrounded(false);
         isClimbing = false;
         isSpeedUp = false;
         speedUpTime = 0.0f;
         speedUpAmount = 0.0f;
         jumpHeight = 200.0f;
         attackBoxPos[0] = new Vector3(18, 225, -1.1f); 
-        attackBoxPos[1] = new Vector3(180, 0, -1.1f); 
+        attackBoxPos[1] = new Vector3(180, 2.08f, -1.1f); 
         attackBoxPos[2] = new Vector3(22, -128, -1.1f);
-        attackBoxPos[3] = new Vector3(180, 133, -1.1f);
+        attackBoxPos[3] = new Vector3(180, 142, -1.1f);
         attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
         status = CHARACTERSTATUS.NONE;
@@ -70,16 +71,15 @@ public class cPlayer : cCharacter
     }
 
     
-    
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
 
         originObj.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
-        _animator.SetBool("isGrounded", isGrounded);
-
-        if (isGrounded.Equals(false) && isJumpAniDone.Equals(false) 
+        _animator.SetBool("isGrounded", GetIsGrounded());
+        
+        if (GetIsGrounded().Equals(false) && isJumpAniDone.Equals(false) 
             && isClimbing.Equals(false))
         {
             _animator.SetTrigger("jumping");
@@ -89,7 +89,7 @@ public class cPlayer : cCharacter
             landEffectPlayed = false;
             sm.StopRunningEffect();
         }
-        else if(isGrounded.Equals(true))
+        else if(GetIsGrounded().Equals(true))
         {
             if (landEffectPlayed.Equals(false))
             {
@@ -111,24 +111,19 @@ public class cPlayer : cCharacter
         if(charDir.Equals(CHARDIRECTION.NONE))
             _animator.SetInteger("Direction", 1);
         
-        if (!isClimbing)
+        if (!isClimbing && GetIsGrounded().Equals(false))
         {
-            if(!isJumpAttack)
-                SetGravity();
-            if (isGrounded)
-                jumpAttackPoint = 0;
-        }
-        else if (!isRightBlocked && !isLeftBlocked)
-        {
-            SetIsClimbing(false);
+            SetGravity();
         }
         else
         {
             changingGravity = defaultGravity;
         }
 
-        if (isGrounded || GetIsClimbing())
-            jumpCount = 0;
+        if (!isRightBlocked && !isLeftBlocked)
+        {
+            SetIsClimbing(false);
+        }
     }
        
     public void ChargeStart()
@@ -148,15 +143,11 @@ public class cPlayer : cCharacter
 
     public void Attack_front()
     {
-        //if (isClimbing.Equals(true))
-        //    return;
         _animator.SetTrigger("AttackFront");
         status = CHARACTERSTATUS.ATTACK;
     }
     public void Attack_up()
     {
-        //if (isClimbing.Equals(true))
-        //    return;
         _animator.SetTrigger("AttackUp");
         status = CHARACTERSTATUS.ATTACK;
     }
@@ -176,16 +167,16 @@ public class cPlayer : cCharacter
         //양옆
         else if (pDir == 1)
         {
-            if(GetIsClimbing().Equals(true))
-            {
+            if(isClimbing.Equals(true))
                 attackBox.transform.localPosition = attackBoxPos[3];
-            }
             else
                 attackBox.transform.localPosition = attackBoxPos[1];
         }
         //아래
         else if (pDir == 2)
             attackBox.transform.localPosition = attackBoxPos[2];
+
+        attackBox.SetActive(true);
 
         float t_tileHp = 0;
 
@@ -215,15 +206,21 @@ public class cPlayer : cCharacter
     {
         attackBox.SetActive(false);
         status = CHARACTERSTATUS.NONE;
-        isJumpAttack = false;
         _animator.SetBool("ChargeDone", false);
     }
     
-    public void UseItem(ITEM rItem)
+    public byte UseItem(byte pItemKind)
     {
-        Debug.Log(rItem);
-        inven.GetItemUse()[(int)rItem].UseItem();
-        inven.GetItemUse()[5].UseItem();
+        byte curAmount = 100;
+        for (byte i = 0; i < inven.GetItemUse().Count; i++)
+        {
+            if (pItemKind.Equals((byte)inven.GetItemUse()[i].kind))
+            {
+                curAmount = inven.GetItemUse()[i].UseItem();
+                break;
+            }
+        }
+        return curAmount;
     }
 
     public void StartSpeedUp(float pAmount, float pTime)

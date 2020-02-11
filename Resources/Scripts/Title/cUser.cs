@@ -9,16 +9,11 @@ public class cUser : MonoBehaviour
     
     void Start()
     {
-        saveString = "save4";
+        saveString = "save5";
         LoadUserData();
     }
 
     public string GetPlayerName() { return _playerInfo.nickName; }
-    public cPlayer GetPlayer()
-    {
-        return _playerInfo.player;
-    }
-    public void SetPlayer(cPlayer pP) { _playerInfo.player = pP; }
     public cInventory GetInventory() { return _playerInfo.inventory; }
 
     #region 데이터 저장&불러오기
@@ -63,12 +58,22 @@ public class cUser : MonoBehaviour
             for (byte i = 0; i < 4; i++)
                 skillLevel[i] = 0;
 
+            //점령지 점령 여부 초기화
+            bool[] flaged = new bool[15];
+            for (byte i = 0; i < flaged.Length; i++)
+                flaged[i] = false;
+
+            //보스 점령 여부 초기화
+            bool[] bossDone = new bool[5];
+            for (byte i = 0; i < bossDone.Length; i++)
+                bossDone[i] = false;
+
             //퀵슬롯 아이템 넘버 초기화
             short[] quickSlotItemNum = new short[4];
             for (byte i = 0; i < 4; i++)
                 quickSlotItemNum[i] = -1;
 
-            _playerInfo = new cPlayerInfo("이름입니다.", tAxe, skillLevel, quickSlotItemNum, this.GetComponent<cInventory>(), 
+            _playerInfo = new cPlayerInfo("이름입니다.", tAxe, skillLevel,flaged, bossDone, quickSlotItemNum, this.GetComponent<cInventory>(), 
                 money, rock, dia, jewerly, soul);
 
             SaveUserData();

@@ -65,11 +65,11 @@ public class cTileMng : MonoBehaviour
         
         CheckTiles(tileMap_canHit, pObj);
         CheckTiles(tileMap_cannotHit, pObj);
-        
+
         if (pObj.notUpBlocked)
             pObj.isUpBlocked = false;
-        if (pObj.notGrounded)
-            pObj.isGrounded = false;
+        if (pObj.notGrounded)        
+            pObj.SetIsGrounded(false);        
         if (pObj.notLeftBlocked)
             pObj.isLeftBlocked = false;
         if (pObj.notRightBlocked)
@@ -186,7 +186,7 @@ public class cTileMng : MonoBehaviour
                             if (distX > distY)
                             {
                                 pObj.notGrounded = false;
-                                pObj.isGrounded = true;
+                                pObj.SetIsGrounded(true);
                                 pObj.originObj.transform.position = new Vector3(
                                     originTPos.x,
                                     (cellToWorldPos.y + tileSize) + originRtYLenHalf,
@@ -216,7 +216,7 @@ public class cTileMng : MonoBehaviour
                         if (originTPos.y - originRtYLenHalf < (cellToWorldPos.y + tileSize))
                         {
                             pObj.notGrounded = false;
-                            pObj.isGrounded = true;
+                            pObj.SetIsGrounded(true);
                             pObj.originObj.transform.position = new Vector3(
                                 originTPos.x,
                                 (cellToWorldPos.y + tileSize) + originRtYLenHalf,
@@ -244,7 +244,7 @@ public class cTileMng : MonoBehaviour
                             if (distX > distY)
                             {
                                 pObj.notGrounded = false;
-                                pObj.isGrounded = true;
+                                pObj.SetIsGrounded(true);
                                 pObj.originObj.transform.position = new Vector3(
                                     originTPos.x,
                                     (cellToWorldPos.y + tileSize) + originRtYLenHalf,
@@ -362,6 +362,11 @@ public class cTileMng : MonoBehaviour
         bool isChecked = false;
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
         Vector3 cellToWorldPos = tileMap_canHit.CellToWorld(worldToCellPos);
+        if (!dic_canHit.ContainsKey(cellToWorldPos))
+        {
+            pCurHpPercent = 0;
+            return false;
+        }
         if (dic_canHit[cellToWorldPos].curHp.value <= 0)
         {
             pCurHpPercent = 0;

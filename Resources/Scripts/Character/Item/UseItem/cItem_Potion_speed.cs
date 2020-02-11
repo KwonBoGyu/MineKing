@@ -12,8 +12,8 @@ public class cItem_Potion_speed : cItem_use
     public void SetSpeedUpTime(float pSpeedUpTime) { this.speedUpTime = pSpeedUpTime; }
     public void SetSpeedUpAmount(float pSpeepUpAmount) { this.speedUpAmount = pSpeepUpAmount; }
     #region 생성자
-    public cItem_Potion_speed(string pName, int pPrice, int pAmount, int pKind, int pKindNum)
-        : base(pName, pPrice, pAmount, pKind, pKindNum)
+    public cItem_Potion_speed(string pName, string pDesc, cProperty pPrice, byte pAmount, byte pKind)
+        : base(pName, pDesc, pPrice, pAmount, pKind)
     {
         speedUpTime = 5.0f;
         speedUpAmount = 1.5f;
@@ -22,11 +22,19 @@ public class cItem_Potion_speed : cItem_use
 
     // n초동안 일정 %만큼의 이동속도 증가
     // 임시 : 5초, 50%
-    public override void UseItem()
+    public override byte UseItem()
     {
-        base.UseItem();
+        byte curAmount = 0;
 
-        cUtil._user.GetPlayer().StartSpeedUp(speedUpAmount, speedUpTime);
+        curAmount = base.UseItem();
+
+        if (curAmount.Equals(100))
+            return curAmount;
+
+        cUtil._player.StartSpeedUp(speedUpAmount, speedUpTime);
+
+        return curAmount;
+
     }
 
 }

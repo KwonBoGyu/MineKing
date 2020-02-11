@@ -5,19 +5,19 @@ using UnityEngine;
 [System.Serializable]
 public class cItem_etc : cItem
 {
-    public int amount;
+    public byte amount;
 
     #region 생성자
-    public cItem_etc(string pName, int pPrice, int pAmount, int pKind, int pKindNum)
-        : base(pName, pPrice, pKind, pKindNum)
+    public cItem_etc(string pName, string pDesc, cProperty pPrice, byte pAmount, byte pKind)
+        : base(pName, pDesc, pPrice, pKind)
     {
         amount = pAmount;
     }
 
     public cItem_etc(cItem_etc pIe)
-        : base(pIe._name, pIe.price, pIe.kind, pIe.kindNum)
+        : base(pIe._name, pIe.desc, pIe.price, pIe.kind)
     {
-        this.amount = pIe.amount;
+        amount = pIe.amount;
     }
     #endregion
 }

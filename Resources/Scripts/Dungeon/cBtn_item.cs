@@ -7,14 +7,9 @@ using UnityEngine.EventSystems;
 
 public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public ITEM[] items; //0.현재, 1.퀵슬롯1 2.퀵슬롯2 3.퀵슬롯3
-    private int toChangeBtnIdx;
-
-    public cPlayer scr_player;
-
-    public GameObject btn1;
-    public GameObject btn2;
-    public GameObject btn3;
+    private byte btnIdx;
+    
+    public GameObject[] obj_buttons;
 
     private bool isPopUpActive;
     private float popUpStartTimer;
@@ -23,10 +18,54 @@ public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void Start()
     {
-        for (int i = 3; i >=0; i--)
-            items[i] = (ITEM)i;
-
+        UpdateQuickSlot();
+        
         cor_buttonDown = ButtonDown();
+    }
+
+    public void UpdateQuickSlot()
+    {
+        for (byte i = 0; i < 4; i++)
+        {
+            //이미 지정된 단축키 아이템 표시
+            if (cUtil._user._playerInfo.quickSlotItemNum[i] != -1)
+            {
+                //수량 인덱스
+                byte itemIdx = 0;
+                for (byte k = 0; k < cUtil._user._playerInfo.inventory.GetItemUse().Count; k++)
+                {
+                    if (cUtil._user._playerInfo.quickSlotItemNum[i].Equals(cUtil._user._playerInfo.inventory.GetItemUse()[k].kind))
+                    {
+                        itemIdx = k;
+                        break;
+                    }
+                }
+                //수량이 없다면..
+                if (cUtil._user._playerInfo.inventory.GetItemUse()[itemIdx].amount < 1)
+                {
+                    obj_buttons[i].transform.GetChild(0).gameObject.SetActive(false);
+                    obj_buttons[i].transform.GetChild(1).gameObject.SetActive(false);
+                    cUtil._user._playerInfo.quickSlotItemNum[i] = -1;
+                }
+                //수량이 있다면..
+                else
+                {
+                    obj_buttons[i].transform.GetChild(1).GetComponent<Text>().text =
+                        cUtil._user._playerInfo.inventory.GetItemUse()[itemIdx].amount.ToString();
+                    obj_buttons[i].transform.GetChild(1).gameObject.SetActive(true);
+
+                    //이미지
+                    obj_buttons[i].transform.GetChild(0).GetComponent<Image>().sprite =
+                        Resources.LoadAll<Sprite>("Images/Main/img_items")[cUtil._user._playerInfo.quickSlotItemNum[i] + citemTable.GetUseItemTotalNum()];
+                    obj_buttons[i].transform.GetChild(0).gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                obj_buttons[i].transform.GetChild(0).gameObject.SetActive(false);
+                obj_buttons[i].transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -41,49 +80,46 @@ public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         StopCoroutine(cor_buttonDown);
 
-        //아이템 변경
+        //퀵슬롯 아이템 사용
         if (isPopUpActive.Equals(true))
         {
-            //아이템 변경
-            if (toChangeBtnIdx != -1)
+            if (btnIdx != 4)
             {
-                ITEM t_item = items[0];
-                items[0] = items[toChangeBtnIdx];
-                items[toChangeBtnIdx] = t_item;
-            }
+                //퀵슬롯에 지정되어 있다면 실행
+                if (cUtil._user._playerInfo.quickSlotItemNum[btnIdx] != -1)
+                {
+                    byte curAmount = 100;
+                    byte itemKind = (byte)cUtil._user._playerInfo.quickSlotItemNum[btnIdx];
+                    curAmount = cUtil._player.UseItem(itemKind);
 
-            btn1.SetActive(false);
-            btn2.SetActive(false);
-            btn3.SetActive(false);
+                    //수량 소진시 퀵슬롯 및 인벤토리에서 삭제
+                    if (curAmount.Equals(0) || curAmount.Equals(100))
+                    {
+                        cUtil._user._playerInfo.quickSlotItemNum[btnIdx] = -1;
+                        for(byte i = 0; i < cUtil._user._playerInfo.inventory.GetItemUse().Count; i++)
+                        {
+                            if (cUtil._user._playerInfo.inventory.GetItemUse()[i].kind.Equals(itemKind))
+                            {
+                                cUtil._user._playerInfo.inventory.GetItemUse().RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            for (byte i = 1; i < obj_buttons.Length; i++)
+                obj_buttons[i].SetActive(false);            
         }
-        //아이템 사용
+        //메인 아이템 사용
         else
         {
-            scr_player.UseItem(items[0]);
-            //switch (items[0])
-            //{
-            //    case ITEM.BOMB:
-            //        Debug.Log("bomb");
-            //        scr_player.SetBomb();
-            //        break;
-            //    case ITEM.ROPE:
-            //        Debug.Log("rope");
-            //        scr_player.SetRope();
-            //        break;
-            //    case ITEM.SANDBAG:
-            //        Debug.Log("sandbag");
-            //        scr_player.SetSandBag();
-            //        break;
-            //    case ITEM.POTION_HP:
-            //        Debug.Log("pt_hp");
-            //        scr_player.UseHpPotion();
-            //        break;
-            //    case ITEM.POTION_SPEED:
-            //        Debug.Log("pt_sp");
-            //        scr_player.UseSpeedPotion();
-            //        break;
-            //}
+            //퀵슬롯에 지정되어 있다면 실행
+            if (cUtil._user._playerInfo.quickSlotItemNum[0] != -1)
+                cUtil._player.UseItem((byte)cUtil._user._playerInfo.quickSlotItemNum[0]);            
         }
+
+        UpdateQuickSlot();
     }
 
     IEnumerator ButtonDown()
@@ -99,29 +135,33 @@ public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 if (popUpStartTimer >= 0.7f)
                 {
                     isPopUpActive = true;
-                    btn1.SetActive(true);
-                    btn2.SetActive(true);
-                    btn3.SetActive(true);
+                    for (byte i = 1; i < obj_buttons.Length; i++)
+                        obj_buttons[i].SetActive(true);
                 }
             }
             else
             {
                 Vector2 worldPos = Input.mousePosition;
-                Ray2D ray = new Ray2D(worldPos, Vector2.zero);
+                Ray2D ray = new Ray2D(worldPos, Vector2.left);
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-
                 if (hit)
                 {
                     if (hit.transform.gameObject.tag.Equals("quickSlot_item1"))
-                        toChangeBtnIdx = 1;
+                    {
+                        btnIdx = 1;
+                    }
                     else if (hit.transform.gameObject.tag.Equals("quickSlot_item2"))
-                        toChangeBtnIdx = 2;
+                    {
+                        btnIdx = 2;
+                    }
                     else if (hit.transform.gameObject.tag.Equals("quickSlot_item3"))
-                        toChangeBtnIdx = 3;
+                    {
+                        btnIdx = 3;
+                    }
                     else
-                        toChangeBtnIdx = -1;
-
-                    Debug.Log(hit.transform.gameObject.name);
+                    {
+                        btnIdx = 4;                    
+                    }
                 }
             }
         }

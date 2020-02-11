@@ -5,8 +5,8 @@ using UnityEngine;
 public class cItem_Potion_hp : cItem_use
 {
     #region 생성자
-    public cItem_Potion_hp(string pName, int pPrice, int pAmount, int pKind, int pKindNum)
-        : base(pName, pPrice, pAmount, pKind, pKindNum)
+    public cItem_Potion_hp(string pName, string pDesc, cProperty pPrice, byte pAmount, byte pKind)
+        : base(pName, pDesc, pPrice, pAmount, pKind)
     {
     }
     #endregion
@@ -20,11 +20,16 @@ public class cItem_Potion_hp : cItem_use
     //    pMaxHp * 0.1f;
     //}
 
-    
-    public override void UseItem()
-    {
-        base.UseItem();
 
-        cUtil._user.GetPlayer().IncreaseHP(new cProperty("HP", (long)(cUtil._user.GetPlayer().GetMaxHp().value * 0.1f)));
+    public override byte UseItem()
+    {
+        byte curAmount = 0;
+
+        curAmount = base.UseItem();
+
+        if (curAmount.Equals(100))
+            return curAmount;
+        cUtil._player.RestoreHp(new cProperty("HP", (long)(cUtil._player.GetMaxHp().value * 0.25f)));
+        return curAmount;
     }
 }

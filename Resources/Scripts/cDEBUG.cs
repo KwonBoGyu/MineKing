@@ -38,7 +38,7 @@ public class cDEBUG : MonoBehaviour
         else if (_p.GetDirection() == Vector3.down)
             _dir.text = "DIRECTION : DOWN";
 
-        if (_p.isGrounded == true)
+        if (_p.GetIsGrounded() == true)
             _isGrounded.text = "GROUNDED : TRUE";
         else
             _isGrounded.text = "GROUNDED : FALSE";

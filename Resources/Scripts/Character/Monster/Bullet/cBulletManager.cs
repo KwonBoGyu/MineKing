@@ -13,49 +13,26 @@ public class cBulletManager : MonoBehaviour
 {
     public GameObject originMonster;
     public GameObject[] bullets;
-    private Transform _player;
     private float bulletTerm; // 발사체 발사 간격
 
     private void Start()
     {
         originMonster = this.transform.parent.gameObject;
         bullets = new GameObject[this.gameObject.transform.childCount];
-        for(int i = 0; i < bullets.Length; i++)
+        for (int i = 0; i < bullets.Length; i++)
         {
             bullets[i] = this.gameObject.transform.GetChild(i).gameObject;
         }
-        _player = cUtil._player.gameObject.transform;
-    }
-    
-    public void SetBullet(int pIdx)
-    {
-        switch (pIdx)
-        {
-            // 한발 발사
-            case 0:
-                bulletTerm = 0;
-                StartCoroutine(Launch(1, BULLET_TYPE.NORMAL, false));
-                break;
-            // 3연발 & 중력 on
-            case 1:
-                bulletTerm = 0.3f;
-                StartCoroutine(Launch(3, BULLET_TYPE.NORMAL, true));
-                break;
-            // 분열형 & 중력 off
-            case 2:
-                bulletTerm = 0f;
-                StartCoroutine(Launch(1, BULLET_TYPE.SPLIT, false));
-                break;
-            // 수류탄형 & 중력 on
-            case 3:
-                bulletTerm = 0.3f;
-                StartCoroutine(Launch(5, BULLET_TYPE.GRENADE, true));
-                break;
-        }
     }
 
-    // 발사 코루틴
-    IEnumerator Launch(int pBulletAmount, BULLET_TYPE pType, bool pIsGravity)
+    // targetType : 0 -> 플레이어 방향 발사
+    public void SetBullet(int pBulletAmount, BULLET_TYPE pBulletType, bool pIsGravity, Vector3 pTarget, float pBulletTerm = 0)
+    {
+        bulletTerm = pBulletTerm;
+        StartCoroutine(Launch(pBulletAmount, pBulletType, pIsGravity, pTarget));
+    }
+
+    IEnumerator Launch(int pBulletAmount, BULLET_TYPE pType, bool pIsGravity, Vector3 pTarget)
     {
         int idx = 0;
 
@@ -77,25 +54,10 @@ public class cBulletManager : MonoBehaviour
             bullets[idx].SetActive(true);
             script.SetType(pType); // 투사체 타입 설정
             script.isGravityOn = pIsGravity; // 중력 적용 여부
+            Vector3 tempDir = pTarget - originMonster.transform.position;
+            tempDir = tempDir.normalized;
+            script.dir = tempDir;
 
-            switch (pType)
-            {
-                // 일반형 ( 플레이어 방향으로 발사 )
-                case BULLET_TYPE.NORMAL:
-                    Vector3 tempDir = _player.position - originMonster.transform.position;
-                    tempDir = tempDir.normalized;
-                    script.dir = tempDir;
-                    break;
-                // 수류탄형 ( 공중 랜덤한 방향으로 발사 )
-                case BULLET_TYPE.GRENADE:
-                    float x = Random.Range(-0.6f, 0.5f);
-                    float y = Random.Range(0.4f, 1.0f);
-                    script.dir = new Vector3(x, y, 0);
-                    break;
-                case BULLET_TYPE.SPLIT:
-                    break;
-            }
-            
             yield return new WaitForSeconds(bulletTerm); // 투사체간 발사 간격만큼 대기
             idx++;
         }

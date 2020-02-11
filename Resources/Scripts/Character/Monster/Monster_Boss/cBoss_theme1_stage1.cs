@@ -78,7 +78,7 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
 
                 if (timer >= curCoolTime)
                 {
-                    bulletMng.SetBullet(1);
+                    //bulletMng.SetBullet(1);
                     curPatternCount += 1;
                     timer = 0;
                 }
@@ -99,7 +99,7 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
                 if (timer >= curCoolTime)
                 {
                     Debug.Log("on");
-                    bulletMng.SetBullet(3);
+                    //bulletMng.SetBullet(3);
                     curPatternCount += 1;
                     timer = 0;
                     break;

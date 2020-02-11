@@ -19,7 +19,7 @@ public class cBtn_dash : MonoBehaviour, IPointerDownHandler
         if (scr_player.GetStatus() == CHARACTERSTATUS.NONE &&
             scr_player.GetDashCoolDown() == scr_player.GetMaxDashCoolDown())
         {
-            if (scr_player.isGrounded == true)
+            if (scr_player.GetIsGrounded().Equals(true))
             {
                 scr_player.StartCoroutine("Dash");
                 scr_player.StartCoroutine("DashCoolDown");

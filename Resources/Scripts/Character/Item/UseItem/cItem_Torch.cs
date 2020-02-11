@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class cItem_Torch : cItem_use
 {
-    public cItem_Torch(string pName, int pPrice, int pAmount, int pKind, int pKindNum)
-       : base(pName, pPrice, pAmount, pKind, pKindNum)
+    public cItem_Torch(string pName, string pDesc, cProperty pPrice, byte pAmount, byte pKind)
+        : base(pName, pDesc, pPrice, pAmount, pKind)
     {
-
     }
 
-    public override void UseItem()
+    public override byte UseItem()
     {
-        base.UseItem();
+        byte curAmount = 0;
 
-        Transform tempT = cUtil._user.GetPlayer().transform;
+        curAmount = base.UseItem();
 
-        //GameObject torch = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Item_Torch"), tempT.position,
-        //    Quaternion.identity, tempT.parent.transform.parent);
+        if (curAmount.Equals(100))
+            return curAmount;
+
+        cUtil._player.useMng.SetTorch();
+
+        return curAmount;
     }
 }

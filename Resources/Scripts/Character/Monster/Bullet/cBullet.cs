@@ -10,10 +10,12 @@ public class cBullet : MonoBehaviour
 
     public BULLET_TYPE type;
     public bool isGravityOn;
-    public float speed;
+    private float maxSpeed;
+    public float curSpeed;
     public Vector3 dir;
     private float distance;
     public float damage;
+    private bool isCollide;
     // 중력 적용을 위한 변수
     private float changingGravity;
     private float defaultGravity;
@@ -28,12 +30,13 @@ public class cBullet : MonoBehaviour
         rangeCollider = originMonster.transform.GetChild(1).GetComponent<CircleCollider2D>();
         attackRange = rangeCollider.radius;
         damage = originMonster.GetComponent<cEnemy_Ranged>().GetBulletDamage();
-        changingGravity = 200f;
+        changingGravity = 100f;
         defaultGravity = 400f;
 
         splitCount = 0;
         explodeOn = false;
         explodeTime = 3.0f;
+        isCollide = false;
     }
 
     private void OnEnable()
@@ -42,6 +45,8 @@ public class cBullet : MonoBehaviour
         this.transform.localScale = new Vector3(1, 1, 1);
         changingGravity = 200f;
         explodeOn = false;
+        curSpeed = maxSpeed;
+        isCollide = false;
     }
 
     public void SetType(BULLET_TYPE pType)
@@ -51,27 +56,31 @@ public class cBullet : MonoBehaviour
         switch (pType)
         {
             case BULLET_TYPE.NORMAL:
-                speed = 300f;
+                maxSpeed = 300f;
+                curSpeed = maxSpeed;
                 break;
                 
             case BULLET_TYPE.SPLIT:
-                speed = 300f;
+                maxSpeed = 300f;
+                curSpeed = maxSpeed;
                 break;
                 
             case BULLET_TYPE.GRENADE:
-                speed = 500f;
+                maxSpeed = 500f;
+                curSpeed = maxSpeed;
                 break;
         }
     }
 
     private void FixedUpdate()
     {
+
         if (dir != null)
         {
-            transform.Translate(dir * Time.deltaTime * speed);
+            transform.Translate(dir * Time.deltaTime * curSpeed);
 
             // 중력이 적용되는 경우
-            if (isGravityOn)
+            if (isGravityOn && !isCollide)
             {
                 SetGravity();
             }
@@ -91,14 +100,23 @@ public class cBullet : MonoBehaviour
     {
         this.gameObject.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
         if (changingGravity <= defaultGravity)
-            changingGravity *= 1.02f;
-        if (changingGravity > defaultGravity)
+            changingGravity *= 1.2f;
+        else if (changingGravity > defaultGravity)
             changingGravity = defaultGravity;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        switch(type)
+        if (collision.gameObject.tag.Equals("Tile_canHit"))
+        {
+            isCollide = true;
+        }
+        else if (collision.gameObject.tag.Equals("Tile_CannotHit"))
+        {
+            isCollide = true;
+        }
+
+        switch (type)
         {
             case BULLET_TYPE.NORMAL:
                 if (collision.gameObject.tag.Equals("Player"))
@@ -165,14 +183,14 @@ public class cBullet : MonoBehaviour
                 }
                 else if (collision.gameObject.tag.Equals("Tile_canHit"))
                 {
-                    speed = 0f;
+                    curSpeed = 0f;
                     dir = Vector3.zero;
                     isGravityOn = false;
                     StartCoroutine("SetGrenade");
                 }
                 else if (collision.gameObject.tag.Equals("Tile_cannotHit"))
                 {
-                    speed = 0f;
+                    curSpeed = 0f;
                     dir = Vector3.zero;
                     isGravityOn = false;
                     StartCoroutine("SetGrenade");

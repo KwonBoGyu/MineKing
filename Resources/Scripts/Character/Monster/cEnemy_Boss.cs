@@ -35,7 +35,7 @@ public class cEnemy_Boss : cEnemy_monster
         rt = originObj.GetComponent<BoxCollider2D>();
         defaultGravity = 300.0f;
         changingGravity = defaultGravity;
-        isGrounded = false;
+        SetIsGrounded(false);
         jumpHeight = 200.0f;
         id = pId;
         rocks.value = pRocks.value;

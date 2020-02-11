@@ -18,17 +18,21 @@ public class cMonster_stage1_slime : cEnemy_Ranged
         isSplited = false;
     }
 
-    void Start()
+    private void Start()
     {
-        bulletTypeNum = 0; // 발사체 타입 : 일반형
+        Init(cEnemyTable.SetMonsterInfo(1));
+
         attackCoolTime = 3.0f;
-        curCoolTime = attackCoolTime;
-        isAttackReady = true;
+        bulletCoolTime = 3.0f;
+        timer = bulletCoolTime;
         bulletDamage = (long)(damage.value * 0.5f);
 
-        Init(cEnemyTable.SetMonsterInfo(1));
-        curMoveSpeed = maxMoveSpeed;
-        bulletDamage = (long)(damage.value * 0.5f);
+    }
+
+    public override void Init(enemyInitStruct pEs)
+    {
+        base.Init(pEs);
+        respawnTime = 5.0f;
     }
 
     protected override void FixedUpdate()

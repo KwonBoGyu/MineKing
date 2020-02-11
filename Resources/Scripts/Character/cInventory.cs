@@ -64,7 +64,8 @@ public class cInventory : MonoBehaviour
             l_itemUse.Add((cItem_use)pUse);
         }
         l_itemEtc = new List<cItem_etc>();
-                
+
+        
         money = new cGold();
         rock = new cRock();
         dia = new cDia();

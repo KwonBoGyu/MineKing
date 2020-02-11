@@ -109,12 +109,12 @@ public class cDungeonNormal_processor : MonoBehaviour
             new cProperty("MaxHp", 100),
             new cProperty("CurHp", 100));
         cUtil._player = _p;
-        _e.Init("Slime",
-            new cProperty("Damage", 1),
-            250,
-            new cProperty("MaxHp", 10),
-            new cProperty("CurHp", 10));
-        _player.SetActive(true);
+        //_e.Init("Slime",
+        //    new cProperty("Damage", 1),
+        //    250,
+        //    new cProperty("MaxHp", 10),
+        //    new cProperty("CurHp", 10));
+        //_player.SetActive(true);
 
         //ui
         b_bag.onClick.AddListener(() => _bag.OpenBag());

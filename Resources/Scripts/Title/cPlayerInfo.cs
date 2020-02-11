@@ -6,9 +6,10 @@ using UnityEngine;
 public class cPlayerInfo
 {
     public string nickName;
-    public cPlayer player;
     public cAxe weapon;
     public cInventory inventory;
+    public bool[] flaged;   //스테이지별 점령지 3개씩 : 0~2, 3~5, 6~8, 9~11, 12~14
+    public bool[] bossDone;
     public cItem_equip[] item_equip;
     public cItem_use[] item_use;
     public cItem_etc[] item_etc;
@@ -21,7 +22,8 @@ public class cPlayerInfo
     public short[] quickSlotItemNum;
 
     #region 생성자
-    public cPlayerInfo(string pNickName, cAxe pAxe, byte[] pSkillLevel, short[] pQuickSlotItemNum,cInventory pInventory, 
+    public cPlayerInfo(string pNickName, cAxe pAxe, byte[] pSkillLevel, bool[] pFlaged, bool[] pBossDone,
+        short[] pQuickSlotItemNum,cInventory pInventory, 
         cGold pMoney, cRock pRock, cDia pDia, cJewerly[] pJewerly, cSoul[] pSoul,
         cItem_equip[] pItem_equip = null, cItem_use[] pItem_use = null, cItem_etc[] pItem_etc = null)
     {
@@ -29,6 +31,14 @@ public class cPlayerInfo
         skillLevel = new byte[4];
         for (byte i = 0; i < skillLevel.Length; i++)
             skillLevel[i] = pSkillLevel[i];
+
+        flaged = new bool[15];
+        for (byte i = 0; i < flaged.Length; i++)
+            flaged[i] = pFlaged[i];
+
+        bossDone = new bool[5];
+        for (byte i = 0; i < bossDone.Length; i++)
+            bossDone[i] = pBossDone[i];
 
         quickSlotItemNum = new short[4];
         for (byte i = 0; i < quickSlotItemNum.Length; i++)
@@ -73,6 +83,14 @@ public class cPlayerInfo
         skillLevel = new byte[4];
         for (byte i = 0; i < skillLevel.Length; i++)
             skillLevel[i] = pPi.skillLevel[i];
+
+        flaged = new bool[15];
+        for (byte i = 0; i < flaged.Length; i++)
+            flaged[i] = pPi.flaged[i];
+
+        bossDone = new bool[5];
+        for (byte i = 0; i < bossDone.Length; i++)
+            bossDone[i] = pPi.bossDone[i];
 
         quickSlotItemNum = new short[4];
         for (byte i = 0; i < quickSlotItemNum.Length; i++)

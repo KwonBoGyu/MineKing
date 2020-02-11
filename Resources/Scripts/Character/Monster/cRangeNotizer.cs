@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class cRangeNotizer : MonoBehaviour
 {
+    private bool isInRange;
     private float radius;
+    private cEnemy_monster script;
+    private cPlayer _player;
 
     private void Start()
     {
-        radius = this.gameObject.GetComponent<CircleCollider2D>().radius;    
+        isInRange = false;
+        radius = this.gameObject.GetComponent<CircleCollider2D>().radius;
+        script = GetComponentInParent<cEnemy_monster>();
+        _player = cUtil._player;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void FixedUpdate()
     {
-        if (collision.tag == "Player")
+        if (isInRange)
         {
             Debug.Log("플레이어 인식 ");
             Vector3 dir = (cUtil._player.originObj.transform.position - this.gameObject.transform.position).normalized;
@@ -27,34 +33,35 @@ public class cRangeNotizer : MonoBehaviour
                 Debug.Log(hit[i].collider.gameObject.name);
                 if (hit[i].collider.gameObject.tag.Equals("Tile_canHit"))
                 {
-                    Debug.Log("벽1");
-                    GetComponentInParent<cEnemy_monster>().isInNoticeRange = false;
+                    script.isInNoticeRange = false;
                     break;
                 }
                 else if (hit[i].collider.gameObject.tag.Equals("Tile_cannotHit"))
                 {
-                    Debug.Log("벽2");
-                    GetComponentInParent<cEnemy_monster>().isInNoticeRange = false;
+                    script.isInNoticeRange = false;
                     break;
                 }
                 else
                 {
-                    Debug.Log("인식함");
                     // 인식 범위 안에 들어온 경우
-                    GetComponentInParent<cEnemy_monster>().isInNoticeRange = true;
+                    script.isInNoticeRange = true;
                     break;
                 }
             }
+        }
+        else
+        {
+            script.isInNoticeRange = false;
+        }
 
-            // 공격 범위 안에 들어왔는지 계산
-            if (Vector3.Distance(collision.transform.position, this.transform.position) < 70.0f)
-            {
-                GetComponentInParent<cEnemy_monster>().isInAttackRange = true;
-            }
-            else
-            {
-                GetComponentInParent<cEnemy_monster>().isInAttackRange = false;
-            }
+        Debug.Log("isInNoticeRange : " + script.isInNoticeRange);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            isInRange = true;
         }
     }
 
@@ -63,7 +70,8 @@ public class cRangeNotizer : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            GetComponentInParent<cEnemy_monster>().isInNoticeRange = false;
+            isInRange = false;
         }
     }
 }
+

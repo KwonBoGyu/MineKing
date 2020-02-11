@@ -40,7 +40,8 @@ public class cCharacter : MonoBehaviour
     protected cProperty maxHp;
     protected cProperty curHp;
     protected float jumpHeight;
-    protected bool isDoubleJump;
+    public byte jumpCount;
+    public bool isJumpStart;
     protected float maxDashCoolDown; // 실제 대쉬 쿨다운
     protected float dashCoolDown; // 쿨다운 계산용 (변화)
     protected bool isJetPackOn;
@@ -51,7 +52,6 @@ public class cCharacter : MonoBehaviour
     protected Vector3 dir;
     public GameObject originObj;
     public BoxCollider2D rt;
-    public int jumpCount;
 
     public cTileMng tileMng;
 
@@ -67,13 +67,32 @@ public class cCharacter : MonoBehaviour
     public float changingGravity;
     public float defaultGravity;
 
-    public bool isGrounded;
+    private bool horizontalGroundJumpCheck;
+    private bool isGrounded;
+    public bool GetIsGrounded() { return isGrounded; }
+    public void SetIsGrounded(bool pGrounded)
+    {
+        if (isGrounded.Equals(pGrounded))        
+            return;
+        
+        isGrounded = pGrounded;
+
+        if(GetIsGrounded().Equals(true))
+        {
+            if(isJumpStart.Equals(false))
+                jumpCount = 0;
+
+            isJumpStart = false;
+            if (jumpCount > 1)
+                jumpCount = 0;
+        }
+    }
     public bool isRightBlocked;
     public bool isLeftBlocked;
     public bool isUpBlocked;
 
     public GameObject attackBox;
-    protected Vector3[] attackBoxPos; //오른, 아래, 왼, 위
+    public Vector3[] attackBoxPos; //오른, 아래, 왼, 위
 
     private IEnumerator cor_knockBack;
     protected Animator _animator;
@@ -87,12 +106,12 @@ public class cCharacter : MonoBehaviour
     public virtual void Init(string pNickName, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp)
     {
         nickName = pNickName;
-        damage = pDamage;
+        damage = new cProperty(pDamage);
         maxMoveSpeed = pMaxMoveSpeed;
         dashMoveSpeed = maxMoveSpeed + 400;
         curMoveSpeed = 0;
-        maxHp = pMaxHp;
-        curHp = pCurHp;
+        maxHp = new cProperty(pMaxHp);
+        curHp = new cProperty(pCurHp);
         dir = Vector3.right;
         jumpHeight = 200.0f;
         attackBoxPos = new Vector3[4];
@@ -105,16 +124,6 @@ public class cCharacter : MonoBehaviour
     
     public cProperty GetMaxHp() { return maxHp; }
     public cProperty GetCurHP() { return curHp; }
-    public void IncreaseHP(cProperty pAmount)
-    {
-        if(curHp.value <= maxHp.value)
-            curHp.value += pAmount.value;
-
-        if (curHp.value > maxHp.value)
-            curHp.value = maxHp.value;
-
-        SetHp();
-    }
 
     protected virtual void FixedUpdate()
     {
@@ -122,9 +131,7 @@ public class cCharacter : MonoBehaviour
             tileMng = cUtil._tileMng;
         
         if(tileMng != null)
-        {
-            tileMng.CheckCanGroundTile(this);               
-        }
+            tileMng.CheckCanGroundTile(this);
     }
 
     public cProperty GetDamage() { return damage; }
@@ -148,31 +155,24 @@ public class cCharacter : MonoBehaviour
     //점프 코루틴
     IEnumerator Jump()
     {
-        yield return null;
-
         bool goBreak = false;
-
-        if (isGrounded || isClimbing)
-            isDoubleJump = false;
-
-        if (!isGrounded && !isDoubleJump && !isClimbing)
-            isDoubleJump = true;
-        else if (!isGrounded && isDoubleJump && !isClimbing)
+        
+        if(jumpCount > 2)
+        {
+            jumpCount = 0;
             goBreak = true;
-
+        }
         SetIsClimbing(false);
-        isGrounded = false;
         
         float jumpTimer = 0;
         float factor;
 
         float currentHeight = originObj.transform.position.y;
-
-
+        
         sm.playEffect(1);
         while (true)
         {
-            if(goBreak || isClimbing)
+            if (goBreak || isClimbing)
             {
                 break;
             }
@@ -291,7 +291,6 @@ public class cCharacter : MonoBehaviour
     {
         if (!isGrounded&&!status.Equals(CHARACTERSTATUS.JUMP))
         {
-            Debug.Log("GRAVITY ADAPTED");
             originObj.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
             if (changingGravity <= 1500)
                 changingGravity *= 1.02f;
@@ -304,6 +303,7 @@ public class cCharacter : MonoBehaviour
 
     public virtual void ReduceHp(long pVal)
     {
+        Debug.Log(this.name + " hp : " + this.curHp.value);
         curHp.value -= pVal;
 
         if (curHp.value < 0)
@@ -328,7 +328,7 @@ public class cCharacter : MonoBehaviour
             _animator.SetTrigger("getHit");
     }
 
-    public void RestoreHp(cProperty pVal, bool toFool)
+    public void RestoreHp(cProperty pVal, bool toFool = false)
     {
         if (toFool)
             curHp.value = maxHp.value;
@@ -337,6 +337,7 @@ public class cCharacter : MonoBehaviour
 
         if (curHp.value > maxHp.value)
             curHp.value = maxHp.value;
+        SetHp();
     }
 
     protected void SetHp()
@@ -415,8 +416,6 @@ public class cCharacter : MonoBehaviour
         {
             _animator.SetTrigger("Crawl");
         }
-        else
-            jumpCount = 0;
             
         isClimbing = pbool;
         _animator.SetBool("isCrawl", isClimbing);
