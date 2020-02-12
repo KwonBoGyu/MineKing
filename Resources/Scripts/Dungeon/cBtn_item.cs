@@ -96,14 +96,7 @@ public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                     if (curAmount.Equals(0) || curAmount.Equals(100))
                     {
                         cUtil._user._playerInfo.quickSlotItemNum[btnIdx] = -1;
-                        for(byte i = 0; i < cUtil._user._playerInfo.inventory.GetItemUse().Count; i++)
-                        {
-                            if (cUtil._user._playerInfo.inventory.GetItemUse()[i].kind.Equals(itemKind))
-                            {
-                                cUtil._user._playerInfo.inventory.GetItemUse().RemoveAt(i);
-                                break;
-                            }
-                        }
+                        cUtil._user._playerInfo.inventory.RemoveItem(itemKind);
                     }
                 }
             }

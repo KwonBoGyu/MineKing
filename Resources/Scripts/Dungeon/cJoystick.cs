@@ -64,6 +64,13 @@ public class cJoystick : MonoBehaviour
                 Attack();                
             }
         }
+        else if(Input.GetKey(KeyCode.A))
+        {
+            if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
+            {
+                Attack();
+            }
+        }
 
 #endif
         ////////////////////////////////안드로이드///////////////////////////////////
@@ -216,7 +223,6 @@ public class cJoystick : MonoBehaviour
                 scr_player.Attack_down();
             else
                 scr_player.Attack_front();
-            scr_player.SetStatus(CHARACTERSTATUS.ATTACK);
         }
     }
 

@@ -83,8 +83,16 @@ public class cSceneManager : MonoBehaviour
         {
             case "Title": sceneNum = 0; break;
             case "Main": sceneNum = 1; break;
-            case "Dungeon_normal": sceneNum = 2; break;
-            case "Dungeon_boss": sceneNum = 3; break;
+            case "Dungeon_normal_1": sceneNum = 2; break;
+            case "Dungeon_boss_1": sceneNum = 3; break;
+            case "Dungeon_normal_2": sceneNum = 4; break;
+            case "Dungeon_boss_2": sceneNum = 5; break;
+            case "Dungeon_normal_3": sceneNum = 6; break;
+            case "Dungeon_boss_3": sceneNum = 7; break;
+            case "Dungeon_normal_4": sceneNum = 8; break;
+            case "Dungeon_boss_4": sceneNum = 9; break;
+            case "Dungeon_normal_5": sceneNum = 10; break;
+            case "Dungeon_boss_5": sceneNum = 11; break;
         }
 
         //이미 같은 씬일 때 리턴
@@ -97,6 +105,51 @@ public class cSceneManager : MonoBehaviour
         //같은 씬이 아니라면 씬 전환 
         _scene = (SCENE)sceneNum;
         StartCoroutine(LoadScene(pSceneName));
+    }
+    public void GoToStageGate(bool pIsNextDoor)
+    {
+        int sceneNum = 0;
+
+        //다음 스테이지로
+        if(pIsNextDoor.Equals(true))
+        {
+            if (_scene != SCENE.DUNGEON_FIRST_5)
+                sceneNum = (int)_scene + 2;
+            else
+                return;
+        }
+        //이전 스테이지로
+        else
+        {
+            if (_scene != SCENE.DUNGEON_FIRST_1)
+                sceneNum = (int)_scene - 2;
+            else
+                return;
+        }
+
+        _scene = (SCENE)sceneNum;
+        StartCoroutine(LoadScene("Dungeon_normal_" + ((int)((int)_scene * 0.5f)).ToString()));
+    }
+    public void GoToBossGate(bool pIsNextDoor)
+    {
+        int sceneNum = 0;
+
+        //보스 스테이지로
+        if (pIsNextDoor.Equals(true))
+        {
+            sceneNum = (int)_scene + 1;
+
+            _scene = (SCENE)sceneNum;
+            StartCoroutine(LoadScene("Dungeon_boss_" + ((int)((int)_scene * 0.5f)).ToString()));
+        }
+        //필드 스테이지로
+        else
+        {
+            sceneNum = (int)_scene - 1;
+
+            _scene = (SCENE)sceneNum;
+            StartCoroutine(LoadScene("Dungeon_normal_" + ((int)((int)_scene * 0.5f)).ToString()));
+        }
     }
 
     //씬 로딩 코루틴

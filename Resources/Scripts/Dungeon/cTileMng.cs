@@ -10,15 +10,13 @@ public class cTileMng : MonoBehaviour
     {
         public Vector3Int location { get; set; }
         public TileBase tileBase;
-        public cProperty level { get; set; }
         public cProperty maxHp { get; set; }
         public cProperty curHp { get; set; }
 
-        public Tile(Vector3Int pLocation, TileBase pTileBase, cProperty pLevel, cProperty pMaxHp, cProperty pCurHp)
+        public Tile(Vector3Int pLocation, TileBase pTileBase, cProperty pMaxHp, cProperty pCurHp)
         {
             location = pLocation;
             tileBase = pTileBase;
-            level = new cProperty(pLevel);
             maxHp = new cProperty(pMaxHp);
             curHp = new cProperty(pCurHp);
         }
@@ -33,7 +31,7 @@ public class cTileMng : MonoBehaviour
     Vector3Int[] cellPos;
 
     Tile? tempTile;
-    public ParticleSystem effect_destroy;
+    public GameObject effect_destroy;
         
     private void Start()
     {
@@ -347,7 +345,6 @@ public class cTileMng : MonoBehaviour
 
             Tile tile = new Tile(localPlace, 
                 tileMap_canHit.GetTile(localPlace), 
-                new cProperty("Level", 1),
                 new cProperty("MaxHp", 10),
                 new cProperty("CurHp", 10));
 
@@ -384,9 +381,16 @@ public class cTileMng : MonoBehaviour
             isChecked = true;
             pCurHpPercent = 0;
             tileMap_canHit.SetTile(worldToCellPos, null);
-            effect_destroy.gameObject.transform.position = new Vector3(cellToWorldPos.x + tileSize / 2,
-                cellToWorldPos.y + tileSize / 2, cellToWorldPos.z) ;
-            effect_destroy.Play();
+
+            //황금 타일
+            if(dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3").Equals(true))
+            {
+                PlayDestroyEffect(cellToWorldPos, 1);
+            }
+            //일반 타일
+            else
+                PlayDestroyEffect(cellToWorldPos, 0);
+
         }
         else if (tempTileToUse.curHp.value <= 0)
         {
@@ -394,9 +398,14 @@ public class cTileMng : MonoBehaviour
             pCurHpPercent = 0;
             isChecked = true;
             tileMap_canHit.SetTile(worldToCellPos, null);
-            effect_destroy.gameObject.transform.position = new Vector3(cellToWorldPos.x + tileSize / 2,
-                cellToWorldPos.y + tileSize / 2, cellToWorldPos.z);
-            effect_destroy.Play();
+            //황금 타일
+            if (dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3").Equals(true))
+            {
+                PlayDestroyEffect(cellToWorldPos, 1);
+            }
+            //일반 타일
+            else
+                PlayDestroyEffect(cellToWorldPos, 0);
         }
         else
             isChecked = true;
@@ -448,5 +457,43 @@ public class cTileMng : MonoBehaviour
             t = true;
 
         return t;
+    }
+
+    private void PlayDestroyEffect(Vector3 pPos, byte pChar)
+    {
+        switch(pChar)
+        {
+            //일반 타일
+            case 0:
+                for (byte i = 0; i < effect_destroy.transform.GetChild(0).childCount; i++)
+                {
+                    if (effect_destroy.transform.GetChild(0).GetChild(i).GetComponent<ParticleSystem>().isPlaying.Equals(false))
+                    {
+                        effect_destroy.transform.GetChild(0).GetChild(i).position = new Vector3(pPos.x + tileSize / 2, pPos.y + tileSize / 2, pPos.z);
+                        effect_destroy.transform.GetChild(0).GetChild(i).GetComponent<ParticleSystem>().Play();
+                        break;
+                    }
+                }
+                break;
+
+            //황금 타일
+            case 1:
+                for (byte i = 0; i < effect_destroy.transform.GetChild(1).childCount; i++)
+                {
+                    if (effect_destroy.transform.GetChild(1).GetChild(i).GetComponent<ParticleSystem>().isPlaying.Equals(false))
+                    {
+                        effect_destroy.transform.GetChild(1).GetChild(i).position = new Vector3(pPos.x + tileSize / 2, pPos.y + tileSize / 2, pPos.z);
+                        effect_destroy.transform.GetChild(1).GetChild(i).GetComponent<ParticleSystem>().Play();
+
+                        //랜덤으로 아이템 추가
+                        byte randomItem = (byte)Random.Range(0, (int)citemTable.GetUseItemTotalNum());
+                        cUtil._user._playerInfo.inventory.AddItem(randomItem);
+
+                        break;
+                    }
+                }
+                break;
+
+        }
     }
 }

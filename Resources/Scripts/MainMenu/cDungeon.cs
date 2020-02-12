@@ -16,6 +16,6 @@ public class cDungeon : cBuilding
     private void OnClickStage()
     {
         animator_main.SetTrigger("DungeonStart");
-        cUtil._sm.ChangeScene("Dungeon_normal");
+        cUtil._sm.ChangeScene("Dungeon_normal_1");
     }
 }

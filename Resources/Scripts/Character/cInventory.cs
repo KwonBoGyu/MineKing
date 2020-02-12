@@ -25,6 +25,49 @@ public class cInventory : MonoBehaviour
     private List<cSoul> soul;
     public List<cSoul> GetSoul() { return soul; }
 
+    //아이템 추가
+    public void AddItem(byte pKind, byte pAmount = 1)
+    {
+        bool contains = false;
+
+        //아이템이 존재 할 때
+        for(byte i = 0; i < l_itemUse.Count; i++)
+        {
+            if (l_itemUse[i].kind.Equals(pKind))
+            {
+                l_itemUse[i].amount += pAmount;
+                contains = true;
+                break;
+            }
+        }
+
+        //아이템이 존재하지 않을 때
+        if (contains.Equals(false))
+        {
+            cItem pUse;
+            citemTable.GetItemInfo(out pUse, pKind);
+            l_itemUse.Add((cItem_use)pUse);
+            AddItem(pKind, (byte)(pAmount - 1));
+        }
+    }
+    //아이템 삭제
+    public void RemoveItem(byte pKind, byte pAmount = 1)
+    {
+        //아이템이 존재 할 때
+        for (byte i = 0; i < l_itemUse.Count; i++)
+        {
+            if (l_itemUse[i].kind.Equals(pKind))
+            {
+                if(l_itemUse[i].amount <= pAmount)                
+                    l_itemUse.RemoveAt(i);                
+                else
+                    l_itemUse[i].amount -= pAmount;
+
+                break;
+            }
+        }
+    }
+
     //보스 키 존재 여부
     public bool isBossKeyExist()
     {
@@ -64,7 +107,6 @@ public class cInventory : MonoBehaviour
             l_itemUse.Add((cItem_use)pUse);
         }
         l_itemEtc = new List<cItem_etc>();
-
         
         money = new cGold();
         rock = new cRock();

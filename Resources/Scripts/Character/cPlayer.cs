@@ -12,7 +12,8 @@ public class cPlayer : cCharacter
     public cInventory inven;
     public cUseManager useMng; // 아이템 사용 관리 클래스
     private bool isJumpAniDone;
-        
+    public cBtn_item quickSlot;    
+
     private bool isSpeedUp;
     private float speedUpTime;
     private float speedUpAmount;
@@ -126,19 +127,20 @@ public class cPlayer : cCharacter
         }
     }
        
-    public void ChargeStart()
+    public void ChargeAttack_front()
     {
-        _animator.SetTrigger("isCharging");
-    }
-    public void ChargeOn()
-    {
-        _animator.SetBool("ChargeDone", true);
+        _animator.SetTrigger("ChargeAttack_front");
         status = CHARACTERSTATUS.ATTACK;
     }
-    public void ChargeFail()
+    public void ChargeAttack_up()
     {
-        _animator.SetTrigger("ChargeFail");
-        status = CHARACTERSTATUS.NONE;
+        _animator.SetTrigger("ChargeAttack_up");
+        status = CHARACTERSTATUS.ATTACK;
+    }
+    public void ChargeAttack_down()
+    {
+        _animator.SetTrigger("ChargeAttack_down");
+        status = CHARACTERSTATUS.ATTACK;
     }
 
     public void Attack_front()
@@ -184,7 +186,9 @@ public class cPlayer : cCharacter
         {
             byte i = 1;
 
-            if (t_tileHp < 0.3f)
+            if (t_tileHp.Equals(0))
+                quickSlot.UpdateQuickSlot();
+            else if (t_tileHp < 0.3f)
                 i = 3;
             else if (t_tileHp < 0.7f)
                 i = 2;

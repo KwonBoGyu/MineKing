@@ -11,91 +11,21 @@ public class cDungeonNormal_processor : MonoBehaviour
     private cPlayer _p;
     private cEnemy_monster _e;
     public GameObject _enemyPool;
-    private GameObject curStageMap;
-    public GameObject[] _stageMap;
 
     public Button b_bag;
     public Button[] b_exitBag;
     public cBag _bag;
 
-    
-    void Start()
+    public Button b_goHome;
+
+    private void Start()
     {
-        InitDungeon();        
+        if (_enemyPool != null)
+            InitDungeon();
     }
 
-    public void ChangeStage(int pId, bool pIsIn)
+    public void InitDungeon()
     {
-        int sId = (int)cUtil._sm._scene;
-
-        //스테이지
-        if (pId.Equals(0))
-        {
-            //들어가는 문
-            if (pIsIn.Equals(true))
-            {
-                Debug.Log(sId);
-                Destroy(curStageMap);
-                curStageMap = Instantiate(_stageMap[sId].gameObject);
-                cUtil._sm._scene += 2;
-            }
-            //나가는 문
-            else
-            {
-                Destroy(curStageMap);
-                curStageMap = Instantiate(_stageMap[sId - 2].gameObject);
-                cUtil._sm._scene -= 2;
-            }
-        }
-        //보스
-        else if(pId.Equals(1))
-        {
-            //보스키 없다면 return
-            if(cUtil._user.GetInventory().isBossKeyExist().Equals(false))
-            {
-                Debug.Log("보스 키가 없습니다.");
-                return;
-            }
-
-            //들어가는 문
-            if (pIsIn.Equals(true))
-            {
-                Destroy(curStageMap);
-                //보스 키 삭제
-                cUtil._user.GetInventory().destroyBossKey();
-                curStageMap = Instantiate(_stageMap[sId - 1].gameObject);
-                cUtil._sm._scene += 1;
-            }
-            //나가는 문
-            else
-            {
-                Destroy(curStageMap);
-                curStageMap = Instantiate(_stageMap[sId - 1].gameObject);
-                cUtil._sm._scene -= 1;
-            }
-        }
-
-        //적 초기화
-        _enemyPool = curStageMap.transform.Find("Canvas").transform.GetChild(0).gameObject;
-    }
-
-    public void ChangeStage(int pId)
-    {
-        if(curStageMap != null)
-            Destroy(curStageMap.gameObject);
-        curStageMap = Instantiate(_stageMap[pId].gameObject);         
-        //debug
-        if(cUtil._sm != null)
-            cUtil._sm._scene = (SCENE)(pId + 2);
-        //적 초기화
-        _enemyPool = curStageMap.transform.Find("Canvas").transform.GetChild(0).gameObject;
-    }
-
-    private void InitDungeon()
-    {
-        //맵 초기화
-        ChangeStage(0);
-
         //플레이어 초기화
         _p = _player.transform.GetChild(0).GetComponent<cPlayer>();
         _e = _enemyPool.transform.GetChild(1).GetComponent<cMonster_stage1_slime>();
@@ -120,10 +50,17 @@ public class cDungeonNormal_processor : MonoBehaviour
         b_bag.onClick.AddListener(() => _bag.OpenBag());
         for (byte i = 0; i < b_exitBag.Length; i++)
             b_exitBag[i].onClick.AddListener(() => ExitBag());
+
+        b_goHome.onClick.AddListener(() => GoHome());
     }   
 
     private void ExitBag()
     {
         _bag.obj_content.SetActive(false);
+    }
+
+    private void GoHome()
+    {
+        cUtil._sm.ChangeScene("Main");
     }
 }

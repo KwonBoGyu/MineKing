@@ -10,130 +10,143 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public Image img_gageBar;
     public Text t_gagePercent;
     public ParticleSystem p_gageEffect;
+    public Image img_Critical;
     private float minChargePoint;
     private float maxChargePoint;
     private float chargeStartTimer;
     private bool isChargingOn;
+    private bool corutineDone;
+
+    private bool criticalOn;
+    private float criticalReduceAmount;
+    private float criticalMin;
 
     private Vector2 prevTouchPos;
 
     private int comboPoint;
     private float chargeTimer;
-    private IEnumerator cor_keepPointerDown;
 
     void Start()
     {
         comboPoint = 0;
         chargeTimer = 0;
-        cor_keepPointerDown = KeepPointerDown();
         minChargePoint = 0;
         maxChargePoint = 2.0f;
         img_gageBar.fillAmount = minChargePoint;
+        criticalMin = 0.7f;
+        img_Critical.fillAmount = 1 - criticalMin;
+        criticalReduceAmount = 0.5f;
         img_gageBar.transform.parent.gameObject.SetActive(false);
+        corutineDone = true;
+    }
+
+    private void FixedUpdate()
+    {
+        //차치중
+        if (isChargingOn.Equals(true))
+        {
+            chargeTimer += Time.deltaTime;
+
+            Attack();
+
+            if (chargeTimer > maxChargePoint)
+                chargeTimer = maxChargePoint;
+            Debug.Log("CHARGING");
+
+            img_gageBar.fillAmount = chargeTimer / maxChargePoint;
+            t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
+            p_gageEffect.transform.position = new Vector3(
+                img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().sizeDelta.x / 2 * img_gageBar.fillAmount,
+                p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+
+        }
+        //손 뗐을 때
+        else
+        {
+            chargeTimer -= Time.deltaTime;
+            if (chargeTimer < 0)
+            {
+                chargeTimer = 0;
+                return;
+            }
+
+            Debug.Log("CHARGE REDUCING");
+
+            img_gageBar.fillAmount = chargeTimer / maxChargePoint;
+            t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
+            p_gageEffect.transform.position = new Vector3(
+img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().sizeDelta.x / 2 * img_gageBar.fillAmount,
+p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+
+            if (img_gageBar.fillAmount < 0.03f)
+            {
+                chargeTimer = 0;
+                img_gageBar.fillAmount = 0;
+                t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
+                p_gageEffect.transform.position = new Vector3(
+            img_gageBar.transform.position.x, p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                img_gageBar.transform.parent.gameObject.SetActive(false);
+            }
+        }
+
+        if (img_gageBar.fillAmount < criticalMin)
+            criticalOn = false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        PointerEventData d = eventData as PointerEventData;
-        prevTouchPos = d.position;
-
-        StopCoroutine(cor_keepPointerDown);
-
-        isChargingOn = false;
-        chargeTimer = 0;
-        chargeStartTimer = 0;
-
-        if(scr_player.GetIsGrounded().Equals(true))
-            StartCoroutine(cor_keepPointerDown);                
+        isChargingOn = true;
+        Attack();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        PointerEventData d = eventData as PointerEventData;
-        float dist = (d.position - prevTouchPos).magnitude;
+        isChargingOn = false;
 
-        StopCoroutine(cor_keepPointerDown);
+        if (img_gageBar.fillAmount >= criticalMin)
+            criticalOn = true;
+    }
 
-        //차지공격
-        if(img_gageBar.fillAmount > 0.5f && isChargingOn.Equals(true))
+    private void Attack()
+    {
+        if (scr_player.GetStatus().Equals(CHARACTERSTATUS.ATTACK))
         {
-            scr_player.ChargeOn();
+            //풀차지 일 때 크리티컬 공격
+            if (criticalOn.Equals(true))
+            {
+                chargeTimer -= maxChargePoint * criticalReduceAmount;
+                
+                if (chargeTimer < 0)
+                    chargeTimer = 0;
+
+                if (scr_player.GetDirection().Equals(Vector3.up))
+                    scr_player.ChargeAttack_up();
+                else if (scr_player.GetDirection().Equals(Vector3.down) && scr_player.GetIsClimbing().Equals(false))
+                    scr_player.ChargeAttack_down();
+                else
+                    scr_player.ChargeAttack_front();
+                criticalOn = false;
+            }
         }
-        else if (img_gageBar.fillAmount < 0.5f && isChargingOn.Equals(true))
+        //일반 공격
+        else if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
         {
-            scr_player.ChargeFail();
-        }
-        //일반 연속 공격
-        else if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK && isChargingOn.Equals(false))
-        {
-            //점프 공격
-            //if (scr_player.isGrounded.Equals(false))
-            //{
-            //    if (scr_player.jumpAttackPoint > 0)
-            //        return;
-
-            //    scr_player.jumpAttackPoint += 1;
-            //    scr_player.isJumpAttack = true;
-            //}
+            if (scr_player.GetIsGrounded().Equals(false) && scr_player.GetIsClimbing().Equals(false))
+                return;
 
             if (scr_player.GetDirection().Equals(Vector3.up))
                 scr_player.Attack_up();
-            else if (scr_player.GetDirection().Equals(Vector3.down))
-            {
-                if (scr_player.GetIsClimbing().Equals(false))
-                    scr_player.Attack_down();
-                else
-                    return;
-            }
+            else if (scr_player.GetDirection().Equals(Vector3.down) && scr_player.GetIsClimbing().Equals(false))
+                scr_player.Attack_down();
             else
                 scr_player.Attack_front();
 
-            scr_player.SetStatus(CHARACTERSTATUS.ATTACK);
-
-            if (comboPoint < 3)
-                comboPoint += 1;
-            //else
-            //3타 공격
-        }
-
-        chargeTimer = 0;
-        chargeStartTimer = 0;
-        img_gageBar.fillAmount = minChargePoint;
-        p_gageEffect.transform.position = new Vector3(
-    img_gageBar.transform.position.x, p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
-        img_gageBar.transform.parent.gameObject.SetActive(false);
-    }
-
-    IEnumerator KeepPointerDown()
-    {
-        while (true)
-        {
-            yield return new WaitForFixedUpdate();
-
-            if(isChargingOn.Equals(false))
+            if (scr_player.GetIsGrounded().Equals(true))
             {
-                Debug.Log("CHARGING START");
-                chargeStartTimer += Time.deltaTime;
-
-                if (chargeStartTimer > 0.5f)
-                {
-                    isChargingOn = true;
-                    img_gageBar.transform.parent.gameObject.SetActive(true);
-                    scr_player.ChargeStart();
-                }
-            }
-            //차지 시작
-            else
-            {
-                chargeTimer += Time.deltaTime;
-                Debug.Log("CHARGING");
-                //범위 0.2
-                img_gageBar.fillAmount = chargeTimer / maxChargePoint;
-                t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
-                p_gageEffect.transform.position = new Vector3(
-                    img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().sizeDelta.x /2 * img_gageBar.fillAmount,
-                    p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                isChargingOn = true;
+                img_gageBar.transform.parent.gameObject.SetActive(true);
             }
         }
+
     }
 }
