@@ -9,17 +9,7 @@ public class cUseManager : MonoBehaviour
 
     private void Start()
     {
-        l_Bomb = new GameObject[this.transform.GetChild(0).transform.childCount];
-        l_Torch = new GameObject[this.transform.GetChild(1).transform.childCount];
-
-        for (int i = 0; i < this.transform.GetChild(0).transform.childCount; i++)
-        {
-            l_Bomb[i] = this.transform.GetChild(0).transform.GetChild(i).gameObject;
-        }
-        for (int i = 0; i < this.transform.GetChild(1).transform.childCount; i++)
-        {
-            l_Torch[i] = this.transform.GetChild(1).transform.GetChild(i).gameObject;
-        }
+        Debug.Log("USE MANAGER INIT");
     }
 
     public void SetBomb()
@@ -29,16 +19,15 @@ public class cUseManager : MonoBehaviour
             if (l_Bomb[i].activeSelf.Equals(false))
             {
                 l_Bomb[i].SetActive(true);
-                Vector3 dir = new Vector3(cUtil._player.GetDirection().x, 0.5f, cUtil._player.GetDirection().z);
+                cItem_Bomb_O script = l_Bomb[i].GetComponent<cItem_Bomb_O>();
                 if (cUtil._player.GetDirection().x > 0)
                 {
-                    dir = new Vector3(0.5f, 0.5f, cUtil._player.GetDirection().z);
+                    script.isRight = true;
                 }
                 else
                 {
-                    dir = new Vector3(-0.5f, 0.5f, cUtil._player.GetDirection().z);
+                    script.isRight = false;
                 }
-                l_Bomb[i].GetComponent<cItem_Bomb_O>().SetDir(dir);
                 break;
             }
         }
@@ -58,11 +47,12 @@ public class cUseManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            Debug.Log("BONB00");
             SetBomb();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SetTorch();
         }

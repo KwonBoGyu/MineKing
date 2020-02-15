@@ -2,34 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cItem_Bomb_O : MonoBehaviour
+public class cItem_Bomb_O : cCharacter
 {
     public GameObject explodeCollider;
     private Vector3 originTPos;
     public cProperty damage;
     private bool isAttatched;
-    private Vector3 dir;
-    public void SetDir(Vector3 pDir) { dir = pDir; }
-    private float speed;
-    private float changingGravity;
-    private float defaultGravity;
     private float timer;
     private bool isTimeDone;
     private bool isExplodeDone;
     private Vector3Int[] explodeRange;
+    private float radius;
+    public bool isRight;
+    public bool isUp;
+    private float flyingTime;
+    private float defaultPower;
+    private float changingPower;
+    private float degree;
+    private float speedX;
+    private float speedY;
+    private bool upBlockedContinue;
+    const float gravityConst = 9.8f;
 
     private void Start()
     {
+        rt = originObj.GetComponent<BoxCollider2D>();
         damage = new cProperty("damage", 100);
         timer = 0;
-        speed = 500f;
-        //dir = Vector3.zero;
-        changingGravity = 100f;
-        defaultGravity = 300f;
         isAttatched = false;
         isTimeDone = false;
         isExplodeDone = false;
         originTPos = Vector3.zero;
+        defaultGravity = 400;
+        changingGravity = defaultGravity;
+        radius = this.gameObject.GetComponent<RectTransform>().sizeDelta.x * 0.5f;
+        flyingTime = 0;
+        defaultPower = 12f;
+        changingPower = defaultPower;
+        degree = Mathf.PI * 0.25f;
+        speedX = 0;
+        speedY = 0;
+        isUp = true;
     }
 
     private void OnEnable()
@@ -37,8 +50,12 @@ public class cItem_Bomb_O : MonoBehaviour
         this.transform.position = cUtil._player.originObj.transform.position;
         explodeCollider.SetActive(false);
         timer = 0;
+        changingPower = defaultPower;
         isAttatched = false;
         isTimeDone = false;
+        flyingTime = 0;
+        speedX = 0;
+        speedY = 0;
     }
 
     private void SetExplodeRange()
@@ -49,36 +66,93 @@ public class cItem_Bomb_O : MonoBehaviour
             new Vector3Int[]{
                 new Vector3Int((int)originTPos.x, (int)originTPos.y + 150, 0),
                 new Vector3Int((int)originTPos.x + 60, (int)originTPos.y + 150, 0),
-                new Vector3Int((int)originTPos.x + 60, (int)originTPos.y, 0),
+                new Vector3Int((int)originTPos.x + 150, (int)originTPos.y, 0),
                 new Vector3Int((int)originTPos.x + 60, (int)originTPos.y - 150, 0),
                 new Vector3Int((int)originTPos.x, (int)originTPos.y - 150, 0),
                 new Vector3Int((int)originTPos.x - 60, (int)originTPos.y - 150, 0),
-                new Vector3Int((int)originTPos.x - 60, (int)originTPos.y, 0),
+                new Vector3Int((int)originTPos.x - 150, (int)originTPos.y, 0),
                 new Vector3Int((int)originTPos.x - 60, (int)originTPos.y + 150, 0)
             };
     }
 
-    private void FixedUpdate()
+    private void Move()
     {
+        flyingTime += Time.deltaTime * 3;
+        speedX = changingPower * Mathf.Cos(degree);
+        speedY = changingPower * Mathf.Sin(degree) - (gravityConst * flyingTime);
+
+
+        if (isRight)
+        {
+            this.transform.position = new Vector3(this.transform.position.x + speedX,
+               this.transform.position.y + speedY,
+                   this.transform.position.z);
+        }
+        else
+        {
+            this.transform.position = new Vector3(this.transform.position.x - speedX,
+               this.transform.position.y + speedY,
+                   this.transform.position.z);
+        }
+
+        if (upBlockedContinue.Equals(true))
+        {
+            upBlockedContinue = true;
+            this.transform.position = new Vector3(this.transform.position.x,
+    this.transform.position.y - 10,
+        this.transform.position.z);
+        }
+    }
+
+    protected override void FixedUpdate()
+    {
+        bool isChecked = false;
+
+        if (cUtil._tileMng != null && tileMng == null)
+            tileMng = cUtil._tileMng;
+
+        if (tileMng != null)
+        {
+            isChecked = tileMng.CheckCanGroundTile_bomb(this);
+            if (isChecked.Equals(true))
+            {
+                if (isUpBlocked.Equals(true))
+                {
+                    ResetDir();
+                    upBlockedContinue = true;
+                }
+                if (isRightBlocked.Equals(true))
+                {
+                    isRight = false;
+                    ResetDir(1);
+                    upBlockedContinue = false;
+                }
+                if (isLeftBlocked.Equals(true))
+                {
+                    isRight = true;
+                    ResetDir(3);
+                    upBlockedContinue = false;
+                }
+                if (GetIsGrounded().Equals(true))
+                {
+                    ResetDir(2);
+                    upBlockedContinue = false;
+                }
+            }
+        }
+
+
+
         if (!isAttatched)
         {
-            this.transform.Translate(dir * speed * Time.deltaTime);
-            Debug.Log("dir : " + dir);
-            Debug.Log("speed : " + speed);
-
-            // 중력 적용
-            this.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
-            if (changingGravity <= defaultGravity)
-                changingGravity *= 1.2f;
-            else if (changingGravity > defaultGravity)
-                changingGravity = defaultGravity;
+            Move();
         }
 
         if (isTimeDone.Equals(false) && isExplodeDone.Equals(false))
         {
             timer += Time.deltaTime;
         }
-        else if(isTimeDone)
+        else if (isTimeDone)
         {
             Debug.Log("Bomb Explode");
             float temp_TileHp = 0;
@@ -105,17 +179,392 @@ public class cItem_Bomb_O : MonoBehaviour
             isTimeDone = true;
             timer = 0;
         }
+
+        if (changingPower <= 1f && changingPower >= 0)
+        {
+            isAttatched = true;
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void ResetDir(byte pDir = 100)
     {
-        if(collision.gameObject.tag.Equals("Tile_cannotHit"))
+        flyingTime = 0;
+        speedX = 0;
+        speedY = 0;
+
+        if (pDir.Equals(100))
         {
-            isAttatched = true;
+            changingPower = changingPower * 0.76f;
         }
-        else if (collision.gameObject.tag.Equals("Tile_canHit"))
+        else if (pDir.Equals(0))
         {
-            isAttatched = true;
+
+        }
+        else if (pDir.Equals(1))
+        {
+            changingPower = changingPower * 0.5f;
+        }
+        else if (pDir.Equals(2))
+        {
+            changingPower = changingPower * 0.8f;
+        }
+        else if (pDir.Equals(3))
+        {
+            changingPower = changingPower * 0.5f;
         }
     }
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag.Equals("Tile_cannotHit") || collision.gameObject.tag.Equals("Tile_canHit"))
+    //    {
+    //        Vector3 colPos = collision.contacts[0].point;
+    //        Debug.Log(collision.transform.position);
+    //        //float yDiff = this.GetComponent<RectTransform>().rect.yMin - colPos.y;
+    //        //float xDiff = this.GetComponent<Rigidbody2D>().position.x - colPos.x;
+    //        //Debug.Log("xdiff :" + xDiff);
+    //        //Debug.Log("yDiff :" + yDiff);
+
+    //        //위 충돌
+    //        //if(collision.)
+
+    //        //float yMin = this.GetComponent<CircleCollider2D>().bounds.min.y;
+    //        //float yInterval = Mathf.Abs(colPos.y - yMin);
+    //        //float xInterval;
+    //        //if (isRight)
+    //        //{
+    //        //    float xMax = this.GetComponent<CircleCollider2D>().bounds.max.x;
+    //        //    xInterval = Mathf.Abs(colPos.x - xMax);
+    //        //}
+    //        //else
+    //        //{
+    //        //    float xMin = this.GetComponent<CircleCollider2D>().bounds.min.x;
+    //        //    xInterval = Mathf.Abs(colPos.x - xMin);
+    //        //}
+
+    //        //if (Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //        //{
+    //        //    Debug.Log("상하충돌");
+    //        //    // 위충돌
+    //        //    if (speedY >= 0)
+    //        //    {
+    //        //        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - yInterval - Mathf.Abs(speedY), 0);
+    //        //    }
+    //        //    //아래충돌
+    //        //    else
+    //        //    {
+    //        //        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + yInterval + Mathf.Abs(speedY), 0);
+    //        //    }
+
+    //        //    flyingTime = 0;
+    //        //    speedX = 0;
+    //        //    speedY = 0;
+    //        //    changingPower = changingPower * 0.7f;
+    //        //}
+    //        //else if (yDiff.Equals(0))
+    //        //{
+    //        //    Debug.Log("좌우충돌1");
+    //        //    if (isRight)
+    //        //    {
+    //        //        isRight = false;
+    //        //    }
+    //        //    else
+    //        //    {
+    //        //        isRight = true;
+    //        //    }
+    //        //    if (isRight.Equals(false))
+    //        //    {
+    //        //        this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //        //            this.transform.position.y, 0);
+    //        //    }
+    //        //    else
+    //        //    {
+    //        //        this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //        //            this.transform.position.y, 0);
+    //        //    }
+    //        //    flyingTime = 0;
+    //        //    speedX = 0;
+    //        //    changingPower = changingPower * 0.7f;
+
+    //        //}
+    //        //else if (Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //        //{
+    //        //    if (isRight)
+    //        //    {
+    //        //        this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //        //            this.transform.position.y, 0);
+    //        //    }
+    //        //    else
+    //        //    {
+    //        //        this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //        //            this.transform.position.y, 0);
+    //        //    }
+    //        //    flyingTime = 0;
+    //        //    speedX = 0;
+    //        //    changingPower = changingPower * 0.7f;
+    //        //}
+    //    }
+
+    //    //if (collision.gameObject.tag.Equals("Tile_canHit"))
+    //    //{
+    //    //    Vector3 colPos = collision.contacts[0].point;
+    //    //    float yDiff = this.GetComponent<Rigidbody2D>().position.y - colPos.y;
+    //    //    float xDiff = this.GetComponent<Rigidbody2D>().position.x - colPos.x;
+    //    //    Debug.Log("xdiff :" + xDiff);
+    //    //    Debug.Log("yDiff :" + yDiff);
+
+    //    //    float yMin = this.GetComponent<CircleCollider2D>().bounds.min.y;
+    //    //    float yInterval = Mathf.Abs(colPos.y - yMin);
+    //    //    float xInterval;
+    //    //    if (isRight)
+    //    //    {
+    //    //        float xMax = this.GetComponent<CircleCollider2D>().bounds.max.x;
+    //    //        xInterval = Mathf.Abs(colPos.x - xMax);
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        float xMin = this.GetComponent<CircleCollider2D>().bounds.min.x;
+    //    //        xInterval = Mathf.Abs(colPos.x - xMin);
+    //    //    }
+
+    //    //    if (Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //    //    {
+    //    //        Debug.Log("상하충돌");
+    //    //        // 위충돌
+    //    //        if (speedY >= 0)
+    //    //        {
+    //    //            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - yInterval - Mathf.Abs(speedY), 0);
+    //    //        }
+    //    //        //아래충돌
+    //    //        else
+    //    //        {
+    //    //            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + yInterval + Mathf.Abs(speedY), 0);
+    //    //        }
+
+    //    //        flyingTime = 0;
+    //    //        speedX = 0;
+    //    //        speedY = 0;
+    //    //        changingPower = changingPower * 0.7f;
+    //    //    }
+    //    //    else if (yDiff.Equals(0))
+    //    //    {
+    //    //        Debug.Log("좌우충돌1");
+    //    //        if (isRight)
+    //    //        {
+    //    //            isRight = false;
+    //    //        }
+    //    //        else
+    //    //        {
+    //    //            isRight = true;
+    //    //        }
+    //    //        if (isRight.Equals(false))
+    //    //        {
+    //    //            this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //    //                this.transform.position.y, 0);
+    //    //        }
+    //    //        else
+    //    //        {
+    //    //            this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //    //                this.transform.position.y, 0);
+    //    //        }
+    //    //        flyingTime = 0;
+    //    //        speedX = 0;
+    //    //        changingPower = changingPower * 0.7f;
+
+    //    //    }
+    //    //    else if (Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //    //    {
+    //    //        if (isRight)
+    //    //        {
+    //    //            this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //    //                this.transform.position.y, 0);
+    //    //        }
+    //    //        else
+    //    //        {
+    //    //            this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //    //                this.transform.position.y, 0);
+    //    //        }
+    //    //        flyingTime = 0;
+    //    //        speedX = 0;
+    //    //        changingPower = changingPower * 0.7f;
+    //    //    }
+    //    //}
+    //}
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag.Equals("Tile_cannotHit") && isCollide.Equals(false))
+    //    {
+    //        isCollide = true;
+    //        Vector3 colPos = collision.contacts[0].point;
+    //        float yDiff = this.GetComponent<Rigidbody2D>().position.y - colPos.y;
+    //        float xDiff = this.GetComponent<Rigidbody2D>().position.x - colPos.x;
+    //        Debug.Log("xdiff :" + xDiff);
+    //        Debug.Log("yDiff :" + yDiff);
+
+    //        float yMin = this.GetComponent<CircleCollider2D>().bounds.min.y;
+    //        float yInterval = Mathf.Abs(colPos.y - yMin);
+    //        float xInterval;
+    //        if (isRight)
+    //        {
+    //            float xMax = this.GetComponent<CircleCollider2D>().bounds.max.x;
+    //            xInterval = Mathf.Abs(colPos.x - xMax);
+    //        }
+    //        else
+    //        {
+    //            float xMin = this.GetComponent<CircleCollider2D>().bounds.min.x;
+    //            xInterval = Mathf.Abs(colPos.x - xMin);
+    //        }
+
+    //        if (Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //        {
+    //            Debug.Log("상하충돌");
+    //            // 위충돌
+    //            if (speedY >= 0)
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - yInterval - Mathf.Abs(speedY), 0);
+    //            }
+    //            //아래충돌
+    //            else
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + yInterval + Mathf.Abs(speedY), 0);
+    //            }
+
+    //            flyingTime = 0;
+    //            speedX = 0;
+    //            speedY = 0;
+    //            changingPower = changingPower * 0.7f;
+    //        }
+    //        else if (yDiff.Equals(0))
+    //        {
+    //            Debug.Log("좌우충돌1");
+    //            if (isRight)
+    //            {
+    //                isRight = false;
+    //            }
+    //            else
+    //            {
+    //                isRight = true;
+    //            }
+    //            if (isRight.Equals(false))
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            else
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            flyingTime = 0;
+    //            speedX = 0;
+    //            changingPower = changingPower * 0.7f;
+
+    //        }
+    //        else if(Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //        {
+    //            if (isRight)
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            else
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            flyingTime = 0;
+    //            speedX = 0;
+    //            changingPower = changingPower * 0.7f;
+    //        }
+    //        isCollide = false;
+    //    }
+
+    //    if (collision.gameObject.tag.Equals("Tile_canHit") && isCollide.Equals(false))
+    //    {
+    //        isCollide = true;
+    //        Vector3 colPos = collision.contacts[0].point;
+    //        float yDiff = this.GetComponent<Rigidbody2D>().position.y - colPos.y;
+    //        float xDiff = this.GetComponent<Rigidbody2D>().position.x - colPos.x;
+    //        Debug.Log("xdiff :" + xDiff);
+    //        Debug.Log("yDiff :" + yDiff);
+
+    //        float yMin = this.GetComponent<CircleCollider2D>().bounds.min.y;
+    //        float yInterval = Mathf.Abs(colPos.y - yMin);
+    //        float xInterval;
+    //        if (isRight)
+    //        {
+    //            float xMax = this.GetComponent<CircleCollider2D>().bounds.max.x;
+    //            xInterval = Mathf.Abs(colPos.x - xMax);
+    //        }
+    //        else
+    //        {
+    //            float xMin = this.GetComponent<CircleCollider2D>().bounds.min.x;
+    //            xInterval = Mathf.Abs(colPos.x - xMin);
+    //        }
+
+    //        if (Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //        {
+    //            Debug.Log("상하충돌");
+    //            // 위충돌
+    //            if (speedY >= 0)
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - yInterval - Mathf.Abs(speedY), 0);
+    //            }
+    //            //아래충돌
+    //            else
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + yInterval + Mathf.Abs(speedY), 0);
+    //            }
+
+    //            flyingTime = 0;
+    //            speedX = 0;
+    //            speedY = 0;
+    //            changingPower = changingPower * 0.7f;
+    //        }
+    //        else if(yDiff.Equals(0))
+    //        {
+    //            Debug.Log("좌우충돌1");
+    //            if (isRight)
+    //            {
+    //                isRight = false;
+    //            }
+    //            else
+    //            {
+    //                isRight = true;
+    //            }
+    //            if (isRight.Equals(false))
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            else
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            flyingTime = 0;
+    //            speedX = 0;
+    //            changingPower = changingPower * 0.7f;
+
+    //        }     
+    //        else if (Mathf.Abs(xDiff) <= Mathf.Abs(yDiff))
+    //        {
+    //            if (isRight)
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x - xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            else
+    //            {
+    //                this.transform.position = new Vector3(this.transform.position.x + xInterval,
+    //                    this.transform.position.y, 0);
+    //            }
+    //            flyingTime = 0;
+    //            speedX = 0;
+    //            changingPower = changingPower * 0.7f;
+    //        }
+    //    }
+    //    isCollide = false;
+    //}
 }

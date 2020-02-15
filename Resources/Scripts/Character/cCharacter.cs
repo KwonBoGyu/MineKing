@@ -325,7 +325,10 @@ public class cCharacter : MonoBehaviour
             StartKnockBack(pDir, pVelocity);
 
         if (this.tag.Equals("Player"))
+        {
             _animator.SetTrigger("getHit");
+            SetStatus(CHARACTERSTATUS.NONE);
+        }
     }
 
     public void RestoreHp(cProperty pVal, bool toFool = false)

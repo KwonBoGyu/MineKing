@@ -84,6 +84,7 @@ public class cEnemy_monster : cCharacter
         attackCoolTime = 3.0f;
         attackBoxMng = attackBox.GetComponent<cEnemy_AttckBox>();
         isInAttackRange = false;
+        ChangeDir(Vector3.right);
     }
 
     protected override void FixedUpdate()
@@ -110,10 +111,10 @@ public class cEnemy_monster : cCharacter
                 this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
 
                 if (playerPos.x >= this.transform.position.x)
-                    dir = Vector3.right;
+                    ChangeDir(Vector3.right);
 
                 else if (playerPos.x < this.transform.position.x)
-                    dir = Vector3.left;
+                    ChangeDir(Vector3.left);
             }
             // 공격 범위 안에 들어온 경우
             // 공격 자체는 cEnemy_AttackBox에서 처리
@@ -121,9 +122,9 @@ public class cEnemy_monster : cCharacter
             {
                 playerPos = cUtil._player.gameObject.transform.position;
                 if (playerPos.x >= this.transform.position.x)
-                    dir = Vector3.right;
+                    ChangeDir(Vector3.right);
                 else if (playerPos.x < this.transform.position.x)
-                    dir = Vector3.left;
+                    ChangeDir(Vector3.left);
             }
         }
         // idle 상태
@@ -134,14 +135,24 @@ public class cEnemy_monster : cCharacter
             if (isRightBlocked == true)
             {
                 isRightBlocked = false;
-                dir = Vector3.left;
+                ChangeDir(Vector3.left);
             }
             else if (isLeftBlocked == true)
             {
                 isLeftBlocked = false;
-                dir = Vector3.right;
+                ChangeDir(Vector3.right);
             }
         }
+    }
+
+    public virtual void ChangeDir(Vector3 pDir)
+    {
+        dir = pDir;
+
+        if(dir.Equals(Vector3.right))
+            originObj.transform.localScale = new Vector3(-1, 1, 1);
+        else if(dir.Equals(Vector3.left))
+            originObj.transform.localScale = new Vector3(1, 1, 1);
     }
 
     public override void ReduceHp(long pVal)
@@ -206,9 +217,10 @@ public class cEnemy_monster : cCharacter
         this.GetComponent<BoxCollider2D>().enabled = true;
         this.transform.localPosition = InitPos;
         isDead = false;
-        curHp = maxHp;
+        curHp.value = maxHp.value;
         curMoveSpeed = maxMoveSpeed;
         SetHp();
         Debug.Log("respawn");
+        ChangeDir(Vector3.right);
     }
 }
