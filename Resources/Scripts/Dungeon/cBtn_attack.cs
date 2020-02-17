@@ -10,12 +10,13 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public Image img_gageBar;
     public Text t_gagePercent;
     public ParticleSystem p_gageEffect;
+    public ParticleSystem p_gageCritEffect;
     public Image img_Critical;
     private float minChargePoint;
     private float maxChargePoint;
     private float chargeStartTimer;
     private bool isChargingOn;
-    private bool corutineDone;
+    private float reduceFactor;
 
     private bool criticalOn;
     private float criticalReduceAmount;
@@ -23,12 +24,10 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private Vector2 prevTouchPos;
 
-    private int comboPoint;
     private float chargeTimer;
 
     void Start()
     {
-        comboPoint = 0;
         chargeTimer = 0;
         minChargePoint = 0;
         maxChargePoint = 2.0f;
@@ -36,8 +35,8 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         criticalMin = 0.7f;
         img_Critical.fillAmount = 1 - criticalMin;
         criticalReduceAmount = 0.5f;
+        reduceFactor = 0.5f;
         img_gageBar.transform.parent.gameObject.SetActive(false);
-        corutineDone = true;
     }
 
     private void FixedUpdate()
@@ -45,25 +44,29 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         //차치중
         if (isChargingOn.Equals(true))
         {
-            chargeTimer += Time.deltaTime;
-
             Attack();
 
-            if (chargeTimer > maxChargePoint)
-                chargeTimer = maxChargePoint;
-            Debug.Log("CHARGING");
+            if(scr_player.GetIsClimbing().Equals(false))
+            {
+                Debug.Log("CHARGING");
 
-            img_gageBar.fillAmount = chargeTimer / maxChargePoint;
-            t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
-            p_gageEffect.transform.position = new Vector3(
-                img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().sizeDelta.x / 2 * img_gageBar.fillAmount,
-                p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                chargeTimer += Time.deltaTime;
 
+                if (chargeTimer > maxChargePoint)
+                    chargeTimer = maxChargePoint;
+
+                img_gageBar.fillAmount = chargeTimer / maxChargePoint;
+                t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
+                Debug.Log(img_gageBar.GetComponent<RectTransform>().rect.width);
+                p_gageEffect.transform.position = new Vector3(
+                    img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.5f * 0.7f  * img_gageBar.fillAmount,
+                    p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+            }
         }
         //손 뗐을 때
         else
         {
-            chargeTimer -= Time.deltaTime;
+            chargeTimer -= Time.deltaTime * reduceFactor;
             if (chargeTimer < 0)
             {
                 chargeTimer = 0;
@@ -75,7 +78,7 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             img_gageBar.fillAmount = chargeTimer / maxChargePoint;
             t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
             p_gageEffect.transform.position = new Vector3(
-img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().sizeDelta.x / 2 * img_gageBar.fillAmount,
+img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.5f * 0.7f * img_gageBar.fillAmount,
 p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
 
             if (img_gageBar.fillAmount < 0.03f)
@@ -125,6 +128,8 @@ p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
                     scr_player.ChargeAttack_down();
                 else
                     scr_player.ChargeAttack_front();
+                p_gageCritEffect.Play();
+
                 criticalOn = false;
             }
         }
@@ -141,7 +146,9 @@ p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
             else
                 scr_player.Attack_front();
 
-            if (scr_player.GetIsGrounded().Equals(true))
+            if (scr_player.GetIsClimbing().Equals(true))
+                isChargingOn = false;
+            if (scr_player.GetIsGrounded().Equals(true) && scr_player.GetIsClimbing().Equals(false))
             {
                 isChargingOn = true;
                 img_gageBar.transform.parent.gameObject.SetActive(true);

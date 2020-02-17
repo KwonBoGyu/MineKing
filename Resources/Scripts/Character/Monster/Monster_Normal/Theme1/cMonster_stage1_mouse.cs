@@ -13,5 +13,7 @@ public class cMonster_stage1_mouse : cEnemy_monster
     {
         base.Init(pEs);
         respawnTime = 5.0f;
+        attackCoolTime = 2.0f;
     }
+
 }

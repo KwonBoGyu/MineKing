@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class cUseManager : MonoBehaviour
 {
-    public GameObject[] l_Bomb;
-    public GameObject[] l_Torch;
+    public GameObject bombPrefab;
+    public GameObject torchPrefab;
 
     private void Start()
     {
@@ -14,35 +14,26 @@ public class cUseManager : MonoBehaviour
 
     public void SetBomb()
     {
-        for (int i = 0; i < l_Bomb.Length; i++)
+        GameObject bomb = Instantiate(bombPrefab, cUtil._player.originObj.transform.position,
+            Quaternion.identity, this.gameObject.transform);
+
+        if (cUtil._player.GetDirection().x > 0)
         {
-            if (l_Bomb[i].activeSelf.Equals(false))
-            {
-                l_Bomb[i].SetActive(true);
-                cItem_Bomb_O script = l_Bomb[i].GetComponent<cItem_Bomb_O>();
-                if (cUtil._player.GetDirection().x > 0)
-                {
-                    script.isRight = true;
-                }
-                else
-                {
-                    script.isRight = false;
-                }
-                break;
-            }
+            bomb.GetComponent<cItem_Bomb_O>().SetDir(new Vector3(0.5f, 0.5f));
         }
+        else
+        {
+            bomb.GetComponent<cItem_Bomb_O>().SetDir(new Vector3(-0.5f, 0.5f));
+        }
+
+        bomb.SetActive(true);
     }
 
     public void SetTorch()
     {
-        for (int i = 0; i < l_Torch.Length; i++)
-        {
-            if (l_Torch[i].activeSelf.Equals(false))
-            {
-                l_Torch[i].SetActive(true);
-                break;
-            }
-        }
+        GameObject torch = Instantiate(torchPrefab, cUtil._player.originObj.transform.position,
+            Quaternion.identity, this.gameObject.transform);
+        torch.SetActive(true);
     }
 
     private void FixedUpdate()

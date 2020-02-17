@@ -11,7 +11,7 @@ public class cEnemy_monster : cCharacter
     //리스폰 시간, 타이머
     public float respawnTime;
     //몬스터 id
-    protected int id;
+    public int id;
     public int GetId() { return id; }
     //몬스터 광물 보유량
     protected cProperty rocks;
@@ -20,7 +20,8 @@ public class cEnemy_monster : cCharacter
     private int per_BossKey = 100;
     // 플레이어 인식 여부, 공격 범위 위치 여부
     protected cEnemy_AttckBox attackBoxMng; // 공격 범위는 attackBox에서 관리함
-    protected bool isInAttackRange;
+    public cRangeNotizer notizer;
+    public bool isInAttackRange;
     public bool isInNoticeRange;
     // (공격 행동시) 플레이어 위치
     protected Vector3 playerPos;
@@ -29,6 +30,7 @@ public class cEnemy_monster : cCharacter
     // 쿨타임 관리 변수
     protected float attackCoolTime;
     public float GetAttackCoolTime() { return attackCoolTime; }
+    protected float coolTimer;
 
     protected cDungeonNormal_processor dp;
         
@@ -36,7 +38,6 @@ public class cEnemy_monster : cCharacter
         int pId, cProperty pRocks)
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
-
         originObj = this.gameObject;
         rt = originObj.GetComponent<BoxCollider2D>();
         defaultGravity = 300.0f;
@@ -44,7 +45,7 @@ public class cEnemy_monster : cCharacter
         SetIsGrounded(false);
         jumpHeight = 200.0f;
         id = pId;
-        rocks.value = pRocks.value;
+        rocks = new cProperty(pRocks);
         isDead = false;
         respawnTime = 5.0f;
         InitPos = this.transform.localPosition;
@@ -57,21 +58,22 @@ public class cEnemy_monster : cCharacter
         attackCoolTime = 3.0f;
         attackBoxMng = attackBox.GetComponent<cEnemy_AttckBox>();
         isInAttackRange = false;
+
+        attackBoxMng.Init();
+        notizer.Init();
     }
 
     public virtual void Init(enemyInitStruct pEs)
     {
         base.Init(pEs.nickName, pEs.damage, pEs.maxMoveSpeed, pEs.maxHp, pEs.curHp);
-        
 
         originObj = this.gameObject;
         rt = originObj.GetComponent<BoxCollider2D>();
         defaultGravity = 300.0f;
         changingGravity = defaultGravity;
-        SetIsGrounded(false);
         jumpHeight = 200.0f;
         id = pEs.id;
-        rocks = pEs.rocks;
+        rocks = new cProperty(pEs.rocks);
         isDead = false;
         respawnTime = 5.0f;
         InitPos = this.transform.localPosition;
@@ -85,6 +87,9 @@ public class cEnemy_monster : cCharacter
         attackBoxMng = attackBox.GetComponent<cEnemy_AttckBox>();
         isInAttackRange = false;
         ChangeDir(Vector3.right);
+
+        attackBoxMng.Init();
+        notizer.Init();
     }
 
     protected override void FixedUpdate()
@@ -98,14 +103,14 @@ public class cEnemy_monster : cCharacter
         }
     }
     
+    //Defalut Move
     protected virtual void Move()
     {
         // 인식 범위 내 진입
-        if (isInNoticeRange)
+        if (isInNoticeRange.Equals(true))
         {
-            isInAttackRange = attackBoxMng.GetIsInAttackRange();
             // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
-            if (!isInAttackRange)
+            if (isInAttackRange.Equals(false))
             {
                 playerPos = cUtil._player.gameObject.transform.position;
                 this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
@@ -118,17 +123,24 @@ public class cEnemy_monster : cCharacter
             }
             // 공격 범위 안에 들어온 경우
             // 공격 자체는 cEnemy_AttackBox에서 처리
-            else if (isInAttackRange)
+            else if (isInAttackRange.Equals(true))
             {
                 playerPos = cUtil._player.gameObject.transform.position;
                 if (playerPos.x >= this.transform.position.x)
                     ChangeDir(Vector3.right);
                 else if (playerPos.x < this.transform.position.x)
                     ChangeDir(Vector3.left);
+
+                //공격 쿨타임 돌린다.
+                coolTimer += Time.deltaTime;
+                if (coolTimer >= attackCoolTime)
+                {
+                    Attack1();
+                }
             }
         }
         // idle 상태
-        else if (!isInNoticeRange)
+        else if (isInNoticeRange.Equals(false))
         {
             this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
             //막히면 방향 바꿔준다.
@@ -143,6 +155,12 @@ public class cEnemy_monster : cCharacter
                 ChangeDir(Vector3.right);
             }
         }
+    }
+
+    public virtual void Attack1()
+    {
+        cUtil._player.ReduceHp(damage.value, GetDirection());
+        coolTimer = 0;
     }
 
     public virtual void ChangeDir(Vector3 pDir)

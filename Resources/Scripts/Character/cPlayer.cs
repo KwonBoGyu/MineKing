@@ -40,10 +40,10 @@ public class cPlayer : cCharacter
         speedUpTime = 0.0f;
         speedUpAmount = 0.0f;
         jumpHeight = 200.0f;
-        attackBoxPos[0] = new Vector3(18, 225, -1.1f); 
-        attackBoxPos[1] = new Vector3(180, 2.08f, -1.1f); 
-        attackBoxPos[2] = new Vector3(22, -128, -1.1f);
-        attackBoxPos[3] = new Vector3(180, 142, -1.1f);
+        attackBoxPos[0] = new Vector3(18, 250, -1.1f); 
+        attackBoxPos[1] = new Vector3(180, 58, -1.1f); 
+        attackBoxPos[2] = new Vector3(60, -128, -1.1f);
+        attackBoxPos[3] = new Vector3(100, 142, -1.1f);
         attackBox.transform.position = attackBoxPos[0];
         weapon.damage = damage;
         status = CHARACTERSTATUS.NONE;
@@ -81,7 +81,7 @@ public class cPlayer : cCharacter
         _animator.SetBool("isGrounded", GetIsGrounded());
         
         if (GetIsGrounded().Equals(false) && isJumpAniDone.Equals(false) 
-            && isClimbing.Equals(false))
+            && isClimbing.Equals(false) && status != CHARACTERSTATUS.ATTACK)
         {
             _animator.SetTrigger("jumping");
             if (status.Equals(CHARACTERSTATUS.ATTACK))
@@ -163,6 +163,14 @@ public class cPlayer : cCharacter
 
     public void ActiveAttackBox(int pDir)
     {
+        if (pDir > 2)
+        {
+            pDir -= 3;
+            isCritical = true;
+        }
+        else
+            isCritical = false;
+
         //위
         if (pDir == 0)
             attackBox.transform.localPosition = attackBoxPos[0];
@@ -186,8 +194,8 @@ public class cPlayer : cCharacter
         {
             byte i = 1;
 
-            if (t_tileHp.Equals(0))
-                quickSlot.UpdateQuickSlot();
+            if (t_tileHp.Equals(0))            
+                quickSlot.UpdateQuickSlot();            
             else if (t_tileHp < 0.3f)
                 i = 3;
             else if (t_tileHp < 0.7f)
@@ -199,10 +207,23 @@ public class cPlayer : cCharacter
             effects[i].transform.localScale = new Vector3(originObj.transform.localScale.x,
                 effects[i].transform.localScale.y, effects[i].transform.localScale.z);
             effects[i].Play();
+
+            if(isCritical.Equals(true))
+            {
+                effects[5].transform.position = attackBox.transform.position;
+                effects[5].Play();
+                sm.playAxeEffect(true);
+            }
+            else
+            {
+                effects[4].transform.position = attackBox.transform.position;
+                effects[4].Play();
+                sm.playAxeEffect(false);
+            }
+
                         
             ft.DamageTextOn(damage.GetValueToString(), attackBox.transform.position);
 
-            sm.playAxeEffect();
         }
         
     }

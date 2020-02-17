@@ -28,7 +28,7 @@ public enum CHARDIRECTION
     UPLEFT,
 }
 
-public class cCharacter : MonoBehaviour
+public class cCharacter : cObject
 {
     protected string nickName;
     protected cProperty damage;
@@ -50,36 +50,26 @@ public class cCharacter : MonoBehaviour
     protected CHARDIRECTION charDir;
     public CHARDIRECTION GetCharDir() { return charDir; }
     protected Vector3 dir;
-    public GameObject originObj;
-    public BoxCollider2D rt;
 
-    public cTileMng tileMng;
-
-    public bool notUpBlocked;
-    public bool notGrounded;
-    public bool notLeftBlocked;
-    public bool notRightBlocked;
+    //크리티컬
+    public bool isCritical;
 
     //hp
     public Image img_curHp;
+    public Text t_hp;
 
     // 중력 적용에 필요한 변수
     public float changingGravity;
     public float defaultGravity;
 
     private bool horizontalGroundJumpCheck;
-    private bool isGrounded;
-    public bool GetIsGrounded() { return isGrounded; }
-    public void SetIsGrounded(bool pGrounded)
+    public override void SetIsGrounded(bool pGrounded)
     {
-        if (isGrounded.Equals(pGrounded))        
-            return;
-        
-        isGrounded = pGrounded;
+        base.SetIsGrounded(pGrounded);
 
-        if(GetIsGrounded().Equals(true))
+        if (GetIsGrounded().Equals(true))
         {
-            if(isJumpStart.Equals(false))
+            if (isJumpStart.Equals(false))
                 jumpCount = 0;
 
             isJumpStart = false;
@@ -87,10 +77,6 @@ public class cCharacter : MonoBehaviour
                 jumpCount = 0;
         }
     }
-    public bool isRightBlocked;
-    public bool isLeftBlocked;
-    public bool isUpBlocked;
-
     public GameObject attackBox;
     public Vector3[] attackBoxPos; //오른, 아래, 왼, 위
 
@@ -112,6 +98,7 @@ public class cCharacter : MonoBehaviour
         curMoveSpeed = 0;
         maxHp = new cProperty(pMaxHp);
         curHp = new cProperty(pCurHp);
+        SetHp();
         dir = Vector3.right;
         jumpHeight = 200.0f;
         attackBoxPos = new Vector3[4];
@@ -121,17 +108,18 @@ public class cCharacter : MonoBehaviour
         dashCoolDown = maxDashCoolDown;
         isJetPackOn = false;
     }
-    
+
     public cProperty GetMaxHp() { return maxHp; }
     public cProperty GetCurHP() { return curHp; }
 
-    protected virtual void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        if (cUtil._tileMng != null && tileMng == null)
-            tileMng = cUtil._tileMng;
-        
-        if(tileMng != null)
+        base.FixedUpdate();
+
+        if (tileMng != null)
+        {
             tileMng.CheckCanGroundTile(this);
+        }
     }
 
     public cProperty GetDamage() { return damage; }
@@ -145,7 +133,7 @@ public class cCharacter : MonoBehaviour
     public Vector3 GetDirection() { return dir; }
     public void SetDir(Vector3 pDir) { dir = pDir; }
     public void SetDir(Vector3 pDir, CHARDIRECTION pCharDir) { dir = pDir; charDir = pCharDir; }
-    
+
     public float GetMaxMoveSpeed() { return maxMoveSpeed; }
     public void SetMaxMoveSpeed(float pMaxMoveSpeed) { maxMoveSpeed = pMaxMoveSpeed; }
 
@@ -156,19 +144,19 @@ public class cCharacter : MonoBehaviour
     IEnumerator Jump()
     {
         bool goBreak = false;
-        
-        if(jumpCount > 2)
+
+        if (jumpCount > 2)
         {
             jumpCount = 0;
             goBreak = true;
         }
         SetIsClimbing(false);
-        
+
         float jumpTimer = 0;
         float factor;
 
         float currentHeight = originObj.transform.position.y;
-        
+
         sm.playEffect(1);
         while (true)
         {
@@ -185,11 +173,11 @@ public class cCharacter : MonoBehaviour
             status = CHARACTERSTATUS.JUMP;
             isGrounded = false;
 
-            factor = Mathf.PI * (jumpTimer / jumpTime)*0.5f;
+            factor = Mathf.PI * (jumpTimer / jumpTime) * 0.5f;
 
             originObj.transform.position = new Vector3(originObj.transform.position.x,
-                currentHeight+jumpHeight*Mathf.Sin(factor), originObj.transform.position.z);
-            
+                currentHeight + jumpHeight * Mathf.Sin(factor), originObj.transform.position.z);
+
             if (jumpTimer >= jumpTime)
             {
                 changingGravity = defaultGravity;
@@ -220,7 +208,7 @@ public class cCharacter : MonoBehaviour
             yield return new WaitForFixedUpdate();
 
             factor = Mathf.PI * (DashTimer / dashTime);
-            
+
             if (charDir.Equals(CHARDIRECTION.RIGHT) || charDir.Equals(CHARDIRECTION.LEFT))
                 curMoveSpeed = maxMoveSpeed + dashMoveSpeed * Mathf.Sin(factor);
             else
@@ -231,7 +219,7 @@ public class cCharacter : MonoBehaviour
 
             DashTimer += Time.deltaTime;
 
-            if(DashTimer > dashTime)
+            if (DashTimer > dashTime)
             {
                 if (charDir.Equals(CHARDIRECTION.RIGHT) || charDir.Equals(CHARDIRECTION.LEFT))
                     curMoveSpeed = maxMoveSpeed;
@@ -247,8 +235,8 @@ public class cCharacter : MonoBehaviour
     IEnumerator DashCoolDown()
     {
         yield return null;
-        
-        while(true)
+
+        while (true)
         {
             yield return new WaitForFixedUpdate();
             dashCoolDown -= Time.deltaTime;
@@ -263,7 +251,7 @@ public class cCharacter : MonoBehaviour
     {
         float currentHeight = originObj.transform.position.y;
 
-        while(isJetPackOn)
+        while (isJetPackOn)
         {
             yield return new WaitForFixedUpdate();
             currentHeight += 5;
@@ -286,10 +274,10 @@ public class cCharacter : MonoBehaviour
     {
         isJetPackOn = false;
     }
-    
+
     public virtual void SetGravity()
     {
-        if (!isGrounded&&!status.Equals(CHARACTERSTATUS.JUMP))
+        if (!isGrounded && !status.Equals(CHARACTERSTATUS.JUMP))
         {
             originObj.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
             if (changingGravity <= 1500)
@@ -325,10 +313,7 @@ public class cCharacter : MonoBehaviour
             StartKnockBack(pDir, pVelocity);
 
         if (this.tag.Equals("Player"))
-        {
             _animator.SetTrigger("getHit");
-            SetStatus(CHARACTERSTATUS.NONE);
-        }
     }
 
     public void RestoreHp(cProperty pVal, bool toFool = false)
@@ -346,13 +331,15 @@ public class cCharacter : MonoBehaviour
     protected void SetHp()
     {
         img_curHp.fillAmount = (float)curHp.value / (float)maxHp.value;
+        if (this.tag.Equals("Player"))
+            t_hp.text = curHp.GetValueToString() + " / " + maxHp.GetValueToString();
     }
 
     protected void StartKnockBack(Vector3 pDir, float pVelocity = 7.5f)
     {
         StartCoroutine(KnockBack(pDir, pVelocity));
     }
-    
+
 
     IEnumerator KnockBack(Vector3 pDir, float pVelocity = 7.5f)
     {
@@ -360,7 +347,7 @@ public class cCharacter : MonoBehaviour
 
         Vector3 attackerDir;
         Vector3 currentPos = originObj.transform.position;
-        
+
         if (pDir.x <= 0)
         {
             attackerDir = Vector3.left;
@@ -378,7 +365,7 @@ public class cCharacter : MonoBehaviour
 
             if (velocity <= 0)
                 break;
-            
+
             // 옆이 막힌 경우 넉백 종료
             if (isLeftBlocked)
             {
@@ -412,14 +399,14 @@ public class cCharacter : MonoBehaviour
     public bool GetIsClimbing() { return isClimbing; }
     public void SetIsClimbing(bool pbool)
     {
-        if (isClimbing.Equals(pbool))        
+        if (isClimbing.Equals(pbool))
             return;
 
         if (isClimbing.Equals(false))
         {
             _animator.SetTrigger("Crawl");
         }
-            
+
         isClimbing = pbool;
         _animator.SetBool("isCrawl", isClimbing);
     }

@@ -23,7 +23,6 @@ public class cEnemy_Ranged : cEnemy_monster
         // 인식 범위 내 진입
         if (isInNoticeRange)
         {
-            isInAttackRange = attackBoxMng.GetIsInAttackRange();
             // 근접 공격 범위 바깥
             if (!isInAttackRange)
             {

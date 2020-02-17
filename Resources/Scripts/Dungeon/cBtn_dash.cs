@@ -19,6 +19,10 @@ public class cBtn_dash : MonoBehaviour, IPointerDownHandler
         if (scr_player.GetStatus() == CHARACTERSTATUS.NONE &&
             scr_player.GetDashCoolDown() == scr_player.GetMaxDashCoolDown())
         {
+            //아래 위 방향이라면 대쉬 안함
+            if (scr_player.GetDirection().Equals(Vector3.up) || scr_player.GetDirection().Equals(Vector3.down))
+                return;
+
             if (scr_player.GetIsGrounded().Equals(true))
             {
                 scr_player.StartCoroutine("Dash");

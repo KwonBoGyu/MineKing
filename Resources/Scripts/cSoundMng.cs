@@ -24,16 +24,36 @@ public class cSoundMng : MonoBehaviour
         _as[2].Stop();
     }
 
-    public void playAxeEffect()
+    public void playAxeEffect(bool isCharge)
     {
+        //일반공격
+        if(isCharge.Equals(false))
+        {
+            if (_as[3].clip != _clips[2])
+                _as[3].clip = _clips[2];
+        }
+        //강화공격
+        else
+        {
+            if (_as[3].clip != _clips[3])
+                _as[3].clip = _clips[3];
+        }
         
-        if (_as[3].clip != _clips[2])
-            _as[3].clip = _clips[2];
-
         _as[3].volume = 1.0f;
         
         _as[3].loop = false;
         _as[3].Play();
+    }
+
+    public void playTileEffect()
+    {
+        if (_as[4].clip != _clips[4])
+            _as[4].clip = _clips[4];
+
+        _as[4].volume = 0.5f;
+
+        _as[4].loop = false;
+        _as[4].Play();
     }
 
     public void playEffect(int pNum)

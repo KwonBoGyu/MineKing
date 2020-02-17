@@ -106,7 +106,6 @@ public class cMonster_stage4_goblin_ranged_contaminated : cEnemy_Ranged
         // 인식 범위 내 진입
         else if (isInNoticeRange && !isInDanger)
         {
-            isInAttackRange = attackBoxMng.GetIsInAttackRange();
             // 근접 공격 범위 바깥
             if (!isInAttackRange)
             {

@@ -26,7 +26,6 @@ public class cMonster_stage1_slime : cEnemy_Ranged
         bulletCoolTime = 3.0f;
         timer = bulletCoolTime;
         bulletDamage = (long)(damage.value * 0.5f);
-
     }
 
     public override void Init(enemyInitStruct pEs)

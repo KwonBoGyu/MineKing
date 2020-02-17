@@ -14,7 +14,7 @@ public class cFloatingText : MonoBehaviour
     {
         timer = new float[t_text.Length];
         isDone = new bool[t_text.Length];
-        moveSpeed = 150;
+        moveSpeed = 100;
     }
         
     void Update()
@@ -26,12 +26,12 @@ public class cFloatingText : MonoBehaviour
                 timer[i] += Time.deltaTime;
 
                 t_text[i].transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
-                t_text[i].color = new Color(t_text[i].color.r, t_text[i].color.g, t_text[i].color.b, 1 - timer[i]);
+                //t_text[i].color = new Color(t_text[i].color.r, t_text[i].color.g, t_text[i].color.b, 1 - timer[i]);
 
                 if(timer[i] > 1.0f)
                 {
                     t_text[i].gameObject.SetActive(false);
-                    t_text[i].color = new Color(t_text[i].color.r, t_text[i].color.g, t_text[i].color.b, 1);
+                    //t_text[i].color = new Color(t_text[i].color.r, t_text[i].color.g, t_text[i].color.b, 1);
                     timer[i] = 0;
                     isDone[i] = true;
                 }
@@ -46,7 +46,7 @@ public class cFloatingText : MonoBehaviour
             if(isDone[i].Equals(true))
             {
                 t_text[i].text = "-" + pDamageText;
-                t_text[i].gameObject.transform.position = new Vector3(pPos.x, pPos.y + 100, pPos.z);
+                t_text[i].gameObject.transform.position = new Vector3(pPos.x, pPos.y + 30, pPos.z);
                 isDone[i] = false;
                 t_text[i].gameObject.SetActive(true);
 

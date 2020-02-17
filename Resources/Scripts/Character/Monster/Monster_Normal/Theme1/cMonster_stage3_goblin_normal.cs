@@ -97,7 +97,6 @@ public class cMonster_stage3_goblin_normal : cEnemy_monster
         // 인식 범위 내 진입
         else if (isInNoticeRange && !isInDanger)
         {
-            isInAttackRange = attackBoxMng.GetIsInAttackRange();
             // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
             if (!isInAttackRange)
             {

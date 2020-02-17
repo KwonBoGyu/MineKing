@@ -4,24 +4,40 @@ using UnityEngine;
 
 public class cRangeNotizer : MonoBehaviour
 {
-    private bool isInRange;
     private float radius;
     private cEnemy_monster script;
-    private cPlayer _player;
+    private IEnumerator cor_CalculateRange;
 
-    private void Start()
+    public void Init()
     {
-        isInRange = false;
         radius = this.gameObject.GetComponent<CircleCollider2D>().radius;
         script = GetComponentInParent<cEnemy_monster>();
-        _player = cUtil._player;
+        cor_CalculateRange = CalculateRange();
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("Player"))
+        {
+            StartCoroutine(cor_CalculateRange);
+        }
     }
 
-    private void FixedUpdate()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (isInRange)
+        if (collision.tag.Equals("Player"))
         {
-            Debug.Log("플레이어 인식 ");
+            StopCoroutine(cor_CalculateRange);
+            script.isInNoticeRange = false;
+        }
+    }
+
+    private IEnumerator CalculateRange()
+    {
+        while(true)
+        {
+            yield return new WaitForFixedUpdate();
+
             Vector3 dir = (cUtil._player.originObj.transform.position - this.gameObject.transform.position).normalized;
             Ray ray = new Ray(this.gameObject.transform.position,
                 dir);
@@ -30,7 +46,9 @@ public class cRangeNotizer : MonoBehaviour
 
             for (int i = 0; i < hit.Length; i++)
             {
-                Debug.Log(hit[i].collider.gameObject.name);
+                if (hit[i].collider.gameObject.tag.Equals("Enemy"))
+                    continue;
+
                 if (hit[i].collider.gameObject.tag.Equals("Tile_canHit"))
                 {
                     script.isInNoticeRange = false;
@@ -48,29 +66,6 @@ public class cRangeNotizer : MonoBehaviour
                     break;
                 }
             }
-        }
-        else
-        {
-            script.isInNoticeRange = false;
-        }
-
-        Debug.Log("isInNoticeRange : " + script.isInNoticeRange);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            isInRange = true;
-        }
-    }
-
-    // 인식 범위를 벗어난 경우
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            isInRange = false;
         }
     }
 }
