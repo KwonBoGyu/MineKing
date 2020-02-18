@@ -40,7 +40,7 @@ public class cPlayer : cCharacter
         speedUpTime = 0.0f;
         speedUpAmount = 0.0f;
         jumpHeight = 200.0f;
-        attackBoxPos[0] = new Vector3(18, 250, -1.1f); 
+        attackBoxPos[0] = new Vector3(18, 280, -1.1f); 
         attackBoxPos[1] = new Vector3(180, 58, -1.1f); 
         attackBoxPos[2] = new Vector3(60, -128, -1.1f);
         attackBoxPos[3] = new Vector3(100, 142, -1.1f);
@@ -80,7 +80,7 @@ public class cPlayer : cCharacter
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
         _animator.SetBool("isGrounded", GetIsGrounded());
         
-        if (GetIsGrounded().Equals(false) && isJumpAniDone.Equals(false) 
+        if (GetIsGrounded().Equals(false) && isJumpAniDone.Equals(false)  && status != CHARACTERSTATUS.DASH
             && isClimbing.Equals(false) && status != CHARACTERSTATUS.ATTACK)
         {
             _animator.SetTrigger("jumping");
@@ -203,12 +203,14 @@ public class cPlayer : cCharacter
             else
                 i = 1;
 
+            //타일이펙트
             effects[i].transform.position = attackBox.transform.position;
             effects[i].transform.localScale = new Vector3(originObj.transform.localScale.x,
                 effects[i].transform.localScale.y, effects[i].transform.localScale.z);
             effects[i].Play();
 
-            if(isCritical.Equals(true))
+            //공격이펙트
+            if (isCritical.Equals(true))
             {
                 effects[5].transform.position = attackBox.transform.position;
                 effects[5].Play();

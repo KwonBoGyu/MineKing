@@ -26,11 +26,9 @@ public class cItem_Bomb_O : cProjectile
         flyingTime = 0;
         defaultPower = 12f;
         changingPower = defaultPower;
-        dir = new Vector3(0.5f, 0.5f);
         isReflectOn = true;
         isGravityOn = true;
         gravityAmount = 9.8f;
-        SetDir(dir);
     }
 
     private void SetExplodeRange()

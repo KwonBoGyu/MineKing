@@ -65,7 +65,10 @@ public class cCharacter : cObject
     private bool horizontalGroundJumpCheck;
     public override void SetIsGrounded(bool pGrounded)
     {
-        base.SetIsGrounded(pGrounded);
+        if (isGrounded.Equals(pGrounded))
+            return;
+
+        isGrounded = pGrounded;
 
         if (GetIsGrounded().Equals(true))
         {
@@ -144,7 +147,7 @@ public class cCharacter : cObject
     IEnumerator Jump()
     {
         bool goBreak = false;
-
+        Debug.Log(jumpCount);
         if (jumpCount > 2)
         {
             jumpCount = 0;
@@ -313,7 +316,10 @@ public class cCharacter : cObject
             StartKnockBack(pDir, pVelocity);
 
         if (this.tag.Equals("Player"))
+        {
             _animator.SetTrigger("getHit");
+            SetStatus(CHARACTERSTATUS.NONE);
+        }
     }
 
     public void RestoreHp(cProperty pVal, bool toFool = false)

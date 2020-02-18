@@ -13,7 +13,7 @@ public class cBtn_jump : MonoBehaviour, IPointerDownHandler
         if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
         {
             scr_player.isJumpStart = true;
-
+            
             // 점프 횟수 증가
             scr_player.jumpCount++;
             if (scr_player.jumpCount > 2)

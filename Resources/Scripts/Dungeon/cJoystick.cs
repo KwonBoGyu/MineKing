@@ -172,6 +172,8 @@ public class cJoystick : MonoBehaviour
         joyDir = Vector3.zero;
         isDrag = false;
 
+        if (scr_player.GetStatus().Equals(CHARACTERSTATUS.DASH))
+            return;
         scr_player.SetCurMoveSpeed(0);
         scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
         scr_player.sm.StopRunningEffect();
@@ -183,6 +185,9 @@ public class cJoystick : MonoBehaviour
         joystick.localPosition = Vector3.zero;
         joyDir = Vector3.zero;
         isDrag = false;
+
+        if (scr_player.GetStatus().Equals(CHARACTERSTATUS.DASH))
+            return;
 
         scr_player.SetCurMoveSpeed(0);
         scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
