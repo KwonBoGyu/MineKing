@@ -177,6 +177,12 @@ public class cEnemy_monster : cCharacter
         _animator.SetTrigger("Attack");
     }
 
+    public virtual void SetBullet1()
+    {
+
+    }
+
+
     public virtual void ChangeDir(Vector3 pDir)
     {
         dir = pDir;
@@ -204,6 +210,8 @@ public class cEnemy_monster : cCharacter
         }
         if (isDead.Equals(false))
             _animator.SetTrigger("GetHit");
+
+        
         SetHp();
     }
 
@@ -224,9 +232,8 @@ public class cEnemy_monster : cCharacter
             StartCoroutine(RespawnTimer());
         }
 
-        if(isDead.Equals(false))
+        if (isDead.Equals(false))
             _animator.SetTrigger("GetHit");
-
         SetHp();
 
         // 넉백

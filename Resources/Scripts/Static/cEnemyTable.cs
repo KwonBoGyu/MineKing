@@ -59,11 +59,11 @@ public static class cEnemyTable
             case 1:
                 pRocks = Random.Range((int)0, (int)4);
                 es.Init("슬라임",
-                    new cProperty("Damage", 1),
+                    new cProperty("Damage", 10),
                     160,
                     new cProperty("MaxHp", 10),
                     new cProperty("CurHp", 10),
-                    0,
+                    1,
                     new cProperty("Rocks", pRocks));
                 return es;
 

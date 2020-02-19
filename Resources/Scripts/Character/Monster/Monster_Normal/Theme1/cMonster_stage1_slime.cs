@@ -26,6 +26,7 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     public override void Init(enemyInitStruct pEs)
     {
         base.Init(pEs);
+        
         respawnTime = 5.0f;
         attackCoolTime = 3.0f;
         bulletCoolTime = 2.0f;
@@ -54,22 +55,20 @@ public class cMonster_stage1_slime : cEnemy_Ranged
             else if (playerPos.x < this.transform.position.x)
                 ChangeDir(Vector3.left);
             
-            // 근접 공격 범위 바깥
+            // 공격 범위 바깥
             if (isInAttackRange.Equals(false))
             {
-                timer += Time.deltaTime;
-                if (timer >= bulletCoolTime)
-                {
-                    // 기본값 : 발사체 1, 발사체 타입 일반형, 중력 적용 x, 타겟 : 유저
-                    bulletManager.SetBullet(1, BULLET_TYPE.NORMAL, false, cUtil._player.originObj.transform.position);
-                    timer = 0;
-                }
+                this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
             }
             // 공격 범위 안에 들어온 경우
             // 공격 자체는 cEnemy_AttackBox에서 처리
             else if (isInAttackRange.Equals(true))
             {
-
+                timer += Time.deltaTime;
+                if (timer >= bulletCoolTime)
+                {
+                    Attack1();
+                }                
             }
         }
         // idle
@@ -97,6 +96,14 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     public override void Attack1()
     {
         base.Attack1();
+
+    }
+
+    public override void SetBullet1()
+    {
+        // 기본값 : 발사체 1, 발사체 타입 일반형, 중력 적용 x, 타겟 : 유저
+        bulletManager.LaunchBullet(true, cUtil._player.originObj.transform.position);
+        timer = 0;
     }
 
     public void Split()
@@ -122,7 +129,6 @@ public class cMonster_stage1_slime : cEnemy_Ranged
             isDead = true;
             this.GetComponent<BoxCollider2D>().enabled = false;
             this.curHp.value = this.maxHp.value;
-            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, -1000f);
             
             // 이미 분열한 슬라임이라면
             if (isSplited)

@@ -14,6 +14,11 @@ public class cAttackScript : MonoBehaviour
         dir = pDir;
     }
 
+    public void SetBullet()
+    {
+        em.SetBullet1();
+    }
+
     public void Attack()
     {
         if(em.isInAttackRange.Equals(true))

@@ -9,14 +9,5 @@ public class cEnemy_Ranged : cEnemy_monster
     protected float bulletCoolTime;
     protected float timer;
 
-    public float GetBulletDamage() { return bulletDamage; }
-
-    private void Start()
-    {
-        bulletDamage = (long)(damage.value * 0.5f);
-        bulletCoolTime = 3.0f;
-        timer = bulletCoolTime;
-    }
-
-    
+    public float GetBulletDamage() { return bulletDamage; }           
 }

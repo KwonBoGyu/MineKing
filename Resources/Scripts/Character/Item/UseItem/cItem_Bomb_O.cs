@@ -23,12 +23,7 @@ public class cItem_Bomb_O : cProjectile
         isTimeDone = false;
         isExplodeDone = false;
         originTPos = Vector3.zero;
-        flyingTime = 0;
-        defaultPower = 12f;
-        changingPower = defaultPower;
-        isReflectOn = true;
-        isGravityOn = true;
-        gravityAmount = 9.8f;
+        Init();
     }
 
     private void SetExplodeRange()

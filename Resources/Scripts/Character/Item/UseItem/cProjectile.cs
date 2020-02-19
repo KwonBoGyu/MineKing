@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class cProjectile : cObject
 {
-    protected Vector3 dir; // triangle에 본 방향벡터가 그리는 삼각형 저장
+    public Vector3 dir; // triangle에 본 방향벡터가 그리는 삼각형 저장
     protected Vector3 triangle; // 빗변, 밑변, 높이 순으로 저장
     protected bool upBlockedContinue;
 
     protected bool isReflectOn;
-    protected bool isGravityOn;
+    public bool isGravityOn;
     protected float gravityAmount;
     protected float flyingTime;
 
@@ -18,9 +18,19 @@ public class cProjectile : cObject
     protected float posX;
     protected float posY;
 
+    protected virtual void Init()
+    {
+        flyingTime = 0;
+        defaultPower = 12f;
+        changingPower = defaultPower;
+        isReflectOn = true;
+        isGravityOn = true;
+        gravityAmount = 9.8f;
+    }
+
     public void SetDir(Vector3 pDir)
     {
-        dir = pDir;
+        dir = pDir.normalized;
         triangle = new Vector3(Mathf.Sqrt(Mathf.Pow(dir.x, 2) + Mathf.Pow(dir.y, 2)), dir.x, dir.y);
     }
 
@@ -30,7 +40,7 @@ public class cProjectile : cObject
         posX = changingPower * (triangle.y / triangle.x); //코사인
         posY = changingPower * (triangle.z / triangle.x); //사인
 
-        if(isGravityOn)
+        if (isGravityOn)
         {   
             flyingTime += Time.deltaTime * 3;
             posY -= gravityAmount * flyingTime;
@@ -77,12 +87,14 @@ public class cProjectile : cObject
         {
             if (isUpBlocked.Equals(true))
             {
+                Debug.Log("UP BLOCKED");
                 ReducePower();
                 ResetMove();
                 upBlockedContinue = true;
             }
             if (isRightBlocked.Equals(true))
             {
+                Debug.Log("RIGHT BLOCKED");
                 SetDir(new Vector3(dir.x * -1, dir.y, dir.z));
                 ReducePower(0.5f);
                 ResetMove();
@@ -90,6 +102,7 @@ public class cProjectile : cObject
             }
             if (isLeftBlocked.Equals(true))
             {
+                Debug.Log("LEFT BLOCKED");
                 SetDir(new Vector3(dir.x * -1, dir.y, dir.z));
                 ReducePower(0.5f);
                 ResetMove();
@@ -97,6 +110,7 @@ public class cProjectile : cObject
             }
             if (GetIsGrounded().Equals(true))
             {
+                Debug.Log("DOWN BLOCKED");
                 ReducePower(0.8f);
                 ResetMove();
                 upBlockedContinue = false;

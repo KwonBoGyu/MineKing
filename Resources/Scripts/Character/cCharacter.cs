@@ -57,6 +57,7 @@ public class cCharacter : cObject
     //hp
     public Image img_curHp;
     public Text t_hp;
+    protected IEnumerator hpCor;
 
     // 중력 적용에 필요한 변수
     public float changingGravity;
@@ -315,7 +316,7 @@ public class cCharacter : cObject
         if (curHp.value > 0)
             StartKnockBack(pDir, pVelocity);
 
-        if (this.tag.Equals("Player"))
+        if (originObj.tag.Equals("Player"))
         {
             _animator.SetTrigger("getHit");
             SetStatus(CHARACTERSTATUS.NONE);
@@ -336,7 +337,8 @@ public class cCharacter : cObject
 
     protected void SetHp()
     {
-        img_curHp.fillAmount = (float)curHp.value / (float)maxHp.value;
+        hpCor = HpInterpolation();
+        StartCoroutine(hpCor);
         if (this.tag.Equals("Player"))
             t_hp.text = curHp.GetValueToString() + " / " + maxHp.GetValueToString();
     }
@@ -415,5 +417,23 @@ public class cCharacter : cObject
 
         isClimbing = pbool;
         _animator.SetBool("isCrawl", isClimbing);
+    }
+
+    IEnumerator HpInterpolation()
+    {
+        float prevAmount = img_curHp.fillAmount;
+        float curAmount = (float)curHp.value / (float)maxHp.value;
+        float tick = (curAmount - prevAmount) / 10f;
+
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            img_curHp.fillAmount = img_curHp.fillAmount + tick;
+            if (Mathf.Abs(img_curHp.fillAmount - curAmount) <= Mathf.Abs(tick))
+            {
+                img_curHp.fillAmount = curAmount;
+                break;
+            }
+        }
     }
 }

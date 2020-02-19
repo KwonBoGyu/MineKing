@@ -2,107 +2,89 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cBullet : MonoBehaviour
+public class cBullet : cProjectile
 {
-    public GameObject originMonster;
     private CircleCollider2D rangeCollider;
     private float attackRange;
 
     public BULLET_TYPE type;
-    public bool isGravityOn;
-    private float maxSpeed;
-    public float curSpeed;
-    public Vector3 dir;
     private float distance;
     public float damage;
     private bool isCollide;
-    // 중력 적용을 위한 변수
-    private float changingGravity;
-    private float defaultGravity;
     // type : split인 경우 몇 번 분열했는지 카운트
     private int splitCount;
     // type : grenade인 경우 폭발 관리를 위한 변수
     private bool explodeOn;
     private float explodeTime;
 
-    private void Start()
+    public GameObject parentMonster;
+        
+    public void Init(BULLET_TYPE pType, float pPower, bool pUseGravity, Vector3 pDir)
     {
-        rangeCollider = originMonster.GetComponent<cEnemy_monster>().notizer.GetComponent<CircleCollider2D>();
+        this.transform.position = originObj.transform.position;
+        this.transform.localScale = new Vector3(1, 1, 1);
+
+        type = pType;   
+        rangeCollider = parentMonster.GetComponent<cEnemy_monster>().notizer.GetComponent<CircleCollider2D>();
         attackRange = rangeCollider.radius;
-        damage = originMonster.GetComponent<cEnemy_Ranged>().GetBulletDamage();
-        changingGravity = 100f;
-        defaultGravity = 400f;
+        damage = parentMonster.GetComponent<cEnemy_Ranged>().GetBulletDamage(); 
 
         splitCount = 0;
         explodeOn = false;
         explodeTime = 3.0f;
         isCollide = false;
-    }
+        upBlockedContinue = false;
+        gravityAmount = 7.0f;
 
-    private void OnEnable()
-    {
-        this.transform.position = originMonster.transform.position;
-        this.transform.localScale = new Vector3(1, 1, 1);
-        changingGravity = 200f;
-        explodeOn = false;
-        curSpeed = maxSpeed;
-        isCollide = false;
+        flyingTime = 0;
+        defaultPower = pPower;
+        changingPower = defaultPower;
+        isReflectOn = true;
+        isGravityOn = pUseGravity;
+        SetDir(pDir);
+
+        Debug.Log(dir);
+    
     }
 
     public void SetType(BULLET_TYPE pType)
     {
         type = pType;
 
-        switch (pType)
-        {
-            case BULLET_TYPE.NORMAL:
-                maxSpeed = 300f;
-                curSpeed = maxSpeed;
-                break;
+        //switch (pType)
+        //{
+        //    case BULLET_TYPE.NORMAL:
+        //        maxSpeed = 300f;
+        //        curSpeed = maxSpeed;
+        //        break;
                 
-            case BULLET_TYPE.SPLIT:
-                maxSpeed = 300f;
-                curSpeed = maxSpeed;
-                break;
+        //    case BULLET_TYPE.SPLIT:
+        //        maxSpeed = 300f;
+        //        curSpeed = maxSpeed;
+        //        break;
                 
-            case BULLET_TYPE.GRENADE:
-                maxSpeed = 500f;
-                curSpeed = maxSpeed;
-                break;
-        }
+        //    case BULLET_TYPE.GRENADE:
+        //        maxSpeed = 500f;
+        //        curSpeed = maxSpeed;
+        //        break;
+        //}
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
-
-        if (dir != null)
-        {
-            transform.Translate(dir * Time.deltaTime * curSpeed);
-
-            // 중력이 적용되는 경우
-            if (isGravityOn && !isCollide)
-            {
-                SetGravity();
-            }
-        }
-
-        distance = new Vector2(this.transform.position.x - originMonster.transform.position.x,
-            this.transform.position.y - originMonster.transform.position.y).magnitude;
+        if (dir.Equals(Vector3.zero))
+            return;
+        
+        base.FixedUpdate();
+                
+        distance = new Vector2(this.transform.position.x - originObj.transform.position.x,
+            this.transform.position.y - originObj.transform.position.y).magnitude;
 
         // 총알 최대 범위 이상으로 벗어나면 소멸
         if (distance >= attackRange)
         {
             this.gameObject.SetActive(false);
         }
-    }
-
-    private void SetGravity()
-    {
-        this.gameObject.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
-        if (changingGravity <= defaultGravity)
-            changingGravity *= 1.2f;
-        else if (changingGravity > defaultGravity)
-            changingGravity = defaultGravity;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -121,6 +103,8 @@ public class cBullet : MonoBehaviour
             case BULLET_TYPE.NORMAL:
                 if (collision.gameObject.tag.Equals("Player"))
                 {
+                    Debug.Log("COLLISION");
+                    
                     cUtil._player.ReduceHp((long)damage, dir);
                     this.gameObject.SetActive(false);
                 }
@@ -128,7 +112,7 @@ public class cBullet : MonoBehaviour
                 {
                     this.gameObject.SetActive(false);
                 }
-                else if (collision.gameObject.tag.Equals("Tile_CannotHit"))
+                else if (collision.gameObject.tag.Equals("Tile_cannotHit"))
                 {
                     this.gameObject.SetActive(false);
                 }
@@ -183,14 +167,12 @@ public class cBullet : MonoBehaviour
                 }
                 else if (collision.gameObject.tag.Equals("Tile_canHit"))
                 {
-                    curSpeed = 0f;
                     dir = Vector3.zero;
                     isGravityOn = false;
                     StartCoroutine("SetGrenade");
                 }
                 else if (collision.gameObject.tag.Equals("Tile_cannotHit"))
                 {
-                    curSpeed = 0f;
                     dir = Vector3.zero;
                     isGravityOn = false;
                     StartCoroutine("SetGrenade");

@@ -17,7 +17,6 @@ public class cBulletManager : MonoBehaviour
 
     private void Start()
     {
-        originMonster = this.transform.parent.gameObject;
         bullets = new GameObject[this.gameObject.transform.childCount];
         for (int i = 0; i < bullets.Length; i++)
         {
@@ -26,11 +25,29 @@ public class cBulletManager : MonoBehaviour
     }
 
     // targetType : 0 -> 플레이어 방향 발사
-    public void SetBullet(int pBulletAmount, BULLET_TYPE pBulletType, bool pIsGravity, Vector3 pTarget, float pBulletTerm = 0)
+    //public void SetBullet(int pBulletAmount, BULLET_TYPE pBulletType, bool pIsGravity, Vector3 pTarget, float pBulletTerm = 0)
+    //{
+    //    bulletTerm = pBulletTerm;
+    //    StartCoroutine(Launch(pBulletAmount, pBulletType, pIsGravity, pTarget));
+    //}
+    
+    public void LaunchBullet(bool pIsGravity, Vector3 pTarget)
     {
-        bulletTerm = pBulletTerm;
-        StartCoroutine(Launch(pBulletAmount, pBulletType, pIsGravity, pTarget));
+        for (int i = 0; i < bullets.Length; i++)
+        {
+            if (bullets[i].activeSelf.Equals(false))
+            {
+                cBullet script = bullets[i].GetComponent<cBullet>();
+                script.transform.position = originMonster.transform.position;
+                bullets[i].SetActive(true);
+                Vector3 tempDir = new Vector3(pTarget.x, pTarget.y + 100, pTarget.z) - originMonster.transform.position;
+                script.Init(BULLET_TYPE.NORMAL, 10.0f, pIsGravity, tempDir);
+                break;
+            }
+        }
     }
+   
+
 
     IEnumerator Launch(int pBulletAmount, BULLET_TYPE pType, bool pIsGravity, Vector3 pTarget)
     {
@@ -51,12 +68,11 @@ public class cBulletManager : MonoBehaviour
         while (idx < amount)
         {
             cBullet script = bullets[idx].GetComponent<cBullet>();
+            script.transform.position = originMonster.transform.position;
             bullets[idx].SetActive(true);
-            script.SetType(pType); // 투사체 타입 설정
-            script.isGravityOn = pIsGravity; // 중력 적용 여부
-            Vector3 tempDir = pTarget - originMonster.transform.position;
-            tempDir = tempDir.normalized;
-            script.dir = tempDir;
+            Vector3 tempDir = new Vector3(pTarget.x, pTarget.y + 100, pTarget.z) - originMonster.transform.position;
+            Debug.Log(tempDir);
+            script.Init(pType, 10.0f, true, tempDir);
 
             yield return new WaitForSeconds(bulletTerm); // 투사체간 발사 간격만큼 대기
             idx++;

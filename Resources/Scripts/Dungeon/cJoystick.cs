@@ -52,7 +52,7 @@ public class cJoystick : MonoBehaviour
             stickDir = JOYSTICKDIR.UP;
         }
         //오른
-        else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
+        else if (Mathf.Abs(joyDir.y) < 0.7f && joyDir.x > 0.3f)
         {
             stickDir = JOYSTICKDIR.RIGHT;
         }
@@ -62,7 +62,7 @@ public class cJoystick : MonoBehaviour
             stickDir = JOYSTICKDIR.DOWN;
         }
         //왼
-        else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
+        else if (Mathf.Abs(joyDir.y) < 0.7f && joyDir.x < -0.3f)
         {
             stickDir = JOYSTICKDIR.LEFT;
         }
@@ -346,10 +346,20 @@ public class cJoystick : MonoBehaviour
     }
     public void SetDirOnAttack()
     {
+        //위
+        if (stickDir == JOYSTICKDIR.UP)
+        {
+            CalcDir(0);
+        }
         //오른
-        if (stickDir == JOYSTICKDIR.RIGHT)
+        else if (stickDir == JOYSTICKDIR.RIGHT)
         {
             CalcDir(1);
+        }
+        //아래
+        else if (stickDir == JOYSTICKDIR.DOWN)
+        {
+            CalcDir(2);
         }
         //왼
         else if (stickDir == JOYSTICKDIR.LEFT)
