@@ -12,8 +12,9 @@ public class cMonster_stage1_mouse : cEnemy_monster
     public override void Init(enemyInitStruct pEs)
     {
         base.Init(pEs);
+        _animator = this.transform.Find("log_rig").GetComponent<Animator>();
         respawnTime = 5.0f;
-        attackCoolTime = 2.0f;
+        attackCoolTime = 1.0f;
     }
 
 }

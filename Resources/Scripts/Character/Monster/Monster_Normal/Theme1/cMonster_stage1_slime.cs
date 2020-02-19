@@ -21,22 +21,82 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     private void Start()
     {
         Init(cEnemyTable.SetMonsterInfo(1));
-
-        attackCoolTime = 3.0f;
-        bulletCoolTime = 3.0f;
-        timer = bulletCoolTime;
-        bulletDamage = (long)(damage.value * 0.5f);
     }
 
     public override void Init(enemyInitStruct pEs)
     {
         base.Init(pEs);
         respawnTime = 5.0f;
+        attackCoolTime = 3.0f;
+        bulletCoolTime = 2.0f;
+        timer = bulletCoolTime;
+        bulletDamage = (long)(damage.value * 0.5f);
+        _animator = this.transform.Find("rig_slime").GetComponent<Animator>();
     }
 
-    protected override void FixedUpdate()
+    protected override void Move()
     {
-        base.FixedUpdate();
+        if (isDead.Equals(true))
+            return;
+
+        if (_animator != null)
+            _animator.SetFloat("MoveSpeed", curMoveSpeed);
+
+        // 인식 범위 내 진입
+        if (isInNoticeRange)
+        {   
+            //Hp바 on
+            img_curHp.transform.parent.gameObject.SetActive(true);
+
+            playerPos = cUtil._player.gameObject.transform.position;
+            if (playerPos.x >= this.transform.position.x)
+                ChangeDir(Vector3.right);
+            else if (playerPos.x < this.transform.position.x)
+                ChangeDir(Vector3.left);
+            
+            // 근접 공격 범위 바깥
+            if (isInAttackRange.Equals(false))
+            {
+                timer += Time.deltaTime;
+                if (timer >= bulletCoolTime)
+                {
+                    // 기본값 : 발사체 1, 발사체 타입 일반형, 중력 적용 x, 타겟 : 유저
+                    bulletManager.SetBullet(1, BULLET_TYPE.NORMAL, false, cUtil._player.originObj.transform.position);
+                    timer = 0;
+                }
+            }
+            // 공격 범위 안에 들어온 경우
+            // 공격 자체는 cEnemy_AttackBox에서 처리
+            else if (isInAttackRange.Equals(true))
+            {
+
+            }
+        }
+        // idle
+        else if (isInNoticeRange.Equals(false))
+        {
+            //Hp바 off
+            img_curHp.transform.parent.gameObject.SetActive(false);
+
+            this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
+
+            //막히면 방향 바꿔준다.
+            if (isRightBlocked == true)
+            {
+                isRightBlocked = false;
+                ChangeDir(Vector3.left);
+            }
+            else if (isLeftBlocked == true)
+            {
+                isLeftBlocked = false;
+                ChangeDir(Vector3.right);
+            }
+        }
+    }
+
+    public override void Attack1()
+    {
+        base.Attack1();
     }
 
     public void Split()

@@ -27,7 +27,7 @@ public class cBullet : MonoBehaviour
 
     private void Start()
     {
-        rangeCollider = originMonster.transform.GetChild(1).GetComponent<CircleCollider2D>();
+        rangeCollider = originMonster.GetComponent<cEnemy_monster>().notizer.GetComponent<CircleCollider2D>();
         attackRange = rangeCollider.radius;
         damage = originMonster.GetComponent<cEnemy_Ranged>().GetBulletDamage();
         changingGravity = 100f;

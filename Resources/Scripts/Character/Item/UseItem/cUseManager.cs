@@ -6,12 +6,7 @@ public class cUseManager : MonoBehaviour
 {
     public GameObject bombPrefab;
     public GameObject torchPrefab;
-
-    private void Start()
-    {
-        Debug.Log("USE MANAGER INIT");
-    }
-
+    
     public void SetBomb()
     {
         GameObject bomb = Instantiate(bombPrefab, cUtil._player.originObj.transform.position,

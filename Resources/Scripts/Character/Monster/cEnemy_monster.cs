@@ -32,6 +32,8 @@ public class cEnemy_monster : cCharacter
     public float GetAttackCoolTime() { return attackCoolTime; }
     protected float coolTimer;
 
+    public cAttackScript attackScript;
+
     protected cDungeonNormal_processor dp;
         
     public virtual void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
@@ -106,9 +108,18 @@ public class cEnemy_monster : cCharacter
     //Defalut Move
     protected virtual void Move()
     {
+        if (isDead.Equals(true))
+            return;
+
+        if(_animator != null)
+             _animator.SetFloat("MoveSpeed", curMoveSpeed);
+
         // 인식 범위 내 진입
         if (isInNoticeRange.Equals(true))
         {
+            //Hp바 on
+            img_curHp.transform.parent.gameObject.SetActive(true);
+
             // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
             if (isInAttackRange.Equals(false))
             {
@@ -142,6 +153,8 @@ public class cEnemy_monster : cCharacter
         // idle 상태
         else if (isInNoticeRange.Equals(false))
         {
+            img_curHp.transform.parent.gameObject.SetActive(false);
+            coolTimer = 0;
             this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
             //막히면 방향 바꿔준다.
             if (isRightBlocked == true)
@@ -159,8 +172,9 @@ public class cEnemy_monster : cCharacter
 
     public virtual void Attack1()
     {
-        cUtil._player.ReduceHp(damage.value, GetDirection());
+        attackScript.SetAttackParameter(damage.value, GetDirection());
         coolTimer = 0;
+        _animator.SetTrigger("Attack");
     }
 
     public virtual void ChangeDir(Vector3 pDir)
@@ -179,12 +193,17 @@ public class cEnemy_monster : cCharacter
         
         if (curHp.value <= 0)
         {
+            coolTimer = 0;
             curHp.value = 0;
             isDead = true;
+            _animator.SetTrigger("Dead");
+            img_curHp.transform.parent.gameObject.SetActive(false);
             this.GetComponent<BoxCollider2D>().enabled = false;
             // 리스폰 타이머 활성화
             StartCoroutine(RespawnTimer());
         }
+        if (isDead.Equals(false))
+            _animator.SetTrigger("GetHit");
         SetHp();
     }
 
@@ -198,10 +217,15 @@ public class cEnemy_monster : cCharacter
         {
             curHp.value = 0;
             isDead = true;
+            _animator.SetTrigger("Dead");
+            img_curHp.transform.parent.gameObject.SetActive(false);
             this.GetComponent<BoxCollider2D>().enabled = false;
             // 리스폰 타이머 활성화
             StartCoroutine(RespawnTimer());
         }
+
+        if(isDead.Equals(false))
+            _animator.SetTrigger("GetHit");
 
         SetHp();
 
@@ -214,7 +238,6 @@ public class cEnemy_monster : cCharacter
     IEnumerator RespawnTimer()
     {
         float time = 0;
-        this.transform.localPosition = new Vector3(InitPos.x, InitPos.y, -1000.0f);
 
         while (true)
         {
@@ -232,6 +255,7 @@ public class cEnemy_monster : cCharacter
 
     protected virtual void RespawnInit()
     {
+        _animator.SetTrigger("Init");
         this.GetComponent<BoxCollider2D>().enabled = true;
         this.transform.localPosition = InitPos;
         isDead = false;

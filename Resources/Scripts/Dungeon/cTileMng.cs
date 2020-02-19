@@ -13,14 +13,16 @@ public class cTileMng : MonoBehaviour
         public cProperty level { get; set; }
         public cProperty maxHp { get; set; }
         public cProperty curHp { get; set; }
+        public cProperty rocks { get; set; }
 
-        public Tile(Vector3Int pLocation, TileBase pTileBase, cProperty pLevel, cProperty pMaxHp, cProperty pCurHp)
+        public Tile(Vector3Int pLocation, TileBase pTileBase, cProperty pLevel, cProperty pMaxHp, cProperty pCurHp, cProperty pRocks)
         {
             location = pLocation;
             tileBase = pTileBase;
             level = new cProperty(pLevel);
             maxHp = new cProperty(pMaxHp);
             curHp = new cProperty(pCurHp);
+            rocks = new cProperty(pRocks);
         }
     }
 
@@ -379,7 +381,8 @@ public class cTileMng : MonoBehaviour
                 tileMap_canHit.GetTile(localPlace),
                 new cProperty("Level", 1),
                 new cProperty("MaxHp", 10),
-                new cProperty("CurHp", 10));
+                new cProperty("CurHp", 10),
+                new cProperty("Rocks", 1));
 
             dic_canHit.Add(tileMap_canHit.CellToWorld(localPlace), tile);
         }
@@ -414,8 +417,9 @@ public class cTileMng : MonoBehaviour
             isChecked = true;
             pCurHpPercent = 0;
             tileMap_canHit.SetTile(worldToCellPos, null);
+            cUtil._player.RootRocks(tempTileToUse.rocks.value);
 
-            if(dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3"))
+            if (dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3"))
                 PlayTileEffect(1, new Vector3(cellToWorldPos.x + tileSize / 2,
     cellToWorldPos.y + tileSize / 2, cellToWorldPos.z));
             else
@@ -428,6 +432,7 @@ public class cTileMng : MonoBehaviour
             pCurHpPercent = 0;
             isChecked = true;
             tileMap_canHit.SetTile(worldToCellPos, null);
+            cUtil._player.RootRocks(tempTileToUse.rocks.value);
 
             if (dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3"))
                 PlayTileEffect(1, new Vector3(cellToWorldPos.x + tileSize / 2,

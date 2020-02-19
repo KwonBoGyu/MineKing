@@ -177,9 +177,23 @@ p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
         }
         //일반 공격
         else if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
-        {
+        {           
             if (scr_player.GetIsGrounded().Equals(false) && scr_player.GetIsClimbing().Equals(false))
+            {
+                if (scr_player.isRightBlocked)
+                {
+                    scr_player.SetIsClimbing(true);
+                    scr_player.jumpCount = 0;
+                    isChargingOn = false;
+                }
+                else if (scr_player.isLeftBlocked)
+                {
+                    scr_player.SetIsClimbing(true);
+                    scr_player.jumpCount = 0;
+                    isChargingOn = false;
+                }
                 return;
+            }
 
             if (scr_player.GetDirection().Equals(Vector3.up))
                 scr_player.Attack_up();

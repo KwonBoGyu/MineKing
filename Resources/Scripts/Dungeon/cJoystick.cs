@@ -4,8 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+public enum JOYSTICKDIR
+{
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT,
+    IDLE
+}
+
 public class cJoystick : MonoBehaviour
 {
+    private JOYSTICKDIR stickDir;
+    public JOYSTICKDIR GetStickDir() { return stickDir; }
     public Transform _player;
     public Transform joystick;
 
@@ -22,7 +33,6 @@ public class cJoystick : MonoBehaviour
 
     private Vector3 dragPos;
 
-
     private void Start()
     {
         rad = this.GetComponent<RectTransform>().sizeDelta.y * 0.3f;
@@ -31,10 +41,35 @@ public class cJoystick : MonoBehaviour
         scr_player = _player.transform.GetChild(0).GetComponent<cPlayer>();
         scr_player.SetDir(Vector2.right);
         scr_player.SetCurMoveSpeed(0);
+        stickDir = JOYSTICKDIR.IDLE;
     }
 
     private void Update()
     {
+        //위
+        if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y > 0.7f)
+        {
+            stickDir = JOYSTICKDIR.UP;
+        }
+        //오른
+        else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
+        {
+            stickDir = JOYSTICKDIR.RIGHT;
+        }
+        //아래
+        else if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y < -0.7f)
+        {
+            stickDir = JOYSTICKDIR.DOWN;
+        }
+        //왼
+        else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
+        {
+            stickDir = JOYSTICKDIR.LEFT;
+        }
+        else
+        {
+            stickDir = JOYSTICKDIR.IDLE;
+        }
 #if UNITY_EDITOR
 
         //점프
@@ -61,10 +96,10 @@ public class cJoystick : MonoBehaviour
         {
             if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
             {
-                Attack();                
+                Attack();
             }
         }
-        else if(Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
             if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
             {
@@ -80,71 +115,53 @@ public class cJoystick : MonoBehaviour
         }
 
         if (scr_player.GetStatus() == CHARACTERSTATUS.ATTACK)
-            scr_player.SetCurMoveSpeed(0);
+        {
+            if (scr_player.GetIsMoveAttack().Equals(false))
+            {
+                scr_player.SetCurMoveSpeed(0);
+            }
+        }
         else
         {
             if (isDrag.Equals(true))
             {
                 //위
-                if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y > 0.7f)
+                if (stickDir == JOYSTICKDIR.UP)
                 {
                     CalcDir(0);
                 }
                 //오른
-                else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
+                else if (stickDir == JOYSTICKDIR.RIGHT)
                 {
                     CalcDir(1);
                 }
                 //아래
-                else if (Mathf.Abs(joyDir.x) < 0.3f && joyDir.y < -0.7f)
+                else if (stickDir == JOYSTICKDIR.DOWN)
                 {
                     CalcDir(2);
                 }
                 //왼
-                else if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
+                else if (stickDir == JOYSTICKDIR.LEFT)
                 {
                     CalcDir(3);
                 }
             }
         }
     }
-    
+
     public void PointerDown(BaseEventData _data)
     {
         PointerEventData d = _data as PointerEventData;
+        this.gameObject.transform.position = d.position;
+        joystick.transform.parent.GetChild(0).GetComponent<Image>().enabled = true;
+        joystick.transform.parent.GetChild(1).GetComponent<Image>().enabled = true;
         dragPos = d.position;
         isDrag = true;
 
         //방향
         joyDir = (dragPos - this.transform.position).normalized;
         //조이스틱 이동
-        joystick.position = dragPos;
-        //이동 거리
-        float dist = (defaultPos - dragPos).magnitude;
-
-        if (dist > rad)
-        {
-            joystick.position = joyDir * rad + defaultPos;
-        }
-        //벽에 붙기
-        if(scr_player.isRightBlocked && scr_player.GetIsGrounded().Equals(false))
-        {
-            //오른
-            if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x > 0.7f)
-            {
-                scr_player.SetIsClimbing(true);
-                scr_player.jumpCount = 0;
-            }
-        }
-        if (scr_player.isLeftBlocked && scr_player.GetIsGrounded().Equals(false))
-        {
-            //왼
-            if (Mathf.Abs(joyDir.y) < 0.3f && joyDir.x < -0.7f)
-            {
-                scr_player.SetIsClimbing(true);
-                scr_player.jumpCount = 0;
-            }
-        }
+        joystick.transform.up = joyDir;
     }
 
     public void Drag(BaseEventData _data)
@@ -154,26 +171,20 @@ public class cJoystick : MonoBehaviour
         isDrag = true;
 
         //방향
-        joyDir = (dragPos - this.transform.position).normalized;         
+        joyDir = (dragPos - this.transform.position).normalized;
         //조이스틱 이동
-        joystick.position = dragPos;
-        //이동 거리
-        float dist = (defaultPos - dragPos).magnitude;
-
-        if(dist > rad)
-        {
-            joystick.position = joyDir * rad + defaultPos;
-        }
+        joystick.transform.up = joyDir;
     }
 
     public void DragEnd()
     {
+        this.gameObject.transform.position = defaultPos;
+        joystick.transform.parent.GetChild(0).GetComponent<Image>().enabled = false;
+        joystick.transform.parent.GetChild(1).GetComponent<Image>().enabled = false;
         joystick.localPosition = Vector3.zero;
         joyDir = Vector3.zero;
         isDrag = false;
 
-        if (scr_player.GetStatus().Equals(CHARACTERSTATUS.DASH))
-            return;
         scr_player.SetCurMoveSpeed(0);
         scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
         scr_player.sm.StopRunningEffect();
@@ -181,13 +192,12 @@ public class cJoystick : MonoBehaviour
 
     public void PointerUp(BaseEventData _data)
     {
-        //this.transform.position = defaultPos;
+        this.gameObject.transform.position = defaultPos;
+        joystick.transform.parent.GetChild(0).GetComponent<Image>().enabled = false;
+        joystick.transform.parent.GetChild(1).GetComponent<Image>().enabled = false;
         joystick.localPosition = Vector3.zero;
         joyDir = Vector3.zero;
         isDrag = false;
-
-        if (scr_player.GetStatus().Equals(CHARACTERSTATUS.DASH))
-            return;
 
         scr_player.SetCurMoveSpeed(0);
         scr_player.SetDir(scr_player.GetDirection(), CHARDIRECTION.NONE);
@@ -214,14 +224,14 @@ public class cJoystick : MonoBehaviour
             }
         }
     }
-        
+
     private void Attack()
     {
         if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK)
         {
             if (scr_player.GetIsGrounded().Equals(false) && scr_player.GetIsClimbing().Equals(false))
                 return;
-            
+
             if (scr_player.GetDirection().Equals(Vector3.up))
                 scr_player.Attack_up();
             else if (scr_player.GetDirection().Equals(Vector3.down) && scr_player.GetIsClimbing().Equals(false))
@@ -233,7 +243,7 @@ public class cJoystick : MonoBehaviour
 
     private void CalcDir(int pDir)
     {
-        switch(pDir)
+        switch (pDir)
         {
             //UP
             case 0:
@@ -263,7 +273,7 @@ public class cJoystick : MonoBehaviour
                 _player.transform.localScale = new Vector3(1, 1, 1);
 
                 //붙은거 떨어지기
-                if(scr_player.isLeftBlocked && scr_player.GetIsClimbing())
+                if (scr_player.isLeftBlocked && scr_player.GetIsClimbing())
                 {
                     scr_player.SetIsClimbing(false);
                     scr_player.jumpCount = 0;
@@ -271,16 +281,16 @@ public class cJoystick : MonoBehaviour
 
                 //달리기
                 if (scr_player.GetStatus() != CHARACTERSTATUS.ATTACK &&
-                     scr_player.GetStatus() != CHARACTERSTATUS.DASH && 
+                     scr_player.GetStatus() != CHARACTERSTATUS.DASH &&
                      scr_player.GetIsClimbing().Equals(false))
                 {
                     scr_player.SetStatus(CHARACTERSTATUS.NONE);
                     scr_player.SetCurMoveSpeed(scr_player.GetMaxMoveSpeed());
-                    if(scr_player.GetIsGrounded().Equals(true))
+                    if (scr_player.GetIsGrounded().Equals(true))
                         scr_player.sm.playRunningEffect();
                 }
 
-                if(scr_player.GetIsClimbing().Equals(true))
+                if (scr_player.GetIsClimbing().Equals(true))
                     scr_player.SetCurMoveSpeed(0);
 
                 break;
@@ -332,6 +342,19 @@ public class cJoystick : MonoBehaviour
                 if (scr_player.GetIsClimbing().Equals(true))
                     scr_player.SetCurMoveSpeed(0);
                 break;
-        }        
+        }
+    }
+    public void SetDirOnAttack()
+    {
+        //오른
+        if (stickDir == JOYSTICKDIR.RIGHT)
+        {
+            CalcDir(1);
+        }
+        //왼
+        else if (stickDir == JOYSTICKDIR.LEFT)
+        {
+            CalcDir(3);
+        }
     }
 }
