@@ -229,7 +229,7 @@ public class cEnemy_monster : cCharacter
             img_curHp.transform.parent.gameObject.SetActive(false);
             this.GetComponent<BoxCollider2D>().enabled = false;
             // 리스폰 타이머 활성화
-            StartCoroutine(RespawnTimer());
+            Respawn();
         }
 
         if (isDead.Equals(false))
@@ -239,6 +239,11 @@ public class cEnemy_monster : cCharacter
         // 넉백
         if (curHp.value > 0)
             StartKnockBack(pDir, pVelocity);
+    }
+
+    protected void Respawn()
+    {
+        StartCoroutine(RespawnTimer());
     }
 
     // 리스폰 관리

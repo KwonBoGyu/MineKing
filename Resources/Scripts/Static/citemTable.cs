@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class citemTable
 {
-    public static byte GetUseItemTotalNum() { return 3; }
+    public static int GetUseItemTotalNum() { return 3; }
 
     public static void GetItemInfo(out cItem pItem, int pItemNum)
     {

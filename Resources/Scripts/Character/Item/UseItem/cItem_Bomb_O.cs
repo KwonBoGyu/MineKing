@@ -64,9 +64,10 @@ public class cItem_Bomb_O : cProjectile
 
             //폭발 범위 지정 및 폭발
             SetExplodeRange();
+            GameObject.Find("DungeonNormalScene").transform.Find("Cam_main").GetComponent<cSoundMng>().PlayItemEffect(2);
             for (int i = 0; i < explodeRange.Length; i++)
             {
-                cUtil._tileMng.CheckAttackedTile(explodeRange[i], damage, out temp_TileHp);
+                cUtil._tileMng.CheckAttackedTile(explodeRange[i], damage.value, out temp_TileHp);
             }
             isTimeDone = false;
             isExplodeDone = true;

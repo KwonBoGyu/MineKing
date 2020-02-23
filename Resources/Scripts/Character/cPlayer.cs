@@ -46,7 +46,7 @@ public class cPlayer : cCharacter
         speedUpTime = 0.0f;
         speedUpAmount = 0.0f;
         jumpHeight = 200.0f;
-        attackBoxPos[0] = new Vector3(18, 250, -1.1f);
+        attackBoxPos[0] = new Vector3(18, 280, -1.1f);
         attackBoxPos[1] = new Vector3(180, 58, -1.1f);
         attackBoxPos[2] = new Vector3(60, -128, -1.1f);
         attackBoxPos[3] = new Vector3(100, 142, -1.1f);
@@ -88,7 +88,8 @@ public class cPlayer : cCharacter
         _animator.SetBool("isGrounded", GetIsGrounded());
 
         if (GetIsGrounded().Equals(false) && isJumpAniDone.Equals(false)
-            && isClimbing.Equals(false) && status != CHARACTERSTATUS.ATTACK)
+            && isClimbing.Equals(false) && status != CHARACTERSTATUS.ATTACK 
+            && status != CHARACTERSTATUS.DASH )
         {
             _animator.SetTrigger("jumping");
             if (status.Equals(CHARACTERSTATUS.ATTACK))
@@ -194,6 +195,7 @@ public class cPlayer : cCharacter
         {
             pDir -= 3;
             isCritical = true;
+            damage_crit.value = (long)(damage.value * 2);
         }
         else
             isCritical = false;
@@ -226,8 +228,9 @@ public class cPlayer : cCharacter
         attackBox.SetActive(true);
 
         float t_tileHp = 0;
+        long curDmg = isCritical ? damage_crit.value : damage.value;
 
-        if (tileMng.CheckAttackedTile(attackBox.transform.position, damage, out t_tileHp).Equals(true))
+        if (tileMng.CheckAttackedTile(attackBox.transform.position, curDmg, out t_tileHp).Equals(true))
         {
             byte i = 1;
 
@@ -250,14 +253,15 @@ public class cPlayer : cCharacter
                 effects[5].transform.position = attackBox.transform.position;
                 effects[5].Play();
                 sm.playAxeEffect(true);
+                ft.DamageTextOn(damage_crit.GetValueToString(), attackBox.transform.position, true);
             }
             else
             {
                 effects[4].transform.position = attackBox.transform.position;
                 effects[4].Play();
                 sm.playAxeEffect(false);
+                ft.DamageTextOn(damage.GetValueToString(), attackBox.transform.position);
             }
-            ft.DamageTextOn(damage.GetValueToString(), attackBox.transform.position);
         }
     }
     public void InactiveAttackBox()
@@ -265,7 +269,6 @@ public class cPlayer : cCharacter
         joystick.SetDirOnAttack();
         attackBox.SetActive(false);
         status = CHARACTERSTATUS.NONE;
-        _animator.SetBool("ChargeDone", false);
     }
 
     public byte UseItem(byte pItemKind)

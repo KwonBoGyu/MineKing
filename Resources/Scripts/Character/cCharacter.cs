@@ -32,6 +32,7 @@ public class cCharacter : cObject
 {
     protected string nickName;
     protected cProperty damage;
+    protected cProperty damage_crit;
     protected float maxMoveSpeed;
     protected float dashMoveSpeed;
     protected const float dashTime = 0.7f;
@@ -50,6 +51,8 @@ public class cCharacter : cObject
     protected CHARDIRECTION charDir;
     public CHARDIRECTION GetCharDir() { return charDir; }
     protected Vector3 dir;
+    public GameObject obj_coolTime;
+    public Text t_coolTime;
 
     //크리티컬
     public bool isCritical;
@@ -97,8 +100,10 @@ public class cCharacter : cObject
     {
         nickName = pNickName;
         damage = new cProperty(pDamage);
+        damage_crit = new cProperty(pDamage);
+        damage_crit.value = (long)(damage.value * 1.5f);
         maxMoveSpeed = pMaxMoveSpeed;
-        dashMoveSpeed = maxMoveSpeed + 400;
+        dashMoveSpeed = maxMoveSpeed + 500;
         curMoveSpeed = 0;
         maxHp = new cProperty(pMaxHp);
         curHp = new cProperty(pCurHp);
@@ -148,7 +153,6 @@ public class cCharacter : cObject
     IEnumerator Jump()
     {
         bool goBreak = false;
-        Debug.Log(jumpCount);
         if (jumpCount > 2)
         {
             jumpCount = 0;
@@ -161,6 +165,7 @@ public class cCharacter : cObject
 
         float currentHeight = originObj.transform.position.y;
 
+        effects[0].Play();
         sm.playEffect(1);
         while (true)
         {
@@ -168,7 +173,6 @@ public class cCharacter : cObject
             {
                 break;
             }
-
             yield return new WaitForFixedUpdate();
 
             if (status.Equals(CHARACTERSTATUS.ATTACK))
@@ -207,6 +211,11 @@ public class cCharacter : cObject
         float DashTimer = 0;
         float factor = 0;
 
+        //이펙트
+        //effects[6].transform.localPosition = new Vector3(-47, 46.2f, 0);
+        effects[6].Play();
+        effects[7].Play();
+
         while (true)
         {
             yield return new WaitForFixedUpdate();
@@ -240,12 +249,23 @@ public class cCharacter : cObject
     {
         yield return null;
 
+        obj_coolTime.SetActive(true);
+        t_coolTime.gameObject.SetActive(true);
+        t_coolTime.text = ((int)maxDashCoolDown).ToString();
+        
         while (true)
         {
             yield return new WaitForFixedUpdate();
+            
             dashCoolDown -= Time.deltaTime;
+            t_coolTime.text = ((int)dashCoolDown + 1).ToString();
+
             if (dashCoolDown <= 0)
+            {
+                obj_coolTime.SetActive(false);
+                t_coolTime.gameObject.SetActive(false);
                 break;
+            }
         }
 
         dashCoolDown = maxDashCoolDown;
@@ -314,7 +334,10 @@ public class cCharacter : cObject
         SetHp();
 
         if (curHp.value > 0)
+        {
+            StopCoroutine(KnockBack(pDir, pVelocity));
             StartKnockBack(pDir, pVelocity);
+        }
 
         if (originObj.tag.Equals("Player"))
         {
@@ -339,7 +362,7 @@ public class cCharacter : cObject
     {
         hpCor = HpInterpolation();
         StartCoroutine(hpCor);
-        if (this.tag.Equals("Player"))
+        if (originObj.tag.Equals("Player"))
             t_hp.text = curHp.GetValueToString() + " / " + maxHp.GetValueToString();
     }
 

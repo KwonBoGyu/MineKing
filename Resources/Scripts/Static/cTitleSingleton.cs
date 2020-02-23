@@ -21,7 +21,7 @@ public class cTitleSingleton : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         //해상도 설정
-        Screen.SetResolution(1920, 1080, true);
+        Screen.SetResolution(1920, 1080, false);
 
         //static 클래스 설정
         cUtil._sm = this.transform.Find("SceneManager").GetComponent<cSceneManager>();

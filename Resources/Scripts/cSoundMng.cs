@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class cSoundMng : MonoBehaviour
 {
+    //0:일반, 1:이동, 2:공격, 3:타일, 4: 타일, 5:아이템, 6:가방, 7:BGM
     public AudioSource[] _as;
     public AudioClip[] _clips;
 
@@ -51,7 +52,7 @@ public class cSoundMng : MonoBehaviour
             _as[4].clip = _clips[4];
 
         _as[4].volume = 0.5f;
-
+        _as[4].pitch = 1.2f;
         _as[4].loop = false;
         _as[4].Play();
     }
@@ -78,4 +79,42 @@ public class cSoundMng : MonoBehaviour
         _as[1].Stop();
     }
     
+    public void PlayItemEffect(byte pNum)
+    {
+        _as[5].Stop();
+        switch (pNum)
+        {
+            case 1:
+                _as[5].volume = 0.7f;
+                _as[5].clip = _clips[5];
+                _as[5].loop = false;
+                _as[5].Play();
+                break;
+
+            case 2:
+                _as[5].volume = 1.0f;
+                _as[5].clip = _clips[6];
+                _as[5].loop = false;
+                _as[5].Play();
+                break;
+        }
+    }
+
+    public void PlayBag(bool isOn)
+    {
+        _as[6].Stop();
+
+        if (isOn.Equals(true))
+        {
+            _as[6].clip = _clips[7];
+            _as[6].loop = false;
+            _as[6].Play();
+        }
+        else
+        {
+            _as[6].clip = _clips[8];
+            _as[6].loop = false;
+            _as[6].Play();
+        }
+    }
 }

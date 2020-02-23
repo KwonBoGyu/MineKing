@@ -26,6 +26,8 @@ public class cTileMng : MonoBehaviour
         }
     }
 
+    public Color HitColor;
+
     public int tileSize;
     public int numX;
     public int numY;
@@ -37,16 +39,21 @@ public class cTileMng : MonoBehaviour
     Tile? tempTile;
     public GameObject effect_destroy;
 
+    public GameObject obj_itemDrop;
+    public cSoundMng soundMng;
+
     private void Start()
     {
         tileMap_canHit = this.transform.GetChild(0).GetComponent<Tilemap>();
         tileMap_cannotHit = this.transform.GetChild(1).GetComponent<Tilemap>();
         tempTile = null;
+        obj_itemDrop = GameObject.Find("DungeonNormalScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
+        soundMng = GameObject.Find("DungeonNormalScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
 
         SetEntireTiles();
     }
 
-    public bool CheckAttackedTile(Vector3 pWorldPos, cProperty pDamage, out float pCurHpPercent)
+    public bool CheckAttackedTile(Vector3 pWorldPos, long pDamage, out float pCurHpPercent)
     {
         bool isChecked = false;
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pWorldPos);
@@ -390,7 +397,7 @@ public class cTileMng : MonoBehaviour
         cUtil._tileMng = this;
     }
 
-    private bool UpdateAttackedTile(Vector3 pCurPos, cProperty pDamage, out float pCurHpPercent)
+    private bool UpdateAttackedTile(Vector3 pCurPos, long pDamage, out float pCurHpPercent)
     {
         bool isChecked = false;
         Vector3Int worldToCellPos = tileMap_canHit.WorldToCell(pCurPos);
@@ -408,7 +415,7 @@ public class cTileMng : MonoBehaviour
 
         Tile tempTileToUse;
         tempTileToUse = dic_canHit[cellToWorldPos];
-        tempTileToUse.curHp.value -= pDamage.value;
+        tempTileToUse.curHp.value -= pDamage;
         dic_canHit[cellToWorldPos] = tempTileToUse;
         pCurHpPercent = (float)tempTileToUse.curHp.value / (float)dic_canHit[cellToWorldPos].maxHp.value;
 
@@ -418,13 +425,37 @@ public class cTileMng : MonoBehaviour
             pCurHpPercent = 0;
             tileMap_canHit.SetTile(worldToCellPos, null);
             cUtil._player.RootRocks(tempTileToUse.rocks.value);
+            soundMng.playTileEffect();
 
+            //금광 타일
             if (dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3"))
+            {
                 PlayTileEffect(1, new Vector3(cellToWorldPos.x + tileSize / 2,
-    cellToWorldPos.y + tileSize / 2, cellToWorldPos.z));
+       cellToWorldPos.y + tileSize / 2, cellToWorldPos.z));
+
+                //아이템 드롭
+                byte itemNum = (byte)Random.Range(0, citemTable.GetUseItemTotalNum());
+
+                for (byte k = 0; k < obj_itemDrop.transform.GetChild(itemNum).childCount; k++)
+                {
+                    if (obj_itemDrop.transform.GetChild(itemNum).GetChild(k).gameObject.activeSelf.Equals(false))
+                    {
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).transform.position = new Vector3(cellToWorldPos.x + tileSize / 2,
+   cellToWorldPos.y + tileSize / 2, cellToWorldPos.z);
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).gameObject.SetActive(true);
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).GetComponent<cItemDrop>().Init();
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).GetComponent<cItemDrop>().itemId = itemNum;
+                        break;
+                    }
+                }
+
+            }
+            //노말 타일
             else
+            {
                 PlayTileEffect(0, new Vector3(cellToWorldPos.x + tileSize / 2,
     cellToWorldPos.y + tileSize / 2, cellToWorldPos.z));
+            }
         }
         else if (tempTileToUse.curHp.value <= 0)
         {
@@ -433,16 +464,44 @@ public class cTileMng : MonoBehaviour
             isChecked = true;
             tileMap_canHit.SetTile(worldToCellPos, null);
             cUtil._player.RootRocks(tempTileToUse.rocks.value);
+            soundMng.playTileEffect();
 
+            //금광 타일
             if (dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3"))
+            {
                 PlayTileEffect(1, new Vector3(cellToWorldPos.x + tileSize / 2,
-    cellToWorldPos.y + tileSize / 2, cellToWorldPos.z));
+       cellToWorldPos.y + tileSize / 2, cellToWorldPos.z));
+
+                //아이템 드롭
+                byte itemNum = (byte)Random.Range(0, citemTable.GetUseItemTotalNum());
+                
+                for (byte k = 0; k < obj_itemDrop.transform.GetChild(itemNum).childCount; k++)
+                {
+                    if (obj_itemDrop.transform.GetChild(itemNum).GetChild(k).gameObject.activeSelf.Equals(false))
+                    {
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).transform.position = new Vector3(cellToWorldPos.x + tileSize / 2,
+   cellToWorldPos.y + tileSize / 2, cellToWorldPos.z);
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).gameObject.SetActive(true);
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).GetComponent<cItemDrop>().Init();
+                        obj_itemDrop.transform.GetChild(itemNum).GetChild(k).GetComponent<cItemDrop>().itemId = itemNum;
+                        break;
+                    }
+                }
+
+            }                
+            //노말 타일
             else
+            {
                 PlayTileEffect(0, new Vector3(cellToWorldPos.x + tileSize / 2,
     cellToWorldPos.y + tileSize / 2, cellToWorldPos.z));
+            }
+                
         }
         else
+        {
+            StartCoroutine(TileReaction(tileMap_canHit, worldToCellPos));
             isChecked = true;
+        }
 
         return isChecked;
     }
@@ -503,6 +562,31 @@ public class cTileMng : MonoBehaviour
             effect_destroy.transform.GetChild(pChar).GetChild(i).position = pPos;
             effect_destroy.transform.GetChild(pChar).GetChild(i).GetComponent<ParticleSystem>().Play();
             break;
+        }
+    }
+
+    private IEnumerator TileReaction(Tilemap pTilemap, Vector3Int pPos)
+    {
+        float timer = 0;
+        float MaxTime = 1;
+
+        pTilemap.SetTileFlags(pPos, TileFlags.None);
+        pTilemap.SetColor(pPos, HitColor);
+        Color tC = new Color(1 - HitColor.r, 1 - HitColor.g, 1 - HitColor.b, 1);
+
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+
+            if(timer > MaxTime)
+            {
+                timer = 0;
+                pTilemap.SetColor(pPos, Color.white);
+                break;
+            }
+            pTilemap.SetColor(pPos, new Color(HitColor.r + tC.r * timer, HitColor.g + tC.g * timer, HitColor.b + tC.b * timer, 1));
+
+            timer += Time.deltaTime * 3;
         }
     }
 }

@@ -19,6 +19,7 @@ public class cDungeonNormal_processor : MonoBehaviour
     public GameObject obj_values;
 
     public Button b_goHome;
+    public cSoundMng soundMng;
 
     private void Start()
     {
@@ -50,7 +51,7 @@ public class cDungeonNormal_processor : MonoBehaviour
         //}
 
         //ui 초기화
-        b_bag.onClick.AddListener(() => _bag.OpenBag());
+        b_bag.onClick.AddListener(() => OpenBag());
         for (byte i = 0; i < b_exitBag.Length; i++)
             b_exitBag[i].onClick.AddListener(() => ExitBag());
 
@@ -58,8 +59,15 @@ public class cDungeonNormal_processor : MonoBehaviour
         UpdateValue();
     }   
 
+    private void OpenBag()
+    {
+        soundMng.PlayBag(true);
+        _bag.OpenBag();
+    }
+
     private void ExitBag()
     {
+        soundMng.PlayBag(false);
         _bag.obj_content.SetActive(false);
     }
 

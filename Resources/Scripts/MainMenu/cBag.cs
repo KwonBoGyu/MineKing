@@ -24,7 +24,7 @@ public class cBag : cBuilding
     public void UpdateBagItemInfo()
     {
         //박스 초기화
-        byte useItemNum = citemTable.GetUseItemTotalNum();
+        byte useItemNum = (byte)citemTable.GetUseItemTotalNum();
         for (byte i = 0; i < useItemNum; i++)
         {
             if(obj_parentGroup.transform.GetChild(i).gameObject != null)

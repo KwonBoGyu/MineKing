@@ -1,0 +1,544 @@
+fileFormatVersion: 2
+guid: 79ca556ac04e50d4b8ca42d8bdbb5ead
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1289089058443796486
+    second: BossSlime_red_rightpupil
+  - first:
+      213: 5381090438759310440
+    second: BossSlime_red_leftpupil
+  - first:
+      213: -8272853288647270491
+    second: BossSlime_red_righteye
+  - first:
+      213: -6748501228943536707
+    second: BossSlime_red_lefteye
+  - first:
+      213: 4125844002784179845
+    second: BossSlime_red_mask
+  - first:
+      213: 4326826129012436500
+    second: BossSlime_red_mouth
+  - first:
+      213: -2616001540309787129
+    second: BossSlime_red_body
+  - first:
+      213: -3763637014540417024
+    second: BossSlime_red_leftarm
+  - first:
+      213: 8700685719092890834
+    second: BossSlime_red_rightarm
+  - first:
+      213: 5336113629035673905
+    second: BossSlime_purple_body
+  - first:
+      213: 7560280837368621399
+    second: BossSlime_purple_righteye
+  - first:
+      213: -6513078903543511768
+    second: BossSlime_purple_lefteye
+  - first:
+      213: -4019191136077024412
+    second: BossSlime_purple_mouth
+  - first:
+      213: -2067196466051015467
+    second: BossSlime_purple_sap1
+  - first:
+      213: -6941573052090969594
+    second: BossSlime_purple_sap2
+  - first:
+      213: 8494164054360514522
+    second: BossSlime_purple_rightarm
+  - first:
+      213: -1987642900361398650
+    second: BossSlime_purple_leftarm
+  - first:
+      213: 8121468366488413275
+    second: BossSlime_purple_rightarm_drop
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: BossSlime_red_rightpupil
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 8743
+        width: 57
+        height: 71
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5576997}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 394c3b134c6042e4cafb55de03cf428d
+      internalID: -1289089058443796486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_leftpupil
+      rect:
+        serializedVersion: 2
+        x: 1351
+        y: 8752
+        width: 53
+        height: 70
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5585798}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 566527643d6bf9043bd23a81730595c7
+      internalID: 5381090438759310440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_righteye
+      rect:
+        serializedVersion: 2
+        x: 922.5156
+        y: 8573.003
+        width: 152.73352
+        height: 139.75781
+      alignment: 9
+      pivot: {x: 0.47458068, y: 0.50106907}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f6ef31c44e96db448f9e7cf5ea52bb5
+      internalID: -8272853288647270491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_lefteye
+      rect:
+        serializedVersion: 2
+        x: 1259.0795
+        y: 8573.003
+        width: 256.5398
+        height: 139.75781
+      alignment: 9
+      pivot: {x: 0.49474013, y: 0.50106907}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2c99a370db048944999aeef9768de13
+      internalID: -6748501228943536707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_mask
+      rect:
+        serializedVersion: 2
+        x: 918.2318
+        y: 8369.624
+        width: 615.53625
+        height: 187.33594
+      alignment: 9
+      pivot: {x: 0.4967507, y: 0.503503}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d426f6ae8ae513a4c9189b23aa654419
+      internalID: 4125844002784179845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_mouth
+      rect:
+        serializedVersion: 2
+        x: 1017.3182
+        y: 8289.435
+        width: 282.4914
+        height: 66.22754
+      alignment: 9
+      pivot: {x: 0.49446398, y: 0.4597225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fac0eee7622cb74d9a62ef45b9cd039
+      internalID: 4326826129012436500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_body
+      rect:
+        serializedVersion: 2
+        x: 840.0864
+        y: 7384.8633
+        width: 926.9551
+        height: 814.49805
+      alignment: 9
+      pivot: {x: 0.5004705, y: 0.49757147}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5ce6f5d446967045bbdd7f12b49361a
+      internalID: -2616001540309787129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_leftarm
+      rect:
+        serializedVersion: 2
+        x: 1926.4464
+        y: 6990.094
+        width: 429.55017
+        height: 585.25977
+      alignment: 9
+      pivot: {x: 0.49948436, y: 0.4994402}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74ef76d60ddd6f141baabc0627d9d869
+      internalID: -3763637014540417024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_red_rightarm
+      rect:
+        serializedVersion: 2
+        x: 611.3252
+        y: 6869.737
+        width: 368.99658
+        height: 464.15234
+      alignment: 9
+      pivot: {x: 0.5004784, y: 0.49137688}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2af4797a35957354289b8857b56d37c5
+      internalID: 8700685719092890834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_body
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4656.0425
+        width: 2500
+        height: 2155.3286
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49905655}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6ce02e43d44bb045891f86020f2fb35
+      internalID: 5336113629035673905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_righteye
+      rect:
+        serializedVersion: 2
+        x: 332.99997
+        y: 3769
+        width: 407.92392
+        height: 416.38477
+      alignment: 9
+      pivot: {x: 0.49396473, y: 0.49438348}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bac3772c397a1949802370879257856
+      internalID: 7560280837368621399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_lefteye
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 3765
+        width: 403.59863
+        height: 407.73828
+      alignment: 9
+      pivot: {x: 0.49925837, y: 0.50363636}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4ea0ae87e69cc846bbd5f0a0c1ffd06
+      internalID: -6513078903543511768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_mouth
+      rect:
+        serializedVersion: 2
+        x: 509.1833
+        y: 2814.0051
+        width: 814.49835
+        height: 693.3911
+      alignment: 9
+      pivot: {x: 0.49333036, y: 0.49534458}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbdcc0933c8b7924bba77c0d6a87669a
+      internalID: -4019191136077024412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_sap1
+      rect:
+        serializedVersion: 2
+        x: 542.52936
+        y: 1962.3271
+        width: 204.63666
+        height: 611.21094
+      alignment: 9
+      pivot: {x: 0.49830097, y: 0.49120238}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f92e9db04b772254195e386944ecd6ca
+      internalID: -2067196466051015467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_sap2
+      rect:
+        serializedVersion: 2
+        x: 1077.9689
+        y: 1912.9546
+        width: 135.4325
+        height: 654.4636
+      alignment: 9
+      pivot: {x: 0.48755747, y: 0.5005478}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b430e172d513914bad9c17e28be2a6f
+      internalID: -6941573052090969594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_rightarm
+      rect:
+        serializedVersion: 2
+        x: 30.91013
+        y: 602.5446
+        width: 1009.135
+        height: 1052.3875
+      alignment: 9
+      pivot: {x: 0.49853575, y: 0.49837255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8215d6674e88c14b8ad868d49cb8473
+      internalID: 8494164054360514522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_leftarm
+      rect:
+        serializedVersion: 2
+        x: 1212.114
+        y: 563.9205
+        width: 1004.8098
+        height: 1134.5676
+      alignment: 9
+      pivot: {x: 0.50047886, y: 0.49675786}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad424f081c8e80249ba7eda975b6b4e4
+      internalID: -1987642900361398650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BossSlime_purple_rightarm_drop
+      rect:
+        serializedVersion: 2
+        x: 771.94116
+        y: 0
+        width: 589.5847
+        height: 418.40085
+      alignment: 9
+      pivot: {x: 0.49197143, y: 0.49377617}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3696bf21ceccbc946ad99d73199429aa
+      internalID: 8121468366488413275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: d66b9efd4356f104894e81172cfb2edc
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637148690415595690
+  assetBundleName: 
+  assetBundleVariant: 

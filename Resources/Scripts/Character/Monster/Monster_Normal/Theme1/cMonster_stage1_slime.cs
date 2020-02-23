@@ -123,6 +123,26 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     {
         curHp.value -= pVal;
 
+        // 체력이 0 이하로 떨어질 시 코루틴 중지, 리스폰 타이머 활성화
+        if (curHp.value <= 0)
+        {
+            curHp.value = 0;
+            isDead = true;
+            _animator.SetTrigger("Dead");
+            img_curHp.transform.parent.gameObject.SetActive(false);
+            this.GetComponent<BoxCollider2D>().enabled = false;
+            // 리스폰 타이머 활성화
+            Respawn();
+        }
+
+        if (isDead.Equals(false))
+            _animator.SetTrigger("GetHit");
+        SetHp();
+
+        // 넉백
+        if (curHp.value > 0)
+            StartKnockBack(pDir, pVelocity);
+        
         if (curHp.value <= 0)
         {
             curHp.value = 0;

@@ -18,7 +18,7 @@ public class cProjectile : cObject
     protected float posX;
     protected float posY;
 
-    protected virtual void Init()
+    public virtual void Init()
     {
         flyingTime = 0;
         defaultPower = 12f;
