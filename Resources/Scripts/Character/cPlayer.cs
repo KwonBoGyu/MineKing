@@ -15,12 +15,17 @@ public class cPlayer : cCharacter
     public cBtn_item quickSlot;
     public cJoystick joystick;
 
+    public Light headLight;
+
     private bool isSpeedUp;
     private float speedUpTime;
     private float speedUpAmount;
 
+    public cAxe axe;
     private bool isMoveAttack;
     public bool GetIsMoveAttack() { return isMoveAttack; }
+    public float finalAttackPointMin;
+    private bool isFinalAttack;
 
     //이펙트
     private bool landEffectPlayed;
@@ -54,6 +59,12 @@ public class cPlayer : cCharacter
         weapon.damage = damage;
         status = CHARACTERSTATUS.NONE;
         isMoveAttack = false;
+        isFinalAttack = false;
+
+        axe = cUtil._user._playerInfo.weapon;
+        headLight.range = axe.headlightRange;
+        maxDashCoolDown = axe.dashCoolTime;
+        finalAttackPointMin = axe.finalAttackPointMin;
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)
@@ -77,8 +88,7 @@ public class cPlayer : cCharacter
         }
         isSpeedUp = false;
     }
-
-
+    
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -140,7 +150,6 @@ public class cPlayer : cCharacter
             dp.UpdateValue();
         }
     }
-
     public void ChargeAttack_front()
     {
         _animator.SetTrigger("ChargeAttack_front");
@@ -269,6 +278,43 @@ public class cPlayer : cCharacter
         joystick.SetDirOnAttack();
         attackBox.SetActive(false);
         status = CHARACTERSTATUS.NONE;
+        if (isFinalAttack.Equals(true))
+        {
+            _animator.speed = axe.attackSpeed;
+            isFinalAttack = false;
+            return;
+        }
+        else
+        {
+            FinalAttack();
+        }
+    }
+    private void FinalAttack()
+    {
+        if(finalAttackPointMin >= Random.Range(0f,1f))
+        {
+            _animator.speed = _animator.speed * 1.7f;
+            isFinalAttack = true;
+            if (charDir.Equals(CHARDIRECTION.DOWN))
+            {
+                _animator.SetTrigger("AttackDown");
+                status = CHARACTERSTATUS.ATTACK;
+            }
+            else if(charDir.Equals(CHARDIRECTION.UP))
+            {
+                _animator.SetTrigger("AttackUp");
+                status = CHARACTERSTATUS.ATTACK;
+            }
+            else
+            {
+                _animator.SetTrigger("AttackFront");
+                status = CHARACTERSTATUS.ATTACK;
+            }
+        }
+        else
+        {
+            return;
+        }
     }
 
     public byte UseItem(byte pItemKind)

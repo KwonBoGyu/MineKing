@@ -34,7 +34,7 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         minChargePoint = 0;
         maxChargePoint = 2.0f;
         img_gageBar.fillAmount = minChargePoint;
-        criticalMin = 0.7f;
+        criticalMin = cUtil._user._playerInfo.weapon.chargeAttackPointMin;
         img_Critical.fillAmount = 1 - criticalMin;
         criticalReduceAmount = 0.5f;
         reduceFactor = 0.5f;

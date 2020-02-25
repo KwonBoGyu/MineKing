@@ -12,6 +12,11 @@ public class cAxe
     public float attackSpeed;
     public byte AxeImgNum;
 
+    public float headlightRange;
+    public float dashCoolTime;
+    public float chargeAttackPointMin;
+    public float finalAttackPointMin;
+
     public cAxe()
     {
         level = new cProperty("Level");
@@ -20,8 +25,13 @@ public class cAxe
         value = new cProperty("Value");
         attackSpeed = 1.0f;
         AxeImgNum = 0;
+        headlightRange = 853f;
+        dashCoolTime = 4.0f;
+        chargeAttackPointMin = 0.7f;
+        finalAttackPointMin = 0.5f;
     }
-    public cAxe(cProperty pLevel, cProperty pDamage, cProperty pHp, cProperty pValue, float pAs, byte pImgNum)
+    public cAxe(cProperty pLevel, cProperty pDamage, cProperty pHp, cProperty pValue, float pAs, byte pImgNum,
+        float pHeadlightIntensity, float pDashCollTime, float pchargeAttackPointMin, float pfinalAttackPointMin)
     {
         level = new cProperty(pLevel);
         damage = new cProperty(pDamage);
@@ -29,6 +39,10 @@ public class cAxe
         value = new cProperty(pValue);
         attackSpeed = pAs;
         AxeImgNum = pImgNum;
+        pHeadlightIntensity = headlightRange;
+        pDashCollTime = dashCoolTime;
+        pchargeAttackPointMin = chargeAttackPointMin;
+        pfinalAttackPointMin = finalAttackPointMin;
     }
     public cAxe(cAxe pAxe)
     {
@@ -38,5 +52,9 @@ public class cAxe
         value = new cProperty(pAxe.value);
         attackSpeed = pAxe.attackSpeed;
         AxeImgNum = pAxe.AxeImgNum;
+        headlightRange = pAxe.headlightRange;
+        dashCoolTime = pAxe.dashCoolTime;
+        chargeAttackPointMin = pAxe.chargeAttackPointMin;
+        finalAttackPointMin = pAxe.finalAttackPointMin;
     }
 }
