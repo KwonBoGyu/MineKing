@@ -28,7 +28,7 @@ public class cAxe
         headlightRange = 853f;
         dashCoolTime = 4.0f;
         chargeAttackPointMin = 0.7f;
-        finalAttackPointMin = 0.5f;
+        finalAttackPointMin = 0.1f;
     }
     public cAxe(cProperty pLevel, cProperty pDamage, cProperty pHp, cProperty pValue, float pAs, byte pImgNum,
         float pHeadlightIntensity, float pDashCollTime, float pchargeAttackPointMin, float pfinalAttackPointMin)

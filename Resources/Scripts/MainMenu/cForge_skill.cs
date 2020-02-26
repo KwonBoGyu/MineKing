@@ -6,13 +6,13 @@ using UnityEngine.UI;
 public class cForge_skill : MonoBehaviour
 {
     public GameObject[] obj_skill;
-    private cInventory inven;
+    private cSoul[] soul;
     private cAxe axe;
 
     void Start()
     {
         axe = cUtil._user._playerInfo.weapon;
-        inven = cUtil._user._playerInfo.inventory;
+        soul = cUtil._user._playerInfo.soul;
         UpdateValues();
     }
 
@@ -21,12 +21,12 @@ public class cForge_skill : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("대쉬 쿨타임 감소");
-            axe.dashCoolTime -= 1.0f;
+            axe.dashCoolTime -= 0.5f;
         }
         else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("시야 증가");
-            axe.headlightRange *= 2f;
+            axe.headlightRange *= 1.2f;
         }
         else if(Input.GetKeyDown(KeyCode.Alpha3))
         {

@@ -27,6 +27,7 @@ public class cAttackScript : MonoBehaviour
 
     public void Dead()
     {
+        Debug.Log("dead");
         this.transform.parent.localPosition = new Vector3(-1760, 1000, 1);
     }
 }

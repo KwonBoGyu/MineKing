@@ -210,6 +210,31 @@ public static class cEnemyTable
                     0,
                     new cProperty("Rocks", pRocks));
                 return es;
+
+            // 슬라임킹
+            case 50:
+                pRocks = Random.Range((int)0, (int)4);
+                es.Init("slime_king",
+                    new cProperty("Damage", 10),
+                    160,
+                    new cProperty("MaxHp", 100),
+                    new cProperty("CurHp", 100),
+                    0,
+                    new cProperty("Rocks", pRocks));
+                return es;
+            
+            // 스켈레톤 위자드
+            case 51:
+                pRocks = Random.Range((int)0, (int)4);
+                es.Init("skeleton_wizard",
+                    new cProperty("Damage", 10),
+                    160,
+                    new cProperty("MaxHp", 100),
+                    new cProperty("CurHp", 100),
+                    0,
+                    new cProperty("Rocks", pRocks));
+                return es;
+
         }
 
         return es;

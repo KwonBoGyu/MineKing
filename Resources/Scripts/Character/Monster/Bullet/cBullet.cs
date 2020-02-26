@@ -42,9 +42,6 @@ public class cBullet : cProjectile
         isReflectOn = true;
         isGravityOn = pUseGravity;
         SetDir(pDir);
-
-        Debug.Log(dir);
-    
     }
 
     public void SetType(BULLET_TYPE pType)

@@ -7,6 +7,7 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     // 분열된 횟수
     public bool isSplited;
 
+    public GameObject motherObj;
     private GameObject clone1;
     private GameObject clone2;
 
@@ -33,6 +34,8 @@ public class cMonster_stage1_slime : cEnemy_Ranged
         timer = bulletCoolTime;
         bulletDamage = (long)(damage.value * 0.5f);
         _animator = this.transform.Find("rig_slime").GetComponent<Animator>();
+        isClone1Dead = false;
+        isClone2Dead = false;
     }
 
     protected override void Move()
@@ -96,19 +99,22 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     public override void Attack1()
     {
         base.Attack1();
-
     }
 
     public override void SetBullet1()
     {
         // 기본값 : 발사체 1, 발사체 타입 일반형, 중력 적용 x, 타겟 : 유저
-        bulletManager.LaunchBullet(true, cUtil._player.originObj.transform.position);
+        bulletManager.LaunchBullet(this.gameObject.transform.position, true, cUtil._player.originObj.transform.position);
         timer = 0;
     }
 
     public void Split()
     {
         isSplited = true;
+    }
+    public void SetMotherObj(GameObject pObj)
+    {
+        motherObj = pObj;
     }
 
     public void StartRespawn()
@@ -123,7 +129,15 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     {
         curHp.value -= pVal;
 
-        // 체력이 0 이하로 떨어질 시 코루틴 중지, 리스폰 타이머 활성화
+        if (isDead.Equals(false))
+            _animator.SetTrigger("GetHit");
+
+        // 넉백
+        if (curHp.value > 0)
+            StartKnockBack(pDir, pVelocity);
+        
+        SetHp();
+
         if (curHp.value <= 0)
         {
             curHp.value = 0;
@@ -131,68 +145,39 @@ public class cMonster_stage1_slime : cEnemy_Ranged
             _animator.SetTrigger("Dead");
             img_curHp.transform.parent.gameObject.SetActive(false);
             this.GetComponent<BoxCollider2D>().enabled = false;
-            // 리스폰 타이머 활성화
-            Respawn();
-        }
 
-        if (isDead.Equals(false))
-            _animator.SetTrigger("GetHit");
-        SetHp();
-
-        // 넉백
-        if (curHp.value > 0)
-            StartKnockBack(pDir, pVelocity);
-        
-        if (curHp.value <= 0)
-        {
-            curHp.value = 0;
-            isDead = true;
-            this.GetComponent<BoxCollider2D>().enabled = false;
-            this.curHp.value = this.maxHp.value;
-            
             // 이미 분열한 슬라임이라면
             if (isSplited)
             {
-                if(!this.transform.parent.GetComponent<cMonster_stage1_slime>().isClone1Dead)
+                if(!motherObj.GetComponent<cMonster_stage1_slime>().isClone1Dead)
                 {   
-                    this.transform.parent.GetComponent<cMonster_stage1_slime>().isClone1Dead = true;
+                    motherObj.GetComponent<cMonster_stage1_slime>().isClone1Dead = true;
                     this.gameObject.SetActive(false);
                 }
                 else
                 {
-                    this.transform.parent.GetComponent<cMonster_stage1_slime>().isClone2Dead = true;
+                    motherObj.GetComponent<cMonster_stage1_slime>().isClone2Dead = true;
                     this.gameObject.SetActive(false);
 
-                    this.transform.parent.GetComponent<cMonster_stage1_slime>().StartRespawn();
+                    motherObj.GetComponent<cMonster_stage1_slime>().Respawn();
                 }
             }
 
             else
             {
                 // 분열        
-                clone1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), new Vector3(this.transform.position.x - 100f, this.transform.position.y, this.transform.position.z),
-                    Quaternion.identity, this.transform);
-                clone1.transform.localScale = new Vector3(0.7f,0.7f,0.7f);
-                clone1.transform.position = new Vector3(clone1.transform.position.x, clone1.transform.position.y, clone1.transform.position.z + 1000f);
-                clone1.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone1", 
-                    new cProperty("Damage", this.damage.value / 2),
-                    this.maxMoveSpeed,
-                    new cProperty("MaxHp", this.maxHp.value / 2),
-                    new cProperty("CurHp", this.maxHp.value / 2));
+                clone1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z),
+                    Quaternion.identity, this.transform.parent);
+                clone1.transform.position = new Vector3(clone1.transform.position.x, clone1.transform.position.y, clone1.transform.position.z);
                 clone1.GetComponent<cMonster_stage1_slime>().Split();
+                clone1.GetComponent<cMonster_stage1_slime>().SetMotherObj(this.gameObject);
                 
-                clone2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"),new Vector3(this.transform.position.x + 100f, this.transform.position.y, this.transform.position.z),
-                    Quaternion.identity, this.transform);
-                clone2.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-                clone2.transform.position = new Vector3(clone2.transform.position.x, clone2.transform.position.y, clone2.transform.position.z + 1000f);
-                clone2.GetComponent<cMonster_stage1_slime>().Init(this.nickName + " clone2",
-                    new cProperty("Damage", this.damage.value / 2),
-                    this.maxMoveSpeed,
-                    new cProperty("MaxHp", this.maxHp.value / 2),
-                    new cProperty("CurHp", this.maxHp.value / 2));
+                clone2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"),new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z),
+                    Quaternion.identity, this.transform.parent);
+                clone2.transform.position = new Vector3(clone2.transform.position.x, clone2.transform.position.y, clone2.transform.position.z);
                 clone2.GetComponent<cMonster_stage1_slime>().Split();
+                clone2.GetComponent<cMonster_stage1_slime>().SetMotherObj(this.gameObject);
             }
         }
-        SetHp();
     }
 }

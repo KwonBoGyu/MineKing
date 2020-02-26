@@ -18,17 +18,12 @@ public struct Pattern
 
 public class cEnemy_Boss : cEnemy_monster
 {
-    //몬스터 id
-    private int id;
-    public int GetId() { return id; }
     //몬스터 광물 보유량
-    private cProperty rocks;
-    public cProperty GetRocks() { return rocks; }
-    //강화 아이템 랜덤 드랍 확률 (현재 100%)
-    private int per_Upgrade = 100;
+    private cProperty souls;
+    public cProperty GetSoulss() { return souls; }
 
     public override void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
-        int pId, cProperty pRocks)
+        int pId, cProperty pSouls)
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
 
@@ -38,64 +33,12 @@ public class cEnemy_Boss : cEnemy_monster
         SetIsGrounded(false);
         jumpHeight = 200.0f;
         id = pId;
-        rocks.value = pRocks.value;
+        souls.value = pSouls.value;
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
         Move();
-    }
-
-    //private void Move()
-    //{
-    //    this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
-    //    //막히면 방향 바꿔준다.
-    //    if (isRightBlocked == true)
-    //    {
-    //        isRightBlocked = false;
-    //        dir = Vector3.left;
-    //    }
-    //    else if (isLeftBlocked == true)
-    //    {
-    //        isLeftBlocked = false;
-    //        dir = Vector3.right;
-    //    }
-    //}
-
-    public override void ReduceHp(long pVal)
-    {
-        curHp.value -= pVal;
-
-        if (curHp.value <= 0)
-        {
-            curHp.value = 0;
-
-            if (cUtil._user.GetInventory().isBossKeyExist().Equals(false))
-            {
-                int percent = Random.Range(0, 101);
-
-                if (percent <= per_Upgrade)
-                {
-                    Debug.Log("Get Upgrade Item");
-                    cItem pEtc;
-                    citemTable.GetItemInfo(out pEtc, 102);
-                    cUtil._user.GetInventory().GetItemEtc().Add((cItem_etc)pEtc);
-                }
-            }
-        }
-
-        SetHp();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            cUtil._player.ReduceHp(damage.value);
-
-            Debug.Log("attacked by " + this.nickName);
-        }
-
     }
 }

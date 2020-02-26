@@ -24,8 +24,12 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
 
     private void Start()
     {
-        Init(cEnemyTable.SetMonsterInfo(0));
+        Init(cEnemyTable.SetMonsterInfo(50));
+    }
 
+    public override void Init(enemyInitStruct pEs)
+    {
+        base.Init(pEs);
         patternTable = new List<Pattern>();
 
         // 패턴 세팅
@@ -35,13 +39,11 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         LIQUID = new Pattern(3, 30, 1);
         SUMMON = new Pattern(4, 30, 1);
 
-        //patternTable.Add(MELEE);
-        //patternTable.Add(RANGED1);
+        patternTable.Add(MELEE);
+        patternTable.Add(RANGED1);
         patternTable.Add(RANGED2);
-        //patternTable.Add(LIQUID);
-        //patternTable.Add(SUMMON);
 
-        curPattern = RANGED2;
+        curPattern = MELEE;
         curCoolTime = 0;
         timer = 0;
         curPatternCount = 0;
@@ -49,11 +51,11 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         curMoveSpeed = maxMoveSpeed; // 임시
         curCoolTime = MELEE.patternCount; // 임시
         timer = curCoolTime;
-
-        bulletMng = this.gameObject.transform.GetChild(4).gameObject.GetComponent<cBulletManager>();
         liquidCor = SetLiquid();
-    }
 
+        bulletMng = GameObject.Find("Bullets").GetComponent<cBulletManager>();
+    }
+    
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -65,6 +67,15 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         {
             // 근접 공격 및 이동 패턴
             case 0:
+                if (curPatternCount > curPattern.patternCount)
+                {
+                    ChangePattern();
+                }
+
+                if (timer >= curCoolTime)
+                {
+                    curPatternCount += 1;
+                }
                 base.Move();
                 break;
 
@@ -78,7 +89,7 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
 
                 if (timer >= curCoolTime)
                 {
-                    //bulletMng.SetBullet(1);
+                    RangeAttack1();
                     curPatternCount += 1;
                     timer = 0;
                 }
@@ -98,15 +109,13 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
                 }
                 if (timer >= curCoolTime)
                 {
-                    Debug.Log("on");
-                    //bulletMng.SetBullet(3);
+                    RangeAttack2();
                     curPatternCount += 1;
                     timer = 0;
                     break;
                 }
                 else
                 {
-                    Debug.Log("coolDown");
                     timer += Time.deltaTime;
                 }
                 //Debug.Log("pattern3");
@@ -157,16 +166,54 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         }
     }
 
+    private void RangeAttack1()
+    {
+        bulletMng.SetBullet(3, 0.2f, originObj.transform.position, false, playerPos);
+    }
+
+    private void RangeAttack2()
+    {
+        bulletMng.SetBullet(5, 0.5f, originObj.transform.position, true, playerPos);
+    }
+
     public override void ReduceHp(long pVal)
     {
-        curHp.value -= pVal;
+        base.ReduceHp(pVal);
 
         if (curHp.value <= 0)
         {
-            curHp.value = 0;
+            SummonSlime();
         }
 
-        SetHp();
+        if (curHp.value <= maxHp.value * 0.5f)
+        {
+            patternTable.Add(LIQUID);
+        }
+        
+        if(curHp.value <= maxHp.value * 0.2f)
+        {
+            patternTable.Add(SUMMON);
+        }
+    }
+
+    public override void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5F)
+    {
+        base.ReduceHp(pVal, pDir, pVelocity);
+
+        if (curHp.value <= 0)
+        {
+            SummonSlime();
+        }
+
+        if (curHp.value <= maxHp.value * 0.5f)
+        {
+            patternTable.Add(LIQUID);
+        }
+
+        if (curHp.value <= maxHp.value * 0.2f)
+        {
+            patternTable.Add(SUMMON);
+        }
     }
 
     private void ChangePattern()
@@ -180,7 +227,7 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
                 curPatternCount = 0;
                 curPattern = patternTable[i];
                 curCoolTime = curPattern.coolTime;
-                timer = curPattern.coolTime;
+                timer = 0;
                 break;
             } 
         }
@@ -215,14 +262,12 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
 
     private void SummonSlime()
     {
-        GameObject slime1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), 
+        GameObject slime1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), 
             new Vector3(this.gameObject.transform.position.x - 100f, 
             this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-        slime1.GetComponent<cMonster_stage1_slime>().Init(cEnemyTable.SetMonsterInfo(1));
 
-        GameObject slime2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), 
+        GameObject slime2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), 
             new Vector3(this.gameObject.transform.position.x + 100f, 
             this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-        slime2.GetComponent<cMonster_stage1_slime>().Init(cEnemyTable.SetMonsterInfo(1));
     }
 }
