@@ -66,10 +66,6 @@ public class cPlayer : cCharacter
         maxDashCoolDown = axe.dashCoolTime;
         dashCoolDown = maxDashCoolDown;
         finalAttackPointMin = axe.finalAttackPointMin;
-
-        Debug.Log("headLightRange : " + headLight.range);
-        Debug.Log("maxDashCoolDown : " + maxDashCoolDown);
-        Debug.Log("finalAttackPointMin : " + finalAttackPointMin);
     }
 
     public override void SetCurMoveSpeed(float pCurMoveSpeed)

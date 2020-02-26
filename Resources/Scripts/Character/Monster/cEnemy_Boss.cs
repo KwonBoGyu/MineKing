@@ -21,6 +21,13 @@ public class cEnemy_Boss : cEnemy_monster
     //몬스터 광물 보유량
     private cProperty souls;
     public cProperty GetSoulss() { return souls; }
+    
+    protected List<Pattern> patternTable;
+    protected Pattern curPattern;
+    
+    protected float curCoolTime;
+    protected float timer;
+    protected int curPatternCount;
 
     public override void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
         int pId, cProperty pSouls)
@@ -40,5 +47,22 @@ public class cEnemy_Boss : cEnemy_monster
     {
         base.FixedUpdate();
         Move();
+    }
+    
+    protected void ChangePattern()
+    {
+        int idx = Random.Range((int)0, patternTable.Count);
+
+        for (int i = 0; i < patternTable.Count; i++)
+        {
+            if (idx == patternTable[i].patternNum)
+            {
+                curPatternCount = 0;
+                curPattern = patternTable[i];
+                curCoolTime = curPattern.coolTime;
+                timer = 0;
+                break;
+            }
+        }
     }
 }

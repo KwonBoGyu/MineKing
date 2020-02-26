@@ -6,18 +6,11 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
 {
     cBulletManager bulletMng;
 
-    List<Pattern> patternTable;
-    Pattern curPattern;
-
     Pattern MELEE;
     Pattern RANGED1;
     Pattern RANGED2;
     Pattern LIQUID;
     Pattern SUMMON;
-    
-    private float curCoolTime;
-    private float timer;
-    private int curPatternCount;
 
     public GameObject liquid;
     private IEnumerator liquidCor;
@@ -48,8 +41,8 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         timer = 0;
         curPatternCount = 0;
 
-        curMoveSpeed = maxMoveSpeed; // 임시
-        curCoolTime = MELEE.patternCount; // 임시
+        curMoveSpeed = maxMoveSpeed; 
+        curCoolTime = MELEE.patternCount;
         timer = curCoolTime;
         liquidCor = SetLiquid();
 
@@ -83,7 +76,7 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
             case 1:
                 if (curPatternCount > curPattern.patternCount)
                 {
-                    //Debug.Log("change Pattern");
+                    Debug.Log("change Pattern");
                     ChangePattern();
                 }
 
@@ -97,14 +90,14 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
                 {
                     timer += Time.deltaTime;
                 }
-                //Debug.Log("pattern2");
+                Debug.Log("pattern2");
                 break;
 
             // 원거리 공격
             case 2:
                 if (curPatternCount > curPattern.patternCount)
                 {
-                    //Debug.Log("change Pattern");
+                    Debug.Log("change Pattern");
                     ChangePattern();
                 }
                 if (timer >= curCoolTime)
@@ -118,7 +111,7 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
                 {
                     timer += Time.deltaTime;
                 }
-                //Debug.Log("pattern3");
+                Debug.Log("pattern3");
                 break;
 
             // 액체 상태 공격 (장판)
@@ -216,22 +209,6 @@ public class cBoss_theme1_stage1 : cEnemy_Boss
         }
     }
 
-    private void ChangePattern()
-    {
-        int idx = Random.Range((int)0, patternTable.Count);
-        
-        for(int i = 0; i < patternTable.Count; i++)
-        {
-            if (idx == patternTable[i].patternNum)
-            {
-                curPatternCount = 0;
-                curPattern = patternTable[i];
-                curCoolTime = curPattern.coolTime;
-                timer = 0;
-                break;
-            } 
-        }
-    } 
     
     IEnumerator SetLiquid()
     {
