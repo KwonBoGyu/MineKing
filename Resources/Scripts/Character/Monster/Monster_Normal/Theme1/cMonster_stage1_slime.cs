@@ -129,9 +129,6 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     {
         curHp.value -= pVal;
 
-        if (isDead.Equals(false))
-            _animator.SetTrigger("GetHit");
-
         // 넉백
         if (curHp.value > 0)
             StartKnockBack(pDir, pVelocity);
@@ -143,6 +140,7 @@ public class cMonster_stage1_slime : cEnemy_Ranged
             curHp.value = 0;
             isDead = true;
             _animator.SetTrigger("Dead");
+            Debug.Log("DEAD");
             img_curHp.transform.parent.gameObject.SetActive(false);
             this.GetComponent<BoxCollider2D>().enabled = false;
 
@@ -178,6 +176,11 @@ public class cMonster_stage1_slime : cEnemy_Ranged
                 clone2.GetComponent<cMonster_stage1_slime>().Split();
                 clone2.GetComponent<cMonster_stage1_slime>().SetMotherObj(this.gameObject);
             }
+        }
+        else
+        {
+            _animator.SetTrigger("GetHit");
+            Debug.Log("GET HIT");
         }
     }
 }

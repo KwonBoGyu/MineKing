@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class cTitleSingleton : MonoBehaviour
 {
     public static cTitleSingleton Instance;
-    public Button b_save;
     public double gameTime; // 게임 플레이 시간
 
     void Awake()
@@ -26,7 +25,6 @@ public class cTitleSingleton : MonoBehaviour
         //static 클래스 설정
         cUtil._sm = this.transform.Find("SceneManager").GetComponent<cSceneManager>();
         cUtil._user = this.GetComponent<cUser>();
-        b_save.onClick.AddListener(() => cUtil._user.SaveUserData());
 
         gameTime = 0;
 

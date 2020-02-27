@@ -2,35 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Pattern
-{
-    public int patternNum { get; set; } // 패턴 고유 번호
-    public float coolTime { get; set; } // 스킬 쿨타임
-    public int patternCount { get; set; } // 스킬 실행 횟수
+//public struct Pattern
+//{
+//    public int patternNum { get; set; } // 패턴 고유 번호
+//    public float coolTime { get; set; } // 스킬 쿨타임
+//    public int patternCount { get; set; } // 스킬 실행 횟수
+//    public delegate void ActivePattern();
 
-    public Pattern(int pPatternNum, float pCoolTime, int pPatternCount)
-    {
-        patternNum = pPatternNum;
-        coolTime = pCoolTime;
-        patternCount = pPatternCount;
-    }
-}
+//    public Pattern(int pPatternNum, float pCoolTime, int pPatternCount)
+//    {
+//        patternNum = pPatternNum;
+//        coolTime = pCoolTime;
+//        patternCount = pPatternCount;
+
+//        cBossSkill bossSkill = new cBossSkill();
+//        ActivePattern activePattern;
+//    }
+    
+//}
 
 public class cEnemy_Boss : cEnemy_monster
 {
-    //몬스터 광물 보유량
-    private cProperty souls;
-    public cProperty GetSoulss() { return souls; }
-    
-    protected List<Pattern> patternTable;
-    protected Pattern curPattern;
-    
-    protected float curCoolTime;
-    protected float timer;
-    protected int curPatternCount;
+    protected delegate void Skill(float pTime);
+    protected List<Skill[]> patternTable;
+    public cBossSkill skills;
+
+    public bool isSkillActive;
+
+    private byte curPatternIdx;
+    private sbyte curSkillIdx;
 
     public override void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
-        int pId, cProperty pSouls)
+        int pId, cProperty pRocks)
     {
         base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
 
@@ -40,29 +43,107 @@ public class cEnemy_Boss : cEnemy_monster
         SetIsGrounded(false);
         jumpHeight = 200.0f;
         id = pId;
-        souls.value = pSouls.value;
+        rocks.value = pRocks.value;
+
+        isSkillActive = false;
+
+        curPatternIdx = 0;
+        curSkillIdx = -1;
+
+        //skills = new cBossSkill(this);
+        Skill skill1 = new Skill(skills.MoveAndAttack);
+        Skill skill2 = new Skill(skills.Stop);
+        Skill skill3 = new Skill(skills.RangeAttack);
+
+        Skill[] pattern1 = { skill1, skill2, skill1 };
+        Skill[] pattern2 = { skill2, skill1 };
+        Skill[] pattern3 = { skill3 };
+
+        patternTable = new List<Skill[]>();
+        patternTable.Add(pattern1);
+        patternTable.Add(pattern2);
+        patternTable.Add(pattern3);
+
+    }
+
+    public override void Init(enemyInitStruct pEs)
+    {
+        base.Init(pEs);
+        rt = originObj.GetComponent<BoxCollider2D>();
+        defaultGravity = 300.0f;
+        changingGravity = defaultGravity;
+        SetIsGrounded(false);
+        jumpHeight = 200.0f;
+        id = pEs.id;
+        rocks.value = pEs.rocks.value;
+
+        isSkillActive = false;
+
+        curPatternIdx = 0;
+        curSkillIdx = -1;
+        
+        Skill skill1 = new Skill(skills.MoveAndAttack);
+        Skill skill2 = new Skill(skills.Stop);
+        Skill skill3 = new Skill(skills.RangeAttack);
+
+        Skill[] pattern1 = { skill1, skill2, skill1 };
+        Skill[] pattern2 = { skill2, skill1 };
+        Skill[] pattern3 = { skill3 };
+
+        patternTable = new List<Skill[]>();
+        patternTable.Add(pattern1);
+        patternTable.Add(pattern2);
+        patternTable.Add(pattern3);
     }
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
-        Move();
-    }
-    
-    protected void ChangePattern()
-    {
-        int idx = Random.Range((int)0, patternTable.Count);
-
-        for (int i = 0; i < patternTable.Count; i++)
+        //base.FixedUpdate();
+        if(isSkillActive.Equals(false))
         {
-            if (idx == patternTable[i].patternNum)
+            Debug.Log("false");
+            curSkillIdx++;
+
+            if(curSkillIdx > patternTable[1].Length)
             {
-                curPatternCount = 0;
-                curPattern = patternTable[i];
-                curCoolTime = curPattern.coolTime;
-                timer = 0;
-                break;
+                curSkillIdx = 0;
+            }
+            patternTable[curPatternIdx][curSkillIdx](1f);
+        }
+        else
+        {
+            Debug.Log("true");
+            if (curHp.value <= maxHp.value * 0.7f && curHp.value > maxHp.value * 0.3f)
+            {
+                curPatternIdx++;
+            }
+            else if (curHp.value <= maxHp.value * 0.3f)
+            {
+                curPatternIdx++;
             }
         }
     }
+
+    //protected override void FixedUpdate()
+    //{
+    //    base.FixedUpdate();
+    //    Move();
+    //}
+
+    //protected void ChangePattern()
+    //{
+    //    int idx = Random.Range((int)0, patternTable.Count);
+
+    //    for (int i = 0; i < patternTable.Count; i++)
+    //    {
+    //        if (idx == patternTable[i].patternNum)
+    //        {
+    //            curPatternCount = 0;
+    //            curPattern = patternTable[i];
+    //            curCoolTime = curPattern.coolTime;
+    //            timer = 0;
+    //            break;
+    //        }
+    //    }
+    //}
 }
