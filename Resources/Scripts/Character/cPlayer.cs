@@ -8,6 +8,7 @@ public class cPlayer : cCharacter
 {
     public cWeapon weapon;
     public cFloatingText ft;
+    private bool isFalling;
     public bool isDash;
     public cInventory inven;
     public cUseManager useMng; // 아이템 사용 관리 클래스
@@ -60,6 +61,7 @@ public class cPlayer : cCharacter
         status = CHARACTERSTATUS.NONE;
         isMoveAttack = false;
         isFinalAttack = false;
+        isFalling = false;
 
         axe = cUtil._user._playerInfo.weapon;
         headLight.range = axe.headlightRange;
@@ -150,6 +152,54 @@ public class cPlayer : cCharacter
             inven.GetMoney().value += 1;
             dp.UpdateValue();
         }
+    }
+    public override void SetGravity()
+    {
+        base.SetGravity();
+
+        if (changingGravity >= 1000f && !isFalling)
+        {
+            StartCoroutine(SetFallDamage());
+        }
+    }
+    IEnumerator SetFallDamage()
+    {
+        float timer = 0;
+        bool isFallDamageOn = false;
+        isFalling = true;
+
+        Debug.Log("Fall Start");
+        while (true)
+        {
+            if (isClimbing)
+            {
+                Debug.Log("Reset Fall Timer");
+                isFallDamageOn = false;
+                timer = 0;
+            }
+            if (isGrounded)
+            {
+                Debug.Log("isGrounded");
+                break;
+            }
+
+            timer += Time.deltaTime;
+            if (timer >= 0.5f)
+            {
+                Debug.Log("fall damage on");
+                isFallDamageOn = true;
+            }
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        if (isFallDamageOn)
+        {
+            Debug.Log("Reduced Hp for Falling : " + maxHp.value * 0.1f * timer);
+            ReduceHp((long)(maxHp.value * 0.1f * timer));
+        }
+
+        isFalling = false;
     }
     public void ChargeAttack_front()
     {
