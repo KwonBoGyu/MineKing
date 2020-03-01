@@ -8,8 +8,8 @@ public class cMonster_stage1_slime : cEnemy_Ranged
     public bool isSplited;
 
     public GameObject motherObj;
-    private GameObject clone1;
-    private GameObject clone2;
+    private GameObject splitObj1;
+    private GameObject splitObj2;
 
     public bool isClone1Dead;
     public bool isClone2Dead;
@@ -150,12 +150,10 @@ public class cMonster_stage1_slime : cEnemy_Ranged
                 if(!motherObj.GetComponent<cMonster_stage1_slime>().isClone1Dead)
                 {   
                     motherObj.GetComponent<cMonster_stage1_slime>().isClone1Dead = true;
-                    this.gameObject.SetActive(false);
                 }
                 else
                 {
                     motherObj.GetComponent<cMonster_stage1_slime>().isClone2Dead = true;
-                    this.gameObject.SetActive(false);
 
                     motherObj.GetComponent<cMonster_stage1_slime>().Respawn();
                 }
@@ -163,18 +161,13 @@ public class cMonster_stage1_slime : cEnemy_Ranged
 
             else
             {
-                // 분열        
-                clone1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z),
-                    Quaternion.identity, this.transform.parent);
-                clone1.transform.position = new Vector3(clone1.transform.position.x, clone1.transform.position.y, clone1.transform.position.z);
-                clone1.GetComponent<cMonster_stage1_slime>().Split();
-                clone1.GetComponent<cMonster_stage1_slime>().SetMotherObj(this.gameObject);
-                
-                clone2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"),new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z),
-                    Quaternion.identity, this.transform.parent);
-                clone2.transform.position = new Vector3(clone2.transform.position.x, clone2.transform.position.y, clone2.transform.position.z);
-                clone2.GetComponent<cMonster_stage1_slime>().Split();
-                clone2.GetComponent<cMonster_stage1_slime>().SetMotherObj(this.gameObject);
+                splitObj1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Slime_Splitting"),
+                    this.transform.position, Quaternion.identity, this.transform.parent);
+                splitObj1.GetComponent<cSlime_SpawnObj>().Init(this.transform.position, new Vector3(0.5f, 0.5f, 0), this.gameObject);
+
+                splitObj2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Slime_Splitting"),
+                    this.transform.position, Quaternion.identity, this.transform.parent);
+                splitObj2.GetComponent<cSlime_SpawnObj>().Init(this.transform.position, new Vector3(-0.5f, 0.5f, 0), this.gameObject);
             }
         }
         else
