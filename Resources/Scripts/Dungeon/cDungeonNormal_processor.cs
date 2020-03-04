@@ -78,6 +78,7 @@ public class cDungeonNormal_processor : MonoBehaviour
 
     public void InitDungeon(bool isBoss = false)
     {
+#if UNITY_EDITOR
         //일반 던전
         //플레이어 초기화
         if(isBoss.Equals(false))
@@ -162,6 +163,7 @@ public class cDungeonNormal_processor : MonoBehaviour
             //_p.t_coolTime = chg_t_coolTime;
             //_p.sm = chg_sm;
             //_p.ft = chg_floatingText;
+            //chg_floatingText.Init();
             //_p.useMng = chg_useMng;
             //_p.joystick = chg_joystick;
             //chg_joystick._player = _player.transform;
@@ -200,6 +202,7 @@ public class cDungeonNormal_processor : MonoBehaviour
             _p.t_coolTime = chg_t_coolTime;
             _p.sm = chg_sm;
             _p.ft = chg_floatingText;
+            chg_floatingText.Init();
             _p.useMng = chg_useMng;
             _p.joystick = chg_joystick;
             chg_joystick._player = _player.transform;
@@ -224,7 +227,14 @@ public class cDungeonNormal_processor : MonoBehaviour
 
         //}
 
-        UpdateValue();
+        //UpdateValue();
+#endif
+
+#if UNITY_ANDROID
+
+#endif
+
+
     }
 
     public void InitDungeon_skin()

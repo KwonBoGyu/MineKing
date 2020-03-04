@@ -153,7 +153,6 @@ public class cEnemy_Boss : cEnemy_monster
                 ChangeDir(Vector3.right);
             }
         }
-
     }
     public override void ChangeDir(Vector3 pDir)
     {

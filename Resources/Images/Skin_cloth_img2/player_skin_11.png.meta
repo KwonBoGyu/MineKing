@@ -127,12 +127,12 @@ TextureImporter:
       name: player_skin_11_0
       rect:
         serializedVersion: 2
-        x: 733.17206
+        x: 732.9269
         y: 1678.4365
-        width: 387.41156
+        width: 387.65674
         height: 393.56348
       alignment: 9
-      pivot: {x: 0.49902472, y: 0.5063094}
+      pivot: {x: 0.49934155, y: 0.5063094}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -234,10 +234,10 @@ TextureImporter:
         serializedVersion: 2
         x: 960.2818
         y: 0
-        width: 246.76764
+        width: 247.25873
         height: 542.25104
       alignment: 9
-      pivot: {x: 0.49527642, y: 0.49428907}
+      pivot: {x: 0.49429277, y: 0.49428907}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -262,6 +262,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 637187604835991453
+  userData: 637189130556169920
   assetBundleName: 
   assetBundleVariant: 

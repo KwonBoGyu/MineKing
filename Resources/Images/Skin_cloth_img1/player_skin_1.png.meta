@@ -174,7 +174,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 774.498
-        width: 255.59651
+        width: 255.59653
         height: 701.08844
       alignment: 9
       pivot: {x: 0.48709583, y: 0.4989179}
@@ -286,6 +286,6 @@ TextureImporter:
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
-  userData: 637187582670623826
+  userData: 637189135120729093
   assetBundleName: 
   assetBundleVariant: 
