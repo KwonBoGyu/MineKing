@@ -40,12 +40,15 @@ public class cPlayer : cCharacter
     {
         base.Init(pNickName, pDamage, pMoveSpeed, pMaxHp, pCurHp);
 
-#if UNITY_EDITOR
+        if (cUtil._sm._scene != SCENE.SKIN)
             this.gameObject.tag = "Untagged";
-        
+
         _animator = this.GetComponent<Animator>();
         originObj = this.transform.parent.gameObject;
-        
+        if (cUtil._user != null)
+        {
+            inven = cUtil._user.GetInventory();
+        }
         rt = originObj.GetComponent<BoxCollider2D>();
 
         changingGravity = defaultGravity;
@@ -64,108 +67,54 @@ public class cPlayer : cCharacter
         status = CHARACTERSTATUS.NONE;
         isMoveAttack = false;
         isFalling = false;
-                
+
+        if (this.tag.Equals("player_skin"))
         {
             //스킬 레벨
             //대쉬
             byte dashFactor = 50;
             float dashCooltimeFactor = 0.5f;
-            dashMoveSpeed = maxMoveSpeed + 300;
-            maxDashCoolDown = 0;
+            dashMoveSpeed = maxMoveSpeed + 300 + dashFactor * 0;
+            maxDashCoolDown = 4.0f - dashCooltimeFactor * 0;
+            dashCoolDown = maxDashCoolDown;
+            //시야
+            byte lightFactor = 100;
+
+            GameObject.Find("SkinScene").transform.Find("HeadLight").GetComponent<cHeadLight>().
+            SetLightRange(lightFactor * 0);
+
+            //차지 계수
+            //cBtn_attack에서 초기화
+            //연속공격
+            doubleAttackPercentage = (byte)(0 + 10 * 0);
+        }
+        else
+        {
+            //스킬 레벨
+            //대쉬
+            byte dashFactor = 50;
+            float dashCooltimeFactor = 0.5f;
+            dashMoveSpeed = maxMoveSpeed + 300 + dashFactor * cUtil._user._playerInfo.skillLevel[0];
+            maxDashCoolDown = 4.0f - dashCooltimeFactor * cUtil._user._playerInfo.skillLevel[0];
             dashCoolDown = maxDashCoolDown;
             //시야
             byte lightFactor = 100;
             GameObject.Find("DungeonNormalScene").transform.Find("HeadLight").GetComponent<cHeadLight>().
-            SetLightRange(lightFactor);
+            SetLightRange(lightFactor * cUtil._user._playerInfo.skillLevel[1]);
+
             //차지 계수
             //cBtn_attack에서 초기화
             //연속공격
-            doubleAttackPercentage = (byte)(0);
+            doubleAttackPercentage = (byte)(0 + 10 * cUtil._user._playerInfo.skillLevel[3]);
 
             //내구도
-            maxDp = new cProperty("MaxDp", 100);
-            curDp = new cProperty("MaxDp", 100);
+            maxDp = new cProperty("MaxDp", cUtil._user._playerInfo.weapon.indurance.value);
+            curDp = new cProperty("MaxDp", cUtil._user._playerInfo.weapon.indurance.value);
 
             SetDp();
         }
-#endif
-#if UNITY_ANDROID
-        //if (cUtil._sm._scene != SCENE.SKIN)
-        //    this.gameObject.tag = "Untagged";
 
-        //_animator = this.GetComponent<Animator>();
-        //originObj = this.transform.parent.gameObject;
-        //if (cUtil._user != null)
-        //{
-        //    inven = cUtil._user.GetInventory();
-        //}
-        //rt = originObj.GetComponent<BoxCollider2D>();
-
-        //changingGravity = defaultGravity;
-        //SetIsGrounded(false);
-        //isClimbing = false;
-        //isSpeedUp = false;
-        //speedUpTime = 0.0f;
-        //speedUpAmount = 0.0f;
-        //jumpHeight = 200.0f;
-        //attackBoxPos[0] = new Vector3(18, 280, -1.1f);
-        //attackBoxPos[1] = new Vector3(180, 58, -1.1f);
-        //attackBoxPos[2] = new Vector3(60, -128, -1.1f);
-        //attackBoxPos[3] = new Vector3(100, 142, -1.1f);
-        //attackBox.transform.position = attackBoxPos[0];
-        //weapon.damage = damage;
-        //status = CHARACTERSTATUS.NONE;
-        //isMoveAttack = false;
-        //isFalling = false;
-
-        //if (this.tag.Equals("player_skin"))
-        //{
-        //    //스킬 레벨
-        //    //대쉬
-        //    byte dashFactor = 50;
-        //    float dashCooltimeFactor = 0.5f;
-        //    dashMoveSpeed = maxMoveSpeed + 300 + dashFactor * 0;
-        //    maxDashCoolDown = 4.0f - dashCooltimeFactor * 0;
-        //    dashCoolDown = maxDashCoolDown;
-        //    //시야
-        //    byte lightFactor = 100;
-
-        //    GameObject.Find("SkinScene").transform.Find("HeadLight").GetComponent<cHeadLight>().
-        //    SetLightRange(lightFactor * 0);
-
-        //    //차지 계수
-        //    //cBtn_attack에서 초기화
-        //    //연속공격
-        //    doubleAttackPercentage = (byte)(0 + 10 * 0);
-        //}
-        //else
-        //{
-        //    //스킬 레벨
-        //    //대쉬
-        //    byte dashFactor = 50;
-        //    float dashCooltimeFactor = 0.5f;
-        //    dashMoveSpeed = maxMoveSpeed + 300 + dashFactor * cUtil._user._playerInfo.skillLevel[0];
-        //    maxDashCoolDown = 4.0f - dashCooltimeFactor * cUtil._user._playerInfo.skillLevel[0];
-        //    dashCoolDown = maxDashCoolDown;
-        //    //시야
-        //    byte lightFactor = 100;
-        //    GameObject.Find("DungeonNormalScene").transform.Find("HeadLight").GetComponent<cHeadLight>().
-        //    SetLightRange(lightFactor * cUtil._user._playerInfo.skillLevel[1]);
-
-        //    //차지 계수
-        //    //cBtn_attack에서 초기화
-        //    //연속공격
-        //    doubleAttackPercentage = (byte)(0 + 10 * cUtil._user._playerInfo.skillLevel[3]);
-
-        //    //내구도
-        //    maxDp = new cProperty("MaxDp", cUtil._user._playerInfo.weapon.indurance.value);
-        //    curDp = new cProperty("MaxDp", cUtil._user._playerInfo.weapon.indurance.value);
-
-        //    SetDp();
-        //}
-
-        //img_weapon.sprite = cUtil._user.WeaponEquipImages[cUtil._user._playerInfo.curWeaponId];
-#endif
+        img_weapon.sprite = cUtil._user.WeaponEquipImages[cUtil._user._playerInfo.curWeaponId];
 
     }
 
@@ -199,14 +148,14 @@ public class cPlayer : cCharacter
         _animator.SetFloat("MoveSpeed", curMoveSpeed);
         _animator.SetBool("isGrounded", GetIsGrounded());
 
-        //인디케이터 - 임시 주석처리
-        //if (this.tag != "player_skin")
-        //{
-        //    Vector3 flagDir = (flagPos.position - originObj.transform.position).normalized;
-        //    indicator.transform.position = new Vector3(originObj.transform.position.x + flagDir.x * 120,
-        //        originObj.transform.position.y + flagDir.y * 120, originObj.transform.position.z);
-        //    indicator.transform.up = flagDir;
-        //}
+        //인디케이터
+        if (this.tag != "player_skin" && (int)cUtil._sm._scene < 18)
+        {
+            Vector3 flagDir = (flagPos.position - originObj.transform.position).normalized;
+            indicator.transform.position = new Vector3(originObj.transform.position.x + flagDir.x * 120,
+                originObj.transform.position.y + flagDir.y * 120, originObj.transform.position.z);
+            indicator.transform.up = flagDir;
+        }
 
         //점프 모션
         if (GetIsGrounded().Equals(false) && isJumpAniDone.Equals(false)

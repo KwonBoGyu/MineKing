@@ -100,7 +100,32 @@ public class cSceneManager : MonoBehaviour
         _scene = (SCENE)sceneNum;
         StartCoroutine(LoadScene(pSceneName));
     }
-    
+
+    //씬 변경
+    public void ChangeScene(int pNum)
+    {
+        string sceneName = "";
+
+        if(pNum.Equals(1))
+            sceneName = "Main";
+        else if (pNum.Equals(2))
+            sceneName = "Main_skin";
+        else if (pNum > 2 && pNum < 18)
+            sceneName = "Dungeon_normal_" + (pNum - 2).ToString();
+        else if (pNum > 17 && pNum < 23)
+            sceneName = "Dungeon_boss_" + (pNum - 17).ToString();
+        else
+        {
+            Debug.Log("잘못된 씬 번호입니다.");
+            return;
+        }
+
+        //같은 씬이 아니라면 씬 전환 
+        clickBarrier.SetActive(true);
+        _scene = (SCENE)pNum;
+        StartCoroutine(LoadScene(sceneName));
+    }
+
     public void GoToStageGate(bool pIsNextDoor)
     {
         int sceneNum = (int)_scene;

@@ -80,7 +80,6 @@ public class cSkinScene : MonoBehaviour
             player.transform.localScale = new Vector3(1, 1, 1);
             player.transform.localPosition = new Vector3(337, 67, 1);
             scr_player = player.transform.GetChild(0).GetComponent<cPlayer>();
-            Debug.Log("CHECKED");
             chg_tileMng.Init();
             scr_player.tileMng = chg_tileMng;
             scr_player.obj_coolTime = chg_obj_coolTime;
@@ -91,6 +90,7 @@ public class cSkinScene : MonoBehaviour
             scr_player.img_weapon.sprite = cUtil._user.WeaponEquipImages[cUtil._user._playerInfo.curWeaponId];
             scr_player.indicator = chg_indicator;
             scr_player.ft = chg_floatingText;
+            chg_floatingText.Init();
             scr_player.useMng = chg_useMng;
             scr_player.joystick = chg_joystick;
             scr_player.dp = chg_dp;

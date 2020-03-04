@@ -48,20 +48,17 @@ public class cTileMng : MonoBehaviour
         tileMap_cannotHit = this.transform.GetChild(1).GetComponent<Tilemap>();
         tempTile = null;
 
-        //if (cUtil._sm._scene.Equals(SCENE.SKIN))
-        //{
-        //    obj_itemDrop = GameObject.Find("SkinScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
-        //    soundMng = GameObject.Find("SkinScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
-        //}
-        //else
-        //{
-        //    obj_itemDrop = GameObject.Find("DungeonNormalScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
-        //    soundMng = GameObject.Find("DungeonNormalScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
-        //}
+        if (cUtil._sm._scene.Equals(SCENE.SKIN))
+        {
+            obj_itemDrop = GameObject.Find("SkinScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
+            soundMng = GameObject.Find("SkinScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
+        }
+        else
+        {
+            obj_itemDrop = GameObject.Find("DungeonNormalScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
+            soundMng = GameObject.Find("DungeonNormalScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
+        }
 
-        ///보스 디버깅용
-        obj_itemDrop = GameObject.Find("DungeonNormalScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
-        soundMng = GameObject.Find("DungeonNormalScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
         SetEntireTiles();
     }
 

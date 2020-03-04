@@ -26,7 +26,7 @@ public class cFloatingText : MonoBehaviour
         
     void Update()
     {
-        if(isInit.Equals(true))
+        if(isInit.Equals(true) && cUtil._sm._scene != SCENE.SKIN)
         {
             for (byte i = 0; i < DmgImg.transform.childCount; i++)
             {
