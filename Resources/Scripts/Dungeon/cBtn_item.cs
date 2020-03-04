@@ -16,7 +16,7 @@ public class cBtn_item : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private IEnumerator cor_buttonDown;
 
-    private void Start()
+    public void Init()
     {
         UpdateQuickSlot();
         

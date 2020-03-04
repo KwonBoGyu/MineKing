@@ -50,12 +50,12 @@ public class cForge : cBuilding
 
             //강화
             case 1:
-                //forge_axe.UpdateValues();
+                forge_axe.UpdateValues();
                 break;
 
             //스킬
             case 2:
-                forge_skill.UpdateValues();
+                forge_skill.Init();
                 break;
         }
 

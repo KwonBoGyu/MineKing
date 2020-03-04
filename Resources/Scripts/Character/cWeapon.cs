@@ -9,14 +9,15 @@ public class cWeapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag.Equals("Tilemap_rock"))
+        if (collision.tag.Equals("flag"))
         {
             Debug.Log(collision.gameObject.name);
+            collision.transform.parent.GetComponent<cFlag>().FlagOn(0);
         }
-
+        
         if (collision.tag.Equals("Enemy"))
         {
-            Debug.Log("Atack!");
+            Debug.Log("Attack!");
             if(scr_player.GetStatus() == CHARACTERSTATUS.DASH_ATTACK)
             {
                 collision.GetComponent<cEnemy_monster>().ReduceHp(damage.value, GetComponentInParent<cPlayer>().GetDirection(), 10.0f);

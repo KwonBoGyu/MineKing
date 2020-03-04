@@ -111,12 +111,12 @@ public class cCamera : MonoBehaviour
                 // 카메라 고정 범위 밖으로 플레이어 이동
                 if (Vector3.Distance(_player.transform.position, moveArea.transform.position) > moveRange_width * 0.5f)
                 {
-                    yFixedPos = Mathf.Lerp(this.gameObject.transform.position.y, _player.transform.position.y, 0.1f);
+                    yFixedPos = Mathf.Lerp(this.gameObject.transform.position.y, _player.transform.position.y, 0.2f);
                 }
                 // 이동 범위 안인 경우 고정
                 else
                 {
-                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.1f);
+                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.2f);
                 }
             }
             // Y방향만 잠긴 경우
@@ -128,12 +128,12 @@ public class cCamera : MonoBehaviour
                     // 오른쪽으로 플레이어 이동중인 경우
                     if (_player.transform.position.x >= this.transform.position.x)
                     {
-                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x - moveRange_width * 0.5f, 0.1f);
+                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x - moveRange_width * 0.5f, 0.2f);
                     }
                     // 왼쪽으로 플레이어 이동중인 경우
                     else
                     {
-                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x + moveRange_width * 0.5f, 0.1f);
+                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x + moveRange_width * 0.5f, 0.2f);
                     }
                 }
                 // 이동 범위 안인 경우
@@ -151,20 +151,20 @@ public class cCamera : MonoBehaviour
                     // 오른쪽
                     if (_player.transform.position.x >= this.transform.position.x)
                     {
-                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x - moveRange_width * 0.5f, 0.1f);
+                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x - moveRange_width * 0.5f, 0.2f);
                     }
                     // 왼쪽
                     else
                     {
-                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x + moveRange_width * 0.5f, 0.1f);
+                        xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x + moveRange_width * 0.5f, 0.2f);
                     }
-                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.1f);
+                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.2f);
                 }
                 // 이동 범위 안
                 else
                 {
                     xFixedPos = this.gameObject.transform.position.x;
-                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.1f);
+                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.2f);
                 }
             }
             this.gameObject.transform.position = new Vector3(xFixedPos, yFixedPos, -9.5f);

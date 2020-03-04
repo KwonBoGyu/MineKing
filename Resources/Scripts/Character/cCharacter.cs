@@ -40,6 +40,8 @@ public class cCharacter : cObject
     protected float curMoveSpeed;
     protected cProperty maxHp;
     protected cProperty curHp;
+    protected cProperty maxDp;
+    protected cProperty curDp;
     protected float jumpHeight;
     public byte jumpCount;
     public bool isJumpStart;
@@ -61,6 +63,11 @@ public class cCharacter : cObject
     public Image img_curHp;
     public Text t_hp;
     protected IEnumerator hpCor;
+
+    //dp
+    public Image img_curDp;
+    public Text t_dp;
+    protected IEnumerator dpCor;
 
     // 중력 적용에 필요한 변수
     public float changingGravity;
@@ -86,6 +93,7 @@ public class cCharacter : cObject
     }
     public GameObject attackBox;
     public Vector3[] attackBoxPos; //오른, 아래, 왼, 위
+    public GameObject doubleAttackBox;
 
     private IEnumerator cor_knockBack;
     protected Animator _animator;
@@ -103,19 +111,15 @@ public class cCharacter : cObject
         damage_crit = new cProperty(pDamage);
         damage_crit.value = (long)(damage.value * 1.5f);
         maxMoveSpeed = pMaxMoveSpeed;
-        dashMoveSpeed = maxMoveSpeed + 500;
         curMoveSpeed = 0;
         maxHp = new cProperty(pMaxHp);
         curHp = new cProperty(pCurHp);
+        jumpHeight = 200.0f;
         SetHp();
         dir = Vector3.right;
-        jumpHeight = 200.0f;
         attackBoxPos = new Vector3[4];
         status = CHARACTERSTATUS.NONE;
-
-        maxDashCoolDown = 4.0f;
-        dashCoolDown = maxDashCoolDown;
-        isJetPackOn = false;
+        defaultGravity = 500;
     }
 
     public cProperty GetMaxHp() { return maxHp; }
@@ -304,10 +308,12 @@ public class cCharacter : cObject
         if (!isGrounded && !status.Equals(CHARACTERSTATUS.JUMP))
         {
             originObj.transform.Translate(Vector3.down * changingGravity * Time.deltaTime);
+
             if (changingGravity <= 1500)
                 changingGravity *= 1.02f;
             if (changingGravity > 1500)
                 changingGravity = 1500;
+
         }
         else
             changingGravity = defaultGravity;
@@ -364,6 +370,17 @@ public class cCharacter : cObject
         StartCoroutine(hpCor);
         if (originObj.tag.Equals("Player"))
             t_hp.text = curHp.GetValueToString() + " / " + maxHp.GetValueToString();
+    }
+
+    protected void SetDp()
+    {
+        if (originObj.tag.Equals("Player"))
+        {
+            dpCor = DpInterpolation();
+            StartCoroutine(dpCor);
+            t_dp.text = curDp.GetValueToString() + " / " + maxDp.GetValueToString();
+        }
+
     }
 
     protected void StartKnockBack(Vector3 pDir, float pVelocity = 7.5f)
@@ -455,6 +472,24 @@ public class cCharacter : cObject
             if (Mathf.Abs(img_curHp.fillAmount - curAmount) <= Mathf.Abs(tick))
             {
                 img_curHp.fillAmount = curAmount;
+                break;
+            }
+        }
+    }
+
+    IEnumerator DpInterpolation()
+    {
+        float prevAmount = img_curDp.fillAmount;
+        float curAmount = (float)curDp.value / (float)maxDp.value;
+        float tick = (curAmount - prevAmount) / 10f;
+
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            img_curDp.fillAmount = img_curDp.fillAmount + tick;
+            if (Mathf.Abs(img_curDp.fillAmount - curAmount) <= Mathf.Abs(tick))
+            {
+                img_curDp.fillAmount = curAmount;
                 break;
             }
         }

@@ -8,7 +8,7 @@ public class cPlayerInfo
     public string nickName;
     public cAxe weapon;
     public cInventory inventory;
-    public bool[] flaged;   //스테이지별 점령지 3개씩 : 0~2, 3~5, 6~8, 9~11, 12~14
+    public bool[] flaged;   //스테이지별 점령지
     public bool[] bossDone;
     public cItem_equip[] item_equip;
     public cItem_use[] item_use;
@@ -20,13 +20,46 @@ public class cPlayerInfo
     public cSoul[] soul;
     public byte[] skillLevel; //0 : 대쉬, 1 : 시야증가, 2 : 차지강화, 3 : 점프강화
     public short[] quickSlotItemNum;
+    public cJewerly[] prevStorePrice;
+    public cJewerly[] avStorePrice;
+    public cJewerly[] curStorePrice;
+    public cProperty clothCoupon;
+    public bool[] myWeaponsId;
+    public byte curWeaponId;
+    public bool[] myClothesId;
+    public byte curClothId;
+
+    public cStore store;
 
     #region 생성자
     public cPlayerInfo(string pNickName, cAxe pAxe, byte[] pSkillLevel, bool[] pFlaged, bool[] pBossDone,
         short[] pQuickSlotItemNum,cInventory pInventory, 
-        cGold pMoney, cRock pRock, cDia pDia, cJewerly[] pJewerly, cSoul[] pSoul,
+        cGold pMoney, cRock pRock, cDia pDia, cJewerly[] pJewerly, cSoul[] pSoul, 
+        cJewerly[] pPrevStorePrice, cJewerly[] pAvStorePrice, cJewerly[] pCurStorePrice,
+        cProperty pClothCoupon, bool[] pMyWeaponsId, byte pCurWeaponId, bool[] pMyClothesId, byte pCurClothId,
         cItem_equip[] pItem_equip = null, cItem_use[] pItem_use = null, cItem_etc[] pItem_etc = null)
     {
+        clothCoupon = new cProperty("clothCoupon", pClothCoupon.value);
+        myWeaponsId = new bool[pMyWeaponsId.Length];
+        for (byte i = 0; i < pMyWeaponsId.Length; i++)
+            myWeaponsId[i] = pMyWeaponsId[i];
+        curWeaponId = pCurWeaponId;
+        myClothesId = new bool[pMyClothesId.Length];
+        for (byte i = 0; i < pMyClothesId.Length; i++)
+            myClothesId[i] = pMyClothesId[i];
+        curClothId = pCurClothId;
+
+
+        prevStorePrice = new cJewerly[5];
+        avStorePrice = new cJewerly[5];
+        curStorePrice = new cJewerly[5];
+        for (byte i = 0; i < 5; i++)
+        {
+            prevStorePrice[i] = new cJewerly(pPrevStorePrice[i]._name, pPrevStorePrice[i].value);
+            avStorePrice[i] = new cJewerly(pAvStorePrice[i]._name, pAvStorePrice[i].value);
+            curStorePrice[i] = new cJewerly(pCurStorePrice[i]._name, pCurStorePrice[i].value);
+        }
+
         weapon = new cAxe(pAxe);
         skillLevel = new byte[4];
         for (byte i = 0; i < skillLevel.Length; i++)
@@ -79,6 +112,26 @@ public class cPlayerInfo
 
     public cPlayerInfo(cPlayerInfo pPi, cInventory pInventory)
     {
+        clothCoupon = new cProperty("clothCoupon", pPi.clothCoupon.value);
+        myWeaponsId = new bool[pPi.myWeaponsId.Length];
+        for (byte i = 0; i < pPi.myWeaponsId.Length; i++)
+            myWeaponsId[i] = pPi.myWeaponsId[i];
+        curWeaponId = pPi.curWeaponId;
+        myClothesId = new bool[pPi.myClothesId.Length];
+        for (byte i = 0; i < pPi.myClothesId.Length; i++)
+            myClothesId[i] = pPi.myClothesId[i];
+        curClothId = pPi.curClothId;
+
+        prevStorePrice = new cJewerly[5];
+        avStorePrice = new cJewerly[5];
+        curStorePrice = new cJewerly[5];
+        for (byte i = 0; i < 5; i++)
+        {
+            prevStorePrice[i] = new cJewerly(pPi.prevStorePrice[i]._name, pPi.prevStorePrice[i].value);
+            avStorePrice[i] = new cJewerly(pPi.avStorePrice[i]._name, pPi.avStorePrice[i].value);
+            curStorePrice[i] = new cJewerly(pPi.curStorePrice[i]._name, pPi.curStorePrice[i].value);
+        }            
+
         weapon = new cAxe(pPi.weapon);
         skillLevel = new byte[4];
         for (byte i = 0; i < skillLevel.Length; i++)
@@ -167,6 +220,41 @@ public class cPlayerInfo
         for (byte i = 0; i < inventory.GetItemEtc().Count; i++)
         {
             item_etc[i] = new cItem_etc(inventory.GetItemEtc()[i]);
+        }
+    }
+
+    public void UpdateStorePrice()
+    {
+        // 실시간 가격 변동
+        // y = ax ^ 4 + b
+        // y : 가격, a: 기울기, x: 확률변수, b: 평균값
+        float maxPrice;
+        float lowPrice;
+        float maxX = 0;
+        float minX = 0;
+        float a = 1;
+        float randomNum;
+        float totalPrice;
+
+
+        for(byte i = 0; i < 5; i++)
+        {
+            lowPrice = avStorePrice[i].value - (avStorePrice[i].value * 0.9f);
+            maxPrice = avStorePrice[i].value + (avStorePrice[i].value * 0.9f);
+
+            minX = Mathf.Pow((maxPrice - avStorePrice[i].value) / a, 0.25f) * -1;
+            maxX = Mathf.Pow((maxPrice - avStorePrice[i].value) / a, 0.25f);
+            randomNum = Random.Range(minX, maxX);
+
+            totalPrice = Mathf.Pow(randomNum, 4) + avStorePrice[i].value;
+
+            cUtil._user._playerInfo.prevStorePrice[i].value = cUtil._user._playerInfo.curStorePrice[i].value;
+            cUtil._user._playerInfo.curStorePrice[i].value = (long)totalPrice;
+        }
+
+        if(store != null)
+        {
+            store.UpdateValue();
         }
     }
 }

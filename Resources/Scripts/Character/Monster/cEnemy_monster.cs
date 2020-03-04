@@ -68,8 +68,6 @@ public class cEnemy_monster : cCharacter
     public virtual void Init(enemyInitStruct pEs)
     {
         base.Init(pEs.nickName, pEs.damage, pEs.maxMoveSpeed, pEs.maxHp, pEs.curHp);
-
-        originObj = this.gameObject;
         rt = originObj.GetComponent<BoxCollider2D>();
         defaultGravity = 300.0f;
         changingGravity = defaultGravity;
@@ -89,15 +87,12 @@ public class cEnemy_monster : cCharacter
         attackBoxMng = attackBox.GetComponent<cEnemy_AttckBox>();
         isInAttackRange = false;
         ChangeDir(Vector3.right);
-
         attackBoxMng.Init();
-        notizer.Init();
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        
         if(isDead.Equals(false))
         {
             SetGravity();
@@ -204,7 +199,7 @@ public class cEnemy_monster : cCharacter
             isDead = true;
             _animator.SetTrigger("Dead");
             img_curHp.transform.parent.gameObject.SetActive(false);
-            this.GetComponent<BoxCollider2D>().enabled = false;
+            originObj.GetComponent<BoxCollider2D>().enabled = false;
             // 리스폰 타이머 활성화
             StartCoroutine(RespawnTimer());
         }
@@ -227,7 +222,7 @@ public class cEnemy_monster : cCharacter
             isDead = true;
             _animator.SetTrigger("Dead");
             img_curHp.transform.parent.gameObject.SetActive(false);
-            this.GetComponent<BoxCollider2D>().enabled = false;
+            originObj.GetComponent<BoxCollider2D>().enabled = false;
             // 리스폰 타이머 활성화
             Respawn();
         }
@@ -268,7 +263,7 @@ public class cEnemy_monster : cCharacter
     protected virtual void RespawnInit()
     {
         _animator.SetTrigger("Init");
-        this.GetComponent<BoxCollider2D>().enabled = true;
+        originObj.GetComponent<BoxCollider2D>().enabled = true;
         this.transform.localPosition = InitPos;
         isDead = false;
         curHp.value = maxHp.value;

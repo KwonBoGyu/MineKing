@@ -7,6 +7,11 @@ public class cHeadLight : MonoBehaviour
 {
     public Transform HeadLight;
 
+    public void SetLightRange(float pValue)
+    {
+        this.GetComponent<Light>().range = 900 + pValue;
+    }
+
     // Update is called once per frame
     void Update()
     {

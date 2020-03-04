@@ -1,0 +1,531 @@
+fileFormatVersion: 2
+guid: b7deb80689884a3489db36a90caf02de
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5234216451447532814
+    second: img_cloth_shade_0
+  - first:
+      213: 4376111688106343277
+    second: img_cloth_shade_1
+  - first:
+      213: 2672549771905444710
+    second: img_cloth_shade_2
+  - first:
+      213: 9061209001423377796
+    second: img_cloth_shade_3
+  - first:
+      213: -1212310260337346282
+    second: img_cloth_shade_4
+  - first:
+      213: 7403079929396616427
+    second: img_cloth_shade_5
+  - first:
+      213: 2315947254048617237
+    second: img_cloth_shade_6
+  - first:
+      213: 8313615992422213335
+    second: img_cloth_shade_7
+  - first:
+      213: -4219199869616331892
+    second: img_cloth_shade_8
+  - first:
+      213: -1154606940516000766
+    second: img_cloth_shade_9
+  - first:
+      213: -3900634074538050593
+    second: img_cloth_shade_10
+  - first:
+      213: -5885231391283960835
+    second: img_cloth_shade_11
+  - first:
+      213: 5328939563233778658
+    second: img_cloth_shade_12
+  - first:
+      213: -1126016291772719985
+    second: img_cloth_shade_13
+  - first:
+      213: -4347959878093671689
+    second: img_cloth_shade_14
+  - first:
+      213: -6747707166184268263
+    second: img_cloth_shade_15
+  - first:
+      213: 5070320694608425110
+    second: img_cloth_shade_16
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: img_cloth_shade_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3634.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe3030039218a8140a51153484c9de71
+      internalID: 5234216451447532814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_1
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 3634.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36ce1e5019e5d6e4cb668984f7d565b6
+      internalID: 4376111688106343277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_2
+      rect:
+        serializedVersion: 2
+        x: 1812
+        y: 3634.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af138f7d08848714081fdd98a31f55a3
+      internalID: 2672549771905444710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_3
+      rect:
+        serializedVersion: 2
+        x: 2718
+        y: 3634.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9cd8f3c28e8ec54f9fff210d19fd193
+      internalID: 9061209001423377796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_4
+      rect:
+        serializedVersion: 2
+        x: 3624
+        y: 3634.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35cf337efbe0031459a60ca32ad8e0ef
+      internalID: -1212310260337346282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2423.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c2df41001ae6e24a8874ef1dc925f84
+      internalID: 7403079929396616427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_6
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 2423.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ea36c2581bd99f4e9cbf4b915ae4a3a
+      internalID: 2315947254048617237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_7
+      rect:
+        serializedVersion: 2
+        x: 1812
+        y: 2423.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5b2710a48db2c64595963d9e2ed0e06
+      internalID: 8313615992422213335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_8
+      rect:
+        serializedVersion: 2
+        x: 2718
+        y: 2423.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 451b8128b7334364ca5748682b21f759
+      internalID: -4219199869616331892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_9
+      rect:
+        serializedVersion: 2
+        x: 3624
+        y: 2423.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 744910f202dece245982af60b5ba63a5
+      internalID: -1154606940516000766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1212.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62c948cc949d90f49b7a4dc94985ebc3
+      internalID: -3900634074538050593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_11
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 1212.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebe5225dd6810d948969c84199a39336
+      internalID: -5885231391283960835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_12
+      rect:
+        serializedVersion: 2
+        x: 1812
+        y: 1212.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73c820780b5a44d44b312667f2d08902
+      internalID: 5328939563233778658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_13
+      rect:
+        serializedVersion: 2
+        x: 2718
+        y: 1212.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e39f1c48b3c13245a4f23520447bca1
+      internalID: -1126016291772719985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_14
+      rect:
+        serializedVersion: 2
+        x: 3624
+        y: 1212.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad7c43e13f1cc074eb0d365410501479
+      internalID: -4347959878093671689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f66f962cf5db134daaa2bb389680a1a
+      internalID: -6747707166184268263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: img_cloth_shade_16
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 1.5
+        width: 906.4
+        height: 1211.5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4632635d11e05f8499f8e9f05fd1b694
+      internalID: 5070320694608425110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 036e10f70fb91254da18e2925341d76c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

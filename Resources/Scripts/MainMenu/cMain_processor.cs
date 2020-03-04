@@ -33,6 +33,8 @@ public class cMain_processor : MonoBehaviour
     {
         currentWindowNum = -1;
 
+        cUtil._user._playerInfo.store = _store;
+
         _store.b_click.onClick.AddListener(() => OnBuilingButtonClicked(0));
         _forge.b_click.onClick.AddListener(() => OnBuilingButtonClicked(1));
         _dungeon.b_click.onClick.AddListener(() => OnBuilingButtonClicked(2));
@@ -61,10 +63,10 @@ public class cMain_processor : MonoBehaviour
         {
             //상점
             case 0:
-                {
-                    _sm.playEffect(0);
-                    animator_main.SetTrigger("StoreOn");
-                }
+                
+                  _sm.playEffect(0);
+                  animator_main.SetTrigger("StoreOn");
+                _store.UpdateValue();                                
                     break;
             //대장간
             case 1:

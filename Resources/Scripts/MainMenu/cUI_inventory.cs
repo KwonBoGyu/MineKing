@@ -188,7 +188,7 @@ public class cUI_inventory : MonoBehaviour
     //인벤토리 열기
     private void OpenInventory()
     {
-        if (content.active == false)
+        if (content.activeSelf == false)
         {
             content.SetActive(true);
             ChangeContents(0);
@@ -198,9 +198,10 @@ public class cUI_inventory : MonoBehaviour
     //인벤토리 닫기
     private void ExitInventory()
     {
-        if (content.active == true)
+        if (content.activeSelf == true)
         {
             content.SetActive(false);
         }
     }
+
 }

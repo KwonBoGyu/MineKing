@@ -41,15 +41,27 @@ public class cTileMng : MonoBehaviour
 
     public GameObject obj_itemDrop;
     public cSoundMng soundMng;
-
-    private void Start()
+    
+    public void Init()
     {
         tileMap_canHit = this.transform.GetChild(0).GetComponent<Tilemap>();
         tileMap_cannotHit = this.transform.GetChild(1).GetComponent<Tilemap>();
         tempTile = null;
+
+        //if (cUtil._sm._scene.Equals(SCENE.SKIN))
+        //{
+        //    obj_itemDrop = GameObject.Find("SkinScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
+        //    soundMng = GameObject.Find("SkinScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
+        //}
+        //else
+        //{
+        //    obj_itemDrop = GameObject.Find("DungeonNormalScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
+        //    soundMng = GameObject.Find("DungeonNormalScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
+        //}
+
+        ///보스 디버깅용
         obj_itemDrop = GameObject.Find("DungeonNormalScene").transform.Find("Canvas_main").Find("ItemDrop").gameObject;
         soundMng = GameObject.Find("DungeonNormalScene").transform.Find("Cam_main").GetComponent<cSoundMng>();
-
         SetEntireTiles();
     }
 
@@ -93,10 +105,10 @@ public class cTileMng : MonoBehaviour
         pObj.notGrounded = true;
         pObj.notRightBlocked = true;
         pObj.notLeftBlocked = true;
-
+        
         CheckTiles(tileMap_canHit, pObj, pObj.rt.size);
         CheckTiles(tileMap_cannotHit, pObj, pObj.rt.size);
-
+        
         if (pObj.notUpBlocked)
             pObj.isUpBlocked = false;
         else
@@ -418,7 +430,7 @@ public class cTileMng : MonoBehaviour
         tempTileToUse.curHp.value -= pDamage;
         dic_canHit[cellToWorldPos] = tempTileToUse;
         pCurHpPercent = (float)tempTileToUse.curHp.value / (float)dic_canHit[cellToWorldPos].maxHp.value;
-
+        
         if (tempTileToUse.curHp.value == 0)
         {
             isChecked = true;
@@ -426,7 +438,6 @@ public class cTileMng : MonoBehaviour
             tileMap_canHit.SetTile(worldToCellPos, null);
             cUtil._player.RootRocks(tempTileToUse.rocks.value);
             soundMng.playTileEffect();
-
             //금광 타일
             if (dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3"))
             {
@@ -465,7 +476,6 @@ public class cTileMng : MonoBehaviour
             tileMap_canHit.SetTile(worldToCellPos, null);
             cUtil._player.RootRocks(tempTileToUse.rocks.value);
             soundMng.playTileEffect();
-
             //금광 타일
             if (dic_canHit[cellToWorldPos].tileBase.name.Contains("img_tile3"))
             {

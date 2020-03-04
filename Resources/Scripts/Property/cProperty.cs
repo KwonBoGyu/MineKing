@@ -32,17 +32,17 @@ public class cProperty
         string s_return = " ";
 
         if (value >= 1000000000000000000)        
-            s_return = string.Format("{0:F1}f", 1000000000000000000 * 0.000000000000000001);        
+            s_return = string.Format("{0:F1}f", value * 0.000000000000000001);        
         else if (value >= 1000000000000000)        
-            s_return = string.Format("{0:F1}e", 1000000000000000 * 0.000000000000001);        
+            s_return = string.Format("{0:F1}e", value * 0.000000000000001);        
         else if (value >= 1000000000000)        
-            s_return = string.Format("{0:F1}d", 1000000000000 * 0.000000000001);        
+            s_return = string.Format("{0:F1}d", value * 0.000000000001);        
         else if (value >= 1000000000)        
-            s_return = string.Format("{0:F1}c", 1000000000 * 0.000000001);        
+            s_return = string.Format("{0:F1}c", value * 0.000000001);        
         else if (value >= 1000000)        
-            s_return = string.Format("{0:F1}b", 1000000 * 0.000001);        
+            s_return = string.Format("{0:F1}b", value * 0.000001);        
         else if (value >= 1000)        
-            s_return = string.Format("{0:F1}a", 1000 * 0.001);        
+            s_return = string.Format("{0:F1}a", value * 0.001);        
         else
             s_return = value.ToString();
 

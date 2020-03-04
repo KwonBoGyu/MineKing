@@ -5,7 +5,7 @@ using UnityEngine;
 public class cMonster_stage5_fungus : cEnemy_Flying
 {
     Transform _playerT;
-    Light light;
+    Light monsterLight;
 
     private void Start()
     {
@@ -16,7 +16,7 @@ public class cMonster_stage5_fungus : cEnemy_Flying
         defaultGravity = 0;
         flyingRangeY = 0.5f;
         _playerT = cUtil._player.transform;
-        light = GameObject.Find("HeadLight").GetComponent<Light>();
+        monsterLight = GameObject.Find("HeadLight").GetComponent<Light>();
     }
 
     protected override void Move()
@@ -73,11 +73,11 @@ public class cMonster_stage5_fungus : cEnemy_Flying
 
     IEnumerator BlindPlayer()
     {
-        float orgLight = light.intensity;
-        light.intensity = 0;
+        float orgLight = monsterLight.intensity;
+        monsterLight.intensity = 0;
 
         yield return new WaitForSeconds(5f);
 
-        light.intensity = orgLight;
+        monsterLight.intensity = orgLight;
     }
 }

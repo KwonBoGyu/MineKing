@@ -6,10 +6,14 @@ public class cUser : MonoBehaviour
 {
     public cPlayerInfo _playerInfo;
     private string saveString;
+
+    public Sprite[] WeaponImages;
+    public Sprite[] WeaponEquipImages;
+    public Sprite[] ClothImages;
     
     void Start()
     {
-        saveString = "save5";
+        saveString = "save12";
         LoadUserData();
     }
 
@@ -56,7 +60,7 @@ public class cUser : MonoBehaviour
             //스킬레벨 초기화
             byte[] skillLevel = new byte[4];
             for (byte i = 0; i < 4; i++)
-                skillLevel[i] = 0;
+                skillLevel[i] = 3;
 
             //점령지 점령 여부 초기화
             bool[] flaged = new bool[15];
@@ -73,8 +77,40 @@ public class cUser : MonoBehaviour
             for (byte i = 0; i < 4; i++)
                 quickSlotItemNum[i] = -1;
 
+            //보석상점 가격 초기화
+            cJewerly[] pPrevStorePrice = new cJewerly[5];
+            cJewerly[] pAvStorePrice = new cJewerly[5];
+            cJewerly[] pCurStorePrice = new cJewerly[5];
+            for (byte i = 0; i < 5; i++)
+            {
+                pPrevStorePrice[i] = new cJewerly("보석", i * 1000 + 100);
+                pAvStorePrice[i] = new cJewerly("보석", i * 1000 + 100);
+                pCurStorePrice[i]= new cJewerly("보석", i * 1000 + 100);
+            }
+
+            cProperty pClothCoupon = new cProperty("clothCoupon",0);
+
+            bool[] pMyWeaponsId = new bool[15];
+            for (byte i = 0; i < pMyWeaponsId.Length; i++)
+                pMyWeaponsId[i] = true;
+            pMyWeaponsId[0] = true;
+            pMyWeaponsId[1] = true;
+            pMyWeaponsId[2] = true;
+
+            byte pCurWeaponId = 0;
+
+            bool[] pMyClothesId = new bool[17];
+            for (byte i = 0; i < pMyClothesId.Length; i++)
+                pMyClothesId[i] = true;
+            pMyClothesId[0] = true;
+            pMyClothesId[1] = true;
+            pMyClothesId[2] = true;
+
+            byte pCurClothId = 0;
+
             _playerInfo = new cPlayerInfo("이름입니다.", tAxe, skillLevel,flaged, bossDone, quickSlotItemNum, this.GetComponent<cInventory>(), 
-                money, rock, dia, jewerly, soul);
+                money, rock, dia, jewerly, soul, pPrevStorePrice, pAvStorePrice, pCurStorePrice,
+                pClothCoupon, pMyWeaponsId, pCurWeaponId, pMyClothesId, pCurClothId);
 
             SaveUserData();
             Debug.Log("Initialized Done - CreatedInitData");

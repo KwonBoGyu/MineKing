@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class cTitleSingleton : MonoBehaviour
 {
     public static cTitleSingleton Instance;
-    public Button b_save;
-    public double gameTime; // 게임 플레이 시간
+    private float storeUpdateTime;
+    private float storeUpdateTimer;
 
     void Awake()
     {
@@ -23,24 +23,30 @@ public class cTitleSingleton : MonoBehaviour
         //해상도 설정
         Screen.SetResolution(1920, 1080, false);
 
+        //상점 업데이트 시간
+        storeUpdateTime = 30;
+
         //static 클래스 설정
         cUtil._sm = this.transform.Find("SceneManager").GetComponent<cSceneManager>();
         cUtil._user = this.GetComponent<cUser>();
-        b_save.onClick.AddListener(() => cUtil._user.SaveUserData());
 
-        gameTime = 0;
 
         cUtil._titleSingleton = this;
     }
 
     private void FixedUpdate()
     {
-        gameTime += Time.deltaTime;
-
-        // 오버플로우 나기 전에 초기화
-        if (gameTime >= double.MaxValue - 60.0)
+        //상점 가격표 변경
+        storeUpdateTimer += Time.deltaTime;
+        if (storeUpdateTimer > storeUpdateTime)
         {
-            gameTime = 0;
+            cUtil._user._playerInfo.UpdateStorePrice();
+            storeUpdateTimer = 0;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            cUtil._user._playerInfo.UpdateStorePrice();
         }
     }
 }

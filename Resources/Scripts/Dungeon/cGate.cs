@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class cGate : MonoBehaviour
 {
-    public bool id; //true : 스테이지, false: 보스
+    public bool isStage; //true : 스테이지, false: 보스
     public bool isIn;
 
     private void Start()
     {
-        this.GetComponent<Button>().onClick.AddListener(() => OpenGate(id, isIn));
+        this.GetComponent<Button>().onClick.AddListener(() => OpenGate(isStage, isIn));
 
     }
 

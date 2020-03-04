@@ -4,225 +4,251 @@ using UnityEngine;
 
 public class cBoss_theme1_stage1 : cEnemy_Boss
 {
-    cBulletManager bulletMng;
+    //cBulletManager bulletMng;
 
-    List<Pattern> patternTable;
-    Pattern curPattern;
+    //Pattern MELEE;
+    //Pattern RANGED1;
+    //Pattern RANGED2;
+    //Pattern LIQUID;
+    //Pattern SUMMON;
 
-    Pattern MELEE;
-    Pattern RANGED1;
-    Pattern RANGED2;
-    Pattern LIQUID;
-    Pattern SUMMON;
-    
-    private float curCoolTime;
-    private float timer;
-    private int curPatternCount;
+    //public GameObject liquid;
+    //private IEnumerator liquidCor;
 
-    public GameObject liquid;
-    private IEnumerator liquidCor;
-
-    private void Start()
+    public void InitBoss()
     {
-        Init(cEnemyTable.SetMonsterInfo(0));
-
-        patternTable = new List<Pattern>();
-
-        // 패턴 세팅
-        MELEE = new Pattern(0, 5, 4);
-        RANGED1 = new Pattern(1, 4, 3);
-        RANGED2 = new Pattern(2, 10, 2);
-        LIQUID = new Pattern(3, 30, 1);
-        SUMMON = new Pattern(4, 30, 1);
-
-        //patternTable.Add(MELEE);
-        //patternTable.Add(RANGED1);
-        patternTable.Add(RANGED2);
-        //patternTable.Add(LIQUID);
-        //patternTable.Add(SUMMON);
-
-        curPattern = RANGED2;
-        curCoolTime = 0;
-        timer = 0;
-        curPatternCount = 0;
-
-        curMoveSpeed = maxMoveSpeed; // 임시
-        curCoolTime = MELEE.patternCount; // 임시
-        timer = curCoolTime;
-
-        bulletMng = this.gameObject.transform.GetChild(4).gameObject.GetComponent<cBulletManager>();
-        liquidCor = SetLiquid();
+        skills = this.GetComponent<cBossSkill>();
+        skills.Init(this);
+        Init(cEnemyTable.SetMonsterInfo(50));
     }
 
-    protected override void FixedUpdate()
+    public override void Init(enemyInitStruct pEs)
     {
-        base.FixedUpdate();
+        base.Init(pEs);
+
     }
+    //patternTable = new List<Pattern>();
 
-    protected override void Move()
-    {
-        switch (curPattern.patternNum)
-        {
-            // 근접 공격 및 이동 패턴
-            case 0:
-                base.Move();
-                break;
+    //    // 패턴 세팅
+    //    MELEE = new Pattern(0, 5, 4);
+    //    RANGED1 = new Pattern(1, 4, 3);
+    //    RANGED2 = new Pattern(2, 10, 2);
+    //    LIQUID = new Pattern(3, 30, 1);
+    //    SUMMON = new Pattern(4, 30, 1);
 
-            // 원거리 공격
-            case 1:
-                if (curPatternCount > curPattern.patternCount)
-                {
-                    //Debug.Log("change Pattern");
-                    ChangePattern();
-                }
+    //    patternTable.Add(MELEE);
+    //    patternTable.Add(RANGED1);
+    //    patternTable.Add(RANGED2);
 
-                if (timer >= curCoolTime)
-                {
-                    //bulletMng.SetBullet(1);
-                    curPatternCount += 1;
-                    timer = 0;
-                }
-                else
-                {
-                    timer += Time.deltaTime;
-                }
-                //Debug.Log("pattern2");
-                break;
+    //    curPattern = MELEE;
+    //    curCoolTime = 0;
+    //    timer = 0;
+    //    curPatternCount = 0;
 
-            // 원거리 공격
-            case 2:
-                if (curPatternCount > curPattern.patternCount)
-                {
-                    //Debug.Log("change Pattern");
-                    ChangePattern();
-                }
-                if (timer >= curCoolTime)
-                {
-                    Debug.Log("on");
-                    //bulletMng.SetBullet(3);
-                    curPatternCount += 1;
-                    timer = 0;
-                    break;
-                }
-                else
-                {
-                    Debug.Log("coolDown");
-                    timer += Time.deltaTime;
-                }
-                //Debug.Log("pattern3");
-                break;
+    //    curMoveSpeed = maxMoveSpeed; 
+    //    curCoolTime = MELEE.patternCount;
+    //    timer = curCoolTime;
+    //    liquidCor = SetLiquid();
 
-            // 액체 상태 공격 (장판)
-            case 3:
-                if (curPatternCount > curPattern.patternCount)
-                {
-                    Debug.Log("change Pattern");
-                    StopCoroutine(liquidCor);
-                    ChangePattern();
-                }
-                if (timer >= curCoolTime)
-                {
-                    StartCoroutine(liquidCor);
-                    curPatternCount += 1;
-                    timer = 0;
-                    break;
-                }
-                else
-                {
-                    timer += Time.deltaTime;
-                }
-                Debug.Log("pattern4");
-                break;
+    //    bulletMng = GameObject.Find("Bullets").GetComponent<cBulletManager>();
+    //}
 
-            // 슬라임 소환
-            case 4:
-                if (curPatternCount > curPattern.patternCount)
-                {
-                    Debug.Log("change Pattern");
-                    ChangePattern();
-                }
-                if (timer >= curCoolTime)
-                {
-                    SummonSlime();
-                    curPatternCount += 1;
-                    timer = 0;
-                    break;
-                }
-                else
-                {
-                    timer += Time.deltaTime;
-                }
-                Debug.Log("pattern5");
-                break;
-        }
-    }
+    //protected override void FixedUpdate()
+    //{
+    //    base.FixedUpdate();
+    //}
 
-    public override void ReduceHp(long pVal)
-    {
-        curHp.value -= pVal;
+    //protected override void Move()
+    //{
+    //    switch (curPattern.patternNum)
+    //    {
+    //        // 근접 공격 및 이동 패턴
+    //        case 0:
+    //            if (curPatternCount > curPattern.patternCount)
+    //            {
+    //                ChangePattern();
+    //            }
 
-        if (curHp.value <= 0)
-        {
-            curHp.value = 0;
-        }
+    //            if (timer >= curCoolTime)
+    //            {
+    //                curPatternCount += 1;
+    //            }
+    //            base.Move();
+    //            break;
 
-        SetHp();
-    }
+    //        // 원거리 공격
+    //        case 1:
+    //            if (curPatternCount > curPattern.patternCount)
+    //            {
+    //                Debug.Log("change Pattern");
+    //                ChangePattern();
+    //            }
 
-    private void ChangePattern()
-    {
-        int idx = Random.Range((int)0, patternTable.Count);
-        
-        for(int i = 0; i < patternTable.Count; i++)
-        {
-            if (idx == patternTable[i].patternNum)
-            {
-                curPatternCount = 0;
-                curPattern = patternTable[i];
-                curCoolTime = curPattern.coolTime;
-                timer = curPattern.coolTime;
-                break;
-            } 
-        }
-    } 
-    
-    IEnumerator SetLiquid()
-    {
-        liquid.SetActive(true);
+    //            if (timer >= curCoolTime)
+    //            {
+    //                RangeAttack1();
+    //                curPatternCount += 1;
+    //                timer = 0;
+    //            }
+    //            else
+    //            {
+    //                timer += Time.deltaTime;
+    //            }
+    //            Debug.Log("pattern2");
+    //            break;
 
-        float height = this.gameObject.transform.position.y - 1500f;
-        this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y,
-            this.gameObject.transform.position.z - 1000f);
-        float liquidZPos = liquid.transform.position.z + 1000f;
-        
-        while(true)
-        {
-            liquid.transform.position = new Vector3(liquid.transform.position.x, height, liquidZPos);
-            height += 1f;
+    //        // 원거리 공격
+    //        case 2:
+    //            if (curPatternCount > curPattern.patternCount)
+    //            {
+    //                Debug.Log("change Pattern");
+    //                ChangePattern();
+    //            }
+    //            if (timer >= curCoolTime)
+    //            {
+    //                RangeAttack2();
+    //                curPatternCount += 1;
+    //                timer = 0;
+    //                break;
+    //            }
+    //            else
+    //            {
+    //                timer += Time.deltaTime;
+    //            }
+    //            Debug.Log("pattern3");
+    //            break;
 
-            if (liquid.transform.position.y >= this.gameObject.transform.position.y)
-            {
-                break;
-            }
+    //        // 액체 상태 공격 (장판)
+    //        case 3:
+    //            if (curPatternCount > curPattern.patternCount)
+    //            {
+    //                Debug.Log("change Pattern");
+    //                StopCoroutine(liquidCor);
+    //                ChangePattern();
+    //            }
+    //            if (timer >= curCoolTime)
+    //            {
+    //                StartCoroutine(liquidCor);
+    //                curPatternCount += 1;
+    //                timer = 0;
+    //                break;
+    //            }
+    //            else
+    //            {
+    //                timer += Time.deltaTime;
+    //            }
+    //            Debug.Log("pattern4");
+    //            break;
 
-            yield return new WaitForFixedUpdate();
-        }
+    //        // 슬라임 소환
+    //        case 4:
+    //            if (curPatternCount > curPattern.patternCount)
+    //            {
+    //                Debug.Log("change Pattern");
+    //                ChangePattern();
+    //            }
+    //            if (timer >= curCoolTime)
+    //            {
+    //                SummonSlime();
+    //                curPatternCount += 1;
+    //                timer = 0;
+    //                break;
+    //            }
+    //            else
+    //            {
+    //                timer += Time.deltaTime;
+    //            }
+    //            Debug.Log("pattern5");
+    //            break;
+    //    }
+    //}
 
-        this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y,
-            this.gameObject.transform.position.z + 1000f);
-        liquid.SetActive(false);
-    }
+    //private void RangeAttack1()
+    //{
+    //    bulletMng.SetBullet(3, 0.2f, originObj.transform.position, false, playerPos);
+    //}
 
-    private void SummonSlime()
-    {
-        GameObject slime1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), 
-            new Vector3(this.gameObject.transform.position.x - 100f, 
-            this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-        slime1.GetComponent<cMonster_stage1_slime>().Init(cEnemyTable.SetMonsterInfo(1));
+    //private void RangeAttack2()
+    //{
+    //    bulletMng.SetBullet(5, 0.5f, originObj.transform.position, true, playerPos);
+    //}
 
-        GameObject slime2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "enemy_Slime"), 
-            new Vector3(this.gameObject.transform.position.x + 100f, 
-            this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-        slime2.GetComponent<cMonster_stage1_slime>().Init(cEnemyTable.SetMonsterInfo(1));
-    }
+    //public override void ReduceHp(long pVal)
+    //{
+    //    base.ReduceHp(pVal);
+
+    //    if (curHp.value <= 0)
+    //    {
+    //        SummonSlime();
+    //    }
+
+    //    if (curHp.value <= maxHp.value * 0.5f)
+    //    {
+    //        patternTable.Add(LIQUID);
+    //    }
+
+    //    if(curHp.value <= maxHp.value * 0.2f)
+    //    {
+    //        patternTable.Add(SUMMON);
+    //    }
+    //}
+
+    //public override void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5F)
+    //{
+    //    base.ReduceHp(pVal, pDir, pVelocity);
+
+    //    if (curHp.value <= 0)
+    //    {
+    //        SummonSlime();
+    //    }
+
+    //    if (curHp.value <= maxHp.value * 0.5f)
+    //    {
+    //        patternTable.Add(LIQUID);
+    //    }
+
+    //    if (curHp.value <= maxHp.value * 0.2f)
+    //    {
+    //        patternTable.Add(SUMMON);
+    //    }
+    //}
+
+
+    //IEnumerator SetLiquid()
+    //{
+    //    liquid.SetActive(true);
+
+    //    float height = this.gameObject.transform.position.y - 1500f;
+    //    this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y,
+    //        this.gameObject.transform.position.z - 1000f);
+    //    float liquidZPos = liquid.transform.position.z + 1000f;
+
+    //    while(true)
+    //    {
+    //        liquid.transform.position = new Vector3(liquid.transform.position.x, height, liquidZPos);
+    //        height += 1f;
+
+    //        if (liquid.transform.position.y >= this.gameObject.transform.position.y)
+    //        {
+    //            break;
+    //        }
+
+    //        yield return new WaitForFixedUpdate();
+    //    }
+
+    //    this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y,
+    //        this.gameObject.transform.position.z + 1000f);
+    //    liquid.SetActive(false);
+    //}
+
+    //private void SummonSlime()
+    //{
+    //    GameObject slime1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), 
+    //        new Vector3(this.gameObject.transform.position.x - 100f, 
+    //        this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
+
+    //    GameObject slime2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), 
+    //        new Vector3(this.gameObject.transform.position.x + 100f, 
+    //        this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
+    //}
 }

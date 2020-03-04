@@ -11,7 +11,7 @@ public class cRangeNotizer : MonoBehaviour
     public void Init()
     {
         radius = this.gameObject.GetComponent<CircleCollider2D>().radius;
-        script = GetComponentInParent<cEnemy_monster>();
+        script = this.transform.parent.GetChild(0).GetComponent<cEnemy_monster>();
         cor_CalculateRange = CalculateRange();
     }
     

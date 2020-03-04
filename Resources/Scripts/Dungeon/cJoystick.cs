@@ -44,6 +44,17 @@ public class cJoystick : MonoBehaviour
         stickDir = JOYSTICKDIR.IDLE;
     }
 
+    public void Init()
+    {
+        rad = this.GetComponent<RectTransform>().sizeDelta.y * 0.3f;
+        defaultPos = this.transform.position;
+        isDrag = false;
+        scr_player = _player.transform.GetChild(0).GetComponent<cPlayer>();
+        scr_player.SetDir(Vector2.right);
+        scr_player.SetCurMoveSpeed(0);
+        stickDir = JOYSTICKDIR.IDLE;
+    }
+
     private void Update()
     {
         //위

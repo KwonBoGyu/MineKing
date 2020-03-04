@@ -7,7 +7,6 @@ public class cItemDrop : cProjectile
     private float timer;
     private bool dropped;
     public GameObject obj_bag;
-    private Vector3 dir;
     private float dist;
     private float speed;
     public byte itemId;

@@ -8,7 +8,7 @@ public class cEnemy_AttckBox : MonoBehaviour
     
     public void Init()
     {
-        script = GetComponentInParent<cEnemy_monster>();
+        script = this.transform.parent.GetChild(0).GetComponent<cEnemy_monster>();
         script.isInAttackRange = false;
     }
     

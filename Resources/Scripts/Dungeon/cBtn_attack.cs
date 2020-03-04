@@ -20,7 +20,7 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private bool criticalOn;
     private float criticalReduceAmount;
-    private float criticalMin;
+    public float criticalMin;
 
     private Vector2 prevTouchPos;
     public ParticleSystem effect;
@@ -28,13 +28,34 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private float chargeTimer;
     public Sprite[] img_attackBtn;
 
-    void Start()
+    public void Init()
     {
+        //chargeTimer = 0;
+        //minChargePoint = 0;
+        //maxChargePoint = 2.0f;
+        //img_gageBar.fillAmount = minChargePoint;
+
+        //if(scr_player.tag.Equals("player_skin"))
+        //    criticalMin = 0.8f;
+        //else 
+        //    criticalMin = 0.9f - (0.05f * cUtil._user._playerInfo.skillLevel[2]);
+
+        //img_Critical.fillAmount = 1 - criticalMin;
+        //criticalReduceAmount = 0.5f;
+        //reduceFactor = 0.5f;
+        //img_gageBar.transform.parent.gameObject.SetActive(false);
+
+        //보스 디버깅용
         chargeTimer = 0;
         minChargePoint = 0;
         maxChargePoint = 2.0f;
         img_gageBar.fillAmount = minChargePoint;
-        criticalMin = 0.7f;
+
+        if (scr_player.tag.Equals("player_skin"))
+            criticalMin = 0.8f;
+        else
+            criticalMin = 0.9f - (0.05f);
+
         img_Critical.fillAmount = 1 - criticalMin;
         criticalReduceAmount = 0.5f;
         reduceFactor = 0.5f;
@@ -66,9 +87,20 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
                 img_gageBar.fillAmount = chargeTimer / maxChargePoint;
                 t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
-                p_gageEffect.transform.position = new Vector3(
-                    img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.5f * 0.7f  * img_gageBar.fillAmount,
-                    p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+
+                if (scr_player.tag.Equals("player_skin"))
+                {
+                    p_gageEffect.transform.position = new Vector3(
+img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.34f * 0.7f * img_gageBar.fillAmount,
+p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                }
+                else
+                {
+                    p_gageEffect.transform.position = new Vector3(
+img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.5f * 0.7f * img_gageBar.fillAmount,
+p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                }
+
             }
             else
             {
@@ -80,9 +112,18 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 }
                 img_gageBar.fillAmount = chargeTimer / maxChargePoint;
                 t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
-                p_gageEffect.transform.position = new Vector3(
-    img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.5f * 0.7f * img_gageBar.fillAmount,
-    p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                if (scr_player.tag.Equals("player_skin"))
+                {
+                    p_gageEffect.transform.position = new Vector3(
+img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.34f * 0.7f * img_gageBar.fillAmount,
+p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                }
+                else
+                {
+                    p_gageEffect.transform.position = new Vector3(
+img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.5f * 0.7f * img_gageBar.fillAmount,
+p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+                }
 
                 if (img_gageBar.fillAmount < 0.03f)
                 {
@@ -106,9 +147,18 @@ public class cBtn_attack : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             }
             img_gageBar.fillAmount = chargeTimer / maxChargePoint;
             t_gagePercent.text = string.Format("{0:F0}%", 100 * img_gageBar.fillAmount);
-            p_gageEffect.transform.position = new Vector3(
+            if (scr_player.tag.Equals("player_skin"))
+            {
+                p_gageEffect.transform.position = new Vector3(
+img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.34f * 0.7f * img_gageBar.fillAmount,
+p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+            }
+            else
+            {
+                p_gageEffect.transform.position = new Vector3(
 img_gageBar.transform.position.x + img_gageBar.GetComponent<RectTransform>().rect.width * 0.5f * 0.7f * img_gageBar.fillAmount,
 p_gageEffect.transform.position.y, p_gageEffect.transform.position.z);
+            }
 
             if (img_gageBar.fillAmount < 0.03f)
             {

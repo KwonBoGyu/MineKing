@@ -1,0 +1,291 @@
+fileFormatVersion: 2
+guid: 7e6e8b173e6103d4a84cfa41baff4acf
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1518659193413501000
+    second: player_skin_10_0
+  - first:
+      213: -5797315541426306618
+    second: player_skin_10_1
+  - first:
+      213: -2659695077852888692
+    second: player_skin_10_2
+  - first:
+      213: 6342637338967553367
+    second: player_skin_10_3
+  - first:
+      213: 2769755129688568016
+    second: player_skin_10_4
+  - first:
+      213: 3858967507176766507
+    second: player_skin_10_5
+  - first:
+      213: 2364014479240154495
+    second: player_skin_10_6
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: 47
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: player_skin_10_0
+      rect:
+        serializedVersion: 2
+        x: 174.91618
+        y: 1876.5514
+        width: 327.54187
+        height: 365.4486
+      alignment: 9
+      pivot: {x: 0.50706136, y: 0.50735116}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7025a955d8ff67f41b96797394aa60d9
+      internalID: 1518659193413501000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_skin_10_1
+      rect:
+        serializedVersion: 2
+        x: 567.12836
+        y: 1590.4496
+        width: 233.37427
+        height: 254.17883
+      alignment: 9
+      pivot: {x: 0.49650565, y: 0.4974266}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b4641cce64853a41aacdc4d55e7b73c
+      internalID: -5797315541426306618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_skin_10_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 734.31995
+        width: 274.1257
+        height: 737.0614
+      alignment: 9
+      pivot: {x: 0.48882684, y: 0.4998598}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c2b8f48b2f92b40839311dfed82a32
+      internalID: -2659695077852888692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_skin_10_3
+      rect:
+        serializedVersion: 2
+        x: 463.73175
+        y: 795.0289
+        width: 418.42456
+        height: 723.9218
+      alignment: 9
+      pivot: {x: 0.49654874, y: 0.5010633}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40a7f49c4cb061c458da33c365d3e10f
+      internalID: 6342637338967553367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_skin_10_4
+      rect:
+        serializedVersion: 2
+        x: 1127.3268
+        y: 799.93536
+        width: 244.67322
+        height: 672.45807
+      alignment: 9
+      pivot: {x: 0.513637, y: 0.4979032}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3caa64884d7ea5f40872402d0c208919
+      internalID: 2769755129688568016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_skin_10_5
+      rect:
+        serializedVersion: 2
+        x: 393.81
+        y: 0
+        width: 212.56982
+        height: 538.01447
+      alignment: 9
+      pivot: {x: 0.49249715, y: 0.4945214}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc643b9ae233c2a4d953ccf13df011e3
+      internalID: 3858967507176766507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_skin_10_6
+      rect:
+        serializedVersion: 2
+        x: 775.6647
+        y: 0
+        width: 212.56982
+        height: 538.01447
+      alignment: 9
+      pivot: {x: 0.49553284, y: 0.4945214}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52daedfbee948be4c89bd3a137557d4b
+      internalID: 2364014479240154495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 9acc11f0721502c46b13ca5c53d9a668
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637187604306133669
+  assetBundleName: 
+  assetBundleVariant: 

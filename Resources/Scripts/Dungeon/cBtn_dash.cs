@@ -27,6 +27,7 @@ public class cBtn_dash : MonoBehaviour, IPointerDownHandler
             {
                 scr_player.StartCoroutine("Dash");
                 scr_player.StartCoroutine("DashCoolDown");
+                scr_player.sm.playEffect(9);
             }
         }
     }

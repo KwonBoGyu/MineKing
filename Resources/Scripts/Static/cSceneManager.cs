@@ -8,46 +8,27 @@ public enum SCENE
 {
     TITLE,
     MAIN,
+    SKIN,
     DUNGEON_FIRST_1,
-    DUNGEON_FIRST_BOSS_1,
     DUNGEON_FIRST_2,
-    DUNGEON_FIRST_BOSS_2,
     DUNGEON_FIRST_3,
-    DUNGEON_FIRST_BOSS_3,
     DUNGEON_FIRST_4,
-    DUNGEON_FIRST_BOSS_4,
     DUNGEON_FIRST_5,
-    DUNGEON_FIRST_BOSS_5,
-    DUNGEON_SECOND_1,
-    DUNGEON_SECOND_BOSS_1,
-    DUNGEON_SECOND_2,
-    DUNGEON_SECOND_BOSS_2,
-    DUNGEON_SECOND_3,
-    DUNGEON_SECOND_BOSS_3,
-    DUNGEON_SECOND_4,
-    DUNGEON_SECOND_BOSS_4,
-    DUNGEON_SECOND_5,
-    DUNGEON_SECOND_BOSS_5,
-    DUNGEON_THIRD_1,
-    DUNGEON_THIRD_BOSS_1,
-    DUNGEON_THIRD_2,
-    DUNGEON_THIRD_BOSS_2,
-    DUNGEON_THIRD_3,
-    DUNGEON_THIRD_BOSS_3,
-    DUNGEON_THIRD_4,
-    DUNGEON_THIRD_BOSS_4,
-    DUNGEON_THIRD_5,
-    DUNGEON_THIRD_BOSS_5,
-    DUNGEON_FOURTH_1,
-    DUNGEON_FOURTH_BOSS_1,
-    DUNGEON_FOURTH_2,
-    DUNGEON_FOURTH_BOSS_2,
-    DUNGEON_FOURTH_3,
-    DUNGEON_FOURTH_BOSS_3,
-    DUNGEON_FOURTH_4,
-    DUNGEON_FOURTH_BOSS_4,
-    DUNGEON_FOURTH_5,
-    DUNGEON_FOURTH_BOSS_5,
+    DUNGEON_FIRST_6,
+    DUNGEON_FIRST_7,
+    DUNGEON_FIRST_8,
+    DUNGEON_FIRST_9,
+    DUNGEON_FIRST_10,
+    DUNGEON_FIRST_11,
+    DUNGEON_FIRST_12,
+    DUNGEON_FIRST_13,
+    DUNGEON_FIRST_14,
+    DUNGEON_FIRST_15,
+    DUNGEON_FIRST_BOSS_1,
+    DUNGEON_FIRST_BOSS_2,
+    DUNGEON_FIRST_BOSS_3,
+    DUNGEON_FIRST_BOSS_4,
+    DUNGEON_FIRST_BOSS_5,    
 }
 
 public class cSceneManager : MonoBehaviour
@@ -58,6 +39,7 @@ public class cSceneManager : MonoBehaviour
     //씬 관련 변수
     public SCENE _scene;    
     public GameObject _loadingImg;
+    public GameObject clickBarrier;
 
     private bool _isStarted;
 
@@ -66,7 +48,7 @@ public class cSceneManager : MonoBehaviour
         alpha = 0.0f;
         _scene = SCENE.TITLE;
         _isStarted = false;
-
+        clickBarrier.SetActive(false);
         Init();
     }
     
@@ -83,16 +65,27 @@ public class cSceneManager : MonoBehaviour
         {
             case "Title": sceneNum = 0; break;
             case "Main": sceneNum = 1; break;
-            case "Dungeon_normal_1": sceneNum = 2; break;
-            case "Dungeon_boss_1": sceneNum = 3; break;
+            case "Main_skin": sceneNum = 2; break;
+            case "Dungeon_normal_1": sceneNum = 3; break;
             case "Dungeon_normal_2": sceneNum = 4; break;
-            case "Dungeon_boss_2": sceneNum = 5; break;
-            case "Dungeon_normal_3": sceneNum = 6; break;
-            case "Dungeon_boss_3": sceneNum = 7; break;
-            case "Dungeon_normal_4": sceneNum = 8; break;
-            case "Dungeon_boss_4": sceneNum = 9; break;
-            case "Dungeon_normal_5": sceneNum = 10; break;
-            case "Dungeon_boss_5": sceneNum = 11; break;
+            case "Dungeon_normal_3": sceneNum = 5; break;
+            case "Dungeon_normal_4": sceneNum = 6; break;
+            case "Dungeon_normal_5": sceneNum = 7; break;
+            case "Dungeon_normal_6": sceneNum = 8; break;
+            case "Dungeon_normal_7": sceneNum = 9; break;
+            case "Dungeon_normal_8": sceneNum = 10; break;
+            case "Dungeon_normal_9": sceneNum = 11; break;
+            case "Dungeon_normal_10": sceneNum = 12; break;
+            case "Dungeon_normal_11": sceneNum = 13; break;
+            case "Dungeon_normal_12": sceneNum = 14; break;
+            case "Dungeon_normal_13": sceneNum = 15; break;
+            case "Dungeon_normal_14": sceneNum = 16; break;
+            case "Dungeon_normal_15": sceneNum = 17; break;
+            case "Dungeon_normal_boss_1": sceneNum = 18; break;
+            case "Dungeon_normal_boss_2": sceneNum = 19; break;
+            case "Dungeon_normal_boss_3": sceneNum = 20; break;
+            case "Dungeon_normal_boss_4": sceneNum = 21; break;
+            case "Dungeon_normal_boss_5": sceneNum = 22; break;
         }
 
         //이미 같은 씬일 때 리턴
@@ -103,52 +96,76 @@ public class cSceneManager : MonoBehaviour
         }
 
         //같은 씬이 아니라면 씬 전환 
+        clickBarrier.SetActive(true);
         _scene = (SCENE)sceneNum;
         StartCoroutine(LoadScene(pSceneName));
     }
+    
     public void GoToStageGate(bool pIsNextDoor)
     {
-        int sceneNum = 0;
+        int sceneNum = (int)_scene;
 
         //다음 스테이지로
         if(pIsNextDoor.Equals(true))
         {
-            if (_scene != SCENE.DUNGEON_FIRST_5)
-                sceneNum = (int)_scene + 2;
+            if (sceneNum < 18)
+            {
+                    sceneNum += 1;
+            }
             else
                 return;
         }
         //이전 스테이지로
         else
         {
-            if (_scene != SCENE.DUNGEON_FIRST_1)
-                sceneNum = (int)_scene - 2;
+            if (sceneNum > 3)
+            {
+                sceneNum -= 1;
+            }
             else
                 return;
         }
 
         _scene = (SCENE)sceneNum;
-        StartCoroutine(LoadScene("Dungeon_normal_" + ((int)((int)_scene * 0.5f)).ToString()));
+        StartCoroutine(LoadScene("Dungeon_normal_" + (sceneNum - 2).ToString()));
     }
     public void GoToBossGate(bool pIsNextDoor)
     {
-        int sceneNum = 0;
+        int sceneNum = (int)_scene;
 
         //보스 스테이지로
         if (pIsNextDoor.Equals(true))
         {
-            sceneNum = (int)_scene + 1;
+            if(sceneNum.Equals(5))
+                sceneNum = 18;
+            else if (sceneNum.Equals(8))
+                sceneNum = 19;
+            else if (sceneNum.Equals(11))
+                sceneNum = 20;
+            else if (sceneNum.Equals(14))
+                sceneNum = 21;
+            else if (sceneNum.Equals(17))
+                sceneNum = 22;
 
             _scene = (SCENE)sceneNum;
-            StartCoroutine(LoadScene("Dungeon_boss_" + ((int)((int)_scene * 0.5f)).ToString()));
+            StartCoroutine(LoadScene("Dungeon_boss_" + (sceneNum - 17).ToString()));
         }
         //필드 스테이지로
         else
         {
-            sceneNum = (int)_scene - 1;
+            if (sceneNum.Equals(18))
+                sceneNum = 5;
+            else if (sceneNum.Equals(19))
+                sceneNum = 8;
+            else if (sceneNum.Equals(20))
+                sceneNum = 11;
+            else if (sceneNum.Equals(21))
+                sceneNum = 14;
+            else if (sceneNum.Equals(22))
+                sceneNum = 17;
 
             _scene = (SCENE)sceneNum;
-            StartCoroutine(LoadScene("Dungeon_normal_" + ((int)((int)_scene * 0.5f)).ToString()));
+            StartCoroutine(LoadScene("Dungeon_normal_" + (sceneNum - 2).ToString()));
         }
     }
 
@@ -216,7 +233,7 @@ public class cSceneManager : MonoBehaviour
 
             img_Fade.color = new Color(img_Fade.color.r, img_Fade.color.g, img_Fade.color.b, alpha);
         }
-
+        clickBarrier.SetActive(false);
         yield return new WaitForSeconds(0.5f);
     }
     #endregion
