@@ -14,6 +14,7 @@ public class cBulletManager : MonoBehaviour
     public GameObject[] bullets;
     private int bulletAmount; // 발사할 숫자
     private float bulletTerm; // 발사체 발사 간격
+    Vector3 tempDir;
 
     private void Start()
     {
@@ -56,10 +57,9 @@ public class cBulletManager : MonoBehaviour
         {
             if (bullets[i].activeSelf.Equals(false))
             {
-                cBullet script = bullets[i].GetComponent<cBullet>();
-                script.transform.position = pOriginPos;
+                bullets[i].transform.position = pOriginPos;
                 bullets[i].SetActive(true);
-                Vector3 tempDir;
+
                 if (pIsGravity.Equals(true))
                 {
                     tempDir = new Vector3(pTarget.x, pTarget.y + 100, pTarget.z) - pOriginPos;
@@ -68,7 +68,10 @@ public class cBulletManager : MonoBehaviour
                 {
                     tempDir = new Vector3(pTarget.x, pTarget.y, pTarget.z) - pOriginPos;
                 }
-                script.Init(BULLET_TYPE.NORMAL, pPower, pIsGravity, tempDir, pDamage, pGravity);
+
+                tempDir = tempDir.normalized;
+
+                bullets[i].GetComponent<cBullet>().Init(BULLET_TYPE.NORMAL, pPower, pIsGravity, tempDir, pDamage, pGravity);
                 break;
             }
         }

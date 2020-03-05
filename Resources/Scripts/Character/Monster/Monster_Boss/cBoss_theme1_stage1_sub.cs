@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cBoss_theme1_stage1 : cEnemy_monster
+public class cBoss_theme1_stage1_sub : cEnemy_monster
 {
     //Pattern1 변수
     private byte curNormalAttackCount; //n번 일반 공격 시 총알 난사
@@ -13,7 +13,7 @@ public class cBoss_theme1_stage1 : cEnemy_monster
     private float normalAttackCoolTimer;
 
     //Pattern2 변수
-    public cBoss_theme1_stage1_sub[] subBoss;
+    public cBoss_theme1_stage1 prevBoss;
 
     private Vector3 NormalNearAttackBoxPos;//local
 
@@ -24,23 +24,20 @@ public class cBoss_theme1_stage1 : cEnemy_monster
 
     public void InitBoss()
     {
-        base.Init(cEnemyTable.SetMonsterInfo(50));
-        
+        base.Init(cEnemyTable.SetMonsterInfo(51));
+
         bulletDamage = 10;
         NormalNearAttackBoxPos = new Vector3(-54, 39, -1);
     }
 
     protected override void FixedUpdate()
     {
-        
-
-        //분열 전 보스 죽었으면..
         if (isDead.Equals(true))
             return;
 
         if (isInit.Equals(true))
         {
-            base.FixedUpdate();            
+            base.FixedUpdate();
         }
     }
 
@@ -118,7 +115,7 @@ public class cBoss_theme1_stage1 : cEnemy_monster
                     normalAttackCoolTimer = 0;
                 }
             }
-        }        
+        }
     }
 
     private void Pattern2()
@@ -164,16 +161,16 @@ public class cBoss_theme1_stage1 : cEnemy_monster
     public void SpoilBullet_ani()
     {
         randomY = Random.Range(-30, 30);
-        bulletManager.LaunchBullet(originObj.transform.position, true, 
+        bulletManager.LaunchBullet(originObj.transform.position, true,
             new Vector3(cUtil._player.originObj.transform.position.x,
-            cUtil._player.originObj.transform.position.y + randomY, 
-            cUtil._player.originObj.transform.position.z) , 
+            cUtil._player.originObj.transform.position.y + randomY,
+            cUtil._player.originObj.transform.position.z),
             bulletDamage, 20.0f);
     }
 
     private void NormalAttack(bool isNear)
     {
-        if(isNear.Equals(true))
+        if (isNear.Equals(true))
         {
             _animator.SetTrigger("NormalNearAttack");
         }
@@ -187,7 +184,7 @@ public class cBoss_theme1_stage1 : cEnemy_monster
 
     public void NormalNearAttack_ani()
     {
-        if(isInAttackRange.Equals(true))
+        if (isInAttackRange.Equals(true))
         {
             cUtil._player.ReduceHp(damage.value, dir);
         }
@@ -198,75 +195,43 @@ public class cBoss_theme1_stage1 : cEnemy_monster
         bulletManager.LaunchBullet(originObj.transform.position, true, cUtil._player.originObj.transform.position, bulletDamage, 15.0f);
     }
 
-    public void SplitInit()
+    public override void ReduceHp(long pVal)
     {
-        for (byte i = 0; i < subBoss.Length; i++)
-        {
-            originObj.transform.position = new Vector3(-10000, -10000, 0);
-            curHp.value = maxHp.value;
-            SetHp();
-            subBoss[i].InitBoss();
-            subBoss[i].originObj.SetActive(true);
-        }
-    }
-
-    public void SlimeKingSetHp()
-    {
-        curHp.value = subBoss[0].GetCurHP().value + subBoss[1].GetCurHP().value;
+        curHp.value -= pVal;
 
         if (curHp.value <= 0)
         {
             coolTimer = 0;
             curHp.value = 0;
             isDead = true;
-            img_curHp.transform.parent.gameObject.SetActive(false);
-        }
-
-        SetHp();        
-    }
-
-    public override void ReduceHp(long pVal)
-    {
-        if (isDead.Equals(true))
-            return;
-
-        curHp.value -= pVal;
-
-        if (curHp.value <= 0)
-        {
-            curHp.value = 0;
-            isDead = true;
-            _animator.SetBool("SplitInit", true);
             _animator.SetTrigger("Dead");
             originObj.GetComponent<BoxCollider2D>().enabled = false;
+            originObj.transform.position = new Vector3(-10000, -10000, 0);
         }
 
-        //if (isDead.Equals(false))
-        //    _animator.SetTrigger("GetHit");
-
-        SetHp();
+        prevBoss.SlimeKingSetHp();
     }
 
     // 공격자가 있는 경우 공격자가 바라보는 방향을 pDir로 받음
     public override void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5f)
     {
-        if (isDead.Equals(true))
-            return;
-
         curHp.value -= pVal;
 
         if (curHp.value <= 0)
         {
+            coolTimer = 0;
             curHp.value = 0;
             isDead = true;
-            _animator.SetBool("SplitInit", true);
             _animator.SetTrigger("Dead");
             originObj.GetComponent<BoxCollider2D>().enabled = false;
+            originObj.transform.position = new Vector3(-10000, -10000, 0);
         }
 
-        //if (isDead.Equals(false))
-        //    _animator.SetTrigger("GetHit");
+        prevBoss.SlimeKingSetHp();
+    }
 
-        SetHp();
+    protected override void SetHp()
+    {
+        
     }
 }

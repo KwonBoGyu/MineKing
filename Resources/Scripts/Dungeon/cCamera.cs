@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class cCamera : MonoBehaviour
 {
+    public float bossPlayerPosY;
+
     public Transform trans_nextGate;
     private bool stopPlayerCam;
 
@@ -43,7 +45,7 @@ public class cCamera : MonoBehaviour
 
         RectTransform mv = moveArea.GetComponent<RectTransform>();
         moveRange_width = mv.sizeDelta.x;
-        moveRange_height = mv.sizeDelta.y;
+        moveRange_height = mv.sizeDelta.y + bossPlayerPosY;
         
         camRt = this.GetComponent<RectTransform>();
 
@@ -62,47 +64,47 @@ public class cCamera : MonoBehaviour
             camRange.z = cam.ViewportToWorldPoint(new Vector2(1, 0)).y;
             camRange.w = cam.ViewportToWorldPoint(new Vector2(0, 0)).x;
 
-            //전체 맵 바운딩
-            if (camRange.x >= minMax_entireRange.x)
-            {
-                yFixedPos = minMax_entireRange.x - cam_height * 0.5f;
+            ////전체 맵 바운딩
+            //if (camRange.x >= minMax_entireRange.x)
+            //{
+            //    yFixedPos = minMax_entireRange.x - cam_height * 0.5f;
 
-                isYLocked = true;
-            }
-            if (camRange.y >= minMax_entireRange.y)
-            {
-                xFixedPos = minMax_entireRange.y - cam_width * 0.5f;
+            //    isYLocked = true;
+            //}
+            //if (camRange.y >= minMax_entireRange.y)
+            //{
+            //    xFixedPos = minMax_entireRange.y - cam_width * 0.5f;
 
-                isXLocked = true;
-                //Debug.Log("오른");
-            }
-            if (camRange.z <= minMax_entireRange.z)
-            {
-                yFixedPos = minMax_entireRange.z + cam_height * 0.5f;
+            //    isXLocked = true;
+            //    //Debug.Log("오른");
+            //}
+            //if (camRange.z <= minMax_entireRange.z)
+            //{
+            //    yFixedPos = minMax_entireRange.z + cam_height * 0.5f;
 
-                isYLocked = true;
-                //Debug.Log("아래");
-            }
-            if (camRange.w <= minMax_entireRange.w)
-            {
-                xFixedPos = minMax_entireRange.w + cam_width * 0.5f;
+            //    isYLocked = true;
+            //    //Debug.Log("아래");
+            //}
+            //if (camRange.w <= minMax_entireRange.w)
+            //{
+            //    xFixedPos = minMax_entireRange.w + cam_width * 0.5f;
 
-                isXLocked = true;
-                //Debug.Log("왼");
-            }
+            //    isXLocked = true;
+            //    //Debug.Log("왼");
+            //}
 
-            // 가로 방향 바운더리에서 캐릭터가 벗어난 경우
-            if ((_player.transform.position.x > minMax_entireRange.w + cam_width / 2 + moveRange_width * 0.5f) &&
-                    (_player.transform.position.x < minMax_entireRange.y - cam_width / 2 - moveRange_height * 0.5f))
-            {
-                isXLocked = false;
-            }
-            // 세로 방향 바운더리에서 캐릭터가 벗어난 경우
-            if ((_player.transform.position.y > minMax_entireRange.z + cam_height / 2) &&
-                    (_player.transform.position.y < minMax_entireRange.x - cam_height / 2))
-            {
-                isYLocked = false;
-            }
+            //// 가로 방향 바운더리에서 캐릭터가 벗어난 경우
+            //if ((_player.transform.position.x > minMax_entireRange.w + cam_width / 2 + moveRange_width * 0.5f) &&
+            //        (_player.transform.position.x < minMax_entireRange.y - cam_width / 2 - moveRange_height * 0.5f))
+            //{
+            //    isXLocked = false;
+            //}
+            //// 세로 방향 바운더리에서 캐릭터가 벗어난 경우
+            //if ((_player.transform.position.y > minMax_entireRange.z + cam_height / 2) &&
+            //        (_player.transform.position.y < minMax_entireRange.x - cam_height / 2))
+            //{
+            //    isYLocked = false;
+            //}
 
             // 플레이어 팔로우
             // X방향만 잠긴 경우
@@ -146,7 +148,8 @@ public class cCamera : MonoBehaviour
             else if (isXLocked.Equals(false) && isYLocked.Equals(false))
             {
                 // 카메라 고정 범위 밖으로 플레이어 이동
-                if (Vector2.Distance(_player.transform.position, moveArea.transform.position) > moveRange_width * 0.5f)
+                if (Vector2.Distance(new Vector3(_player.transform.position.x, _player.transform.position.y + bossPlayerPosY, _player.transform.position.z) , 
+                    moveArea.transform.position) > moveRange_width * 0.5f)
                 {
                     // 오른쪽
                     if (_player.transform.position.x >= this.transform.position.x)
@@ -158,13 +161,13 @@ public class cCamera : MonoBehaviour
                     {
                         xFixedPos = Mathf.Lerp(this.transform.position.x, _player.transform.position.x + moveRange_width * 0.5f, 0.2f);
                     }
-                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.2f);
+                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y + bossPlayerPosY, 0.2f);
                 }
                 // 이동 범위 안
                 else
                 {
                     xFixedPos = this.gameObject.transform.position.x;
-                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y, 0.2f);
+                    yFixedPos = Mathf.Lerp(this.transform.position.y, _player.transform.position.y + bossPlayerPosY, 0.2f);
                 }
             }
             this.gameObject.transform.position = new Vector3(xFixedPos, yFixedPos, -9.5f);

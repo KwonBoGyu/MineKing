@@ -64,9 +64,6 @@ public class cDungeonNormal_processor : MonoBehaviour
             else
                 InitDungeon(true);
         }
-
-        //보스전 디버깅용
-        //InitDungeon(true);
     }
 
     //형상변환 ui
@@ -176,6 +173,7 @@ public class cDungeonNormal_processor : MonoBehaviour
             chg_dash.scr_player = _p;
             chg_light.HeadLight = _p.lightPos;
             chg_camera._player = _player;
+            chg_camera.bossPlayerPosY = 200;
 
             //씬별로 보스 다르게 초기화해야함
             boss_slime.InitBoss();
@@ -223,7 +221,6 @@ public class cDungeonNormal_processor : MonoBehaviour
 
     public void UpdateValue()
     {
-        Debug.Log(cUtil._user._playerInfo.inventory);
         obj_values.transform.GetChild(0).GetChild(0).GetComponent<Text>().text =
                 cUtil._user._playerInfo.inventory.GetMoney().GetValueToString();
         obj_values.transform.GetChild(1).GetChild(0).GetComponent<Text>().text =

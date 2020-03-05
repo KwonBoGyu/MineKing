@@ -215,10 +215,22 @@ public static class cEnemyTable
             case 50:
                 pRocks = Random.Range((int)100, (int)150);
                 es.Init("Boss_slime",
-                    new cProperty("Damage", 10),
+                    new cProperty("Damage", 2),
                     160,
-                    new cProperty("MaxHp", 1000),
-                    new cProperty("CurHp", 1000),
+                    new cProperty("MaxHp", 50),
+                    new cProperty("CurHp", 50),
+                    0,
+                    new cProperty("Rocks", pRocks));
+                return es;
+
+            //보스_짜바리슬라임
+            case 51:
+                pRocks = Random.Range((int)10, (int)20);
+                es.Init("Boss_slime",
+                    new cProperty("Damage", 1),
+                    160,
+                    new cProperty("MaxHp", 25),
+                    new cProperty("CurHp", 25),
                     0,
                     new cProperty("Rocks", pRocks));
                 return es;

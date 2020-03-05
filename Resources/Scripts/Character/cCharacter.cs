@@ -364,12 +364,11 @@ public class cCharacter : cObject
         SetHp();
     }
 
-    protected void SetHp()
+    protected virtual void SetHp()
     {
         hpCor = HpInterpolation();
         StartCoroutine(hpCor);
-        if (originObj.tag.Equals("Player"))
-            t_hp.text = curHp.GetValueToString() + " / " + maxHp.GetValueToString();
+        t_hp.text = curHp.GetValueToString() + " / " + maxHp.GetValueToString();
     }
 
     protected void SetDp()

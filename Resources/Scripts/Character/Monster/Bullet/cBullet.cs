@@ -79,7 +79,7 @@ public class cBullet : cProjectile
         if (dir.Equals(Vector3.zero))
             return;
 
-        base.FixedUpdate();
+        Move();
 
         //distance = new Vector2(this.transform.position.x - originObj.transform.position.x,
         //    this.transform.position.y - originObj.transform.position.y).magnitude;
@@ -109,9 +109,7 @@ public class cBullet : cProjectile
         {
             case BULLET_TYPE.NORMAL:
                 if (collision.gameObject.tag.Equals("Player"))
-                {
-                    Debug.Log("COLLISION");
-                    
+                {                    
                     cUtil._player.ReduceHp((long)damage, dir);
                     this.gameObject.SetActive(false);
                 }
