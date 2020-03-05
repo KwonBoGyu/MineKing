@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class cEnemy_monster : cCharacter
 {
+    protected bool isInit;
+
+    //몬스터 행동 양식
+    protected delegate void Skill(float pTime);
+    protected byte curPatternId;
+
+    public cBulletManager bulletManager; // 투사체 관련 BulletManager에서 관리
+    protected long bulletDamage; // 투사체 데미지
+    protected float bulletCoolTime;
+    protected float bulletCoolTimer;
+    public float GetBulletDamage() { return bulletDamage; }
+
     //초기 위치
     protected Vector3 InitPos;
     //몬스터의 생사 상태
@@ -36,35 +48,6 @@ public class cEnemy_monster : cCharacter
 
     protected cDungeonNormal_processor dp;
         
-    public virtual void Init(string pNickname, cProperty pDamage, float pMaxMoveSpeed, cProperty pMaxHp, cProperty pCurHp,
-        int pId, cProperty pRocks)
-    {
-        base.Init(pNickname, pDamage, pMaxMoveSpeed, pMaxHp, pCurHp);
-        originObj = this.gameObject;
-        rt = originObj.GetComponent<BoxCollider2D>();
-        defaultGravity = 300.0f;
-        changingGravity = defaultGravity;
-        SetIsGrounded(false);
-        jumpHeight = 200.0f;
-        id = pId;
-        rocks = new cProperty(pRocks);
-        isDead = false;
-        respawnTime = 5.0f;
-        InitPos = this.transform.localPosition;
-        isInNoticeRange = false;
-        playerPos = Vector3.zero;
-        attackBoxPos[0] = new Vector3(1.5f, 0f, 0f);
-        attackBoxPos[2] = new Vector3(-1.5f, 0f, 0f);
-        respawnCor = RespawnTimer();
-        curMoveSpeed = maxMoveSpeed;
-        attackCoolTime = 3.0f;
-        attackBoxMng = attackBox.GetComponent<cEnemy_AttckBox>();
-        isInAttackRange = false;
-
-        attackBoxMng.Init();
-        notizer.Init();
-    }
-
     public virtual void Init(enemyInitStruct pEs)
     {
         base.Init(pEs.nickName, pEs.damage, pEs.maxMoveSpeed, pEs.maxHp, pEs.curHp);
@@ -87,16 +70,27 @@ public class cEnemy_monster : cCharacter
         attackBoxMng = attackBox.GetComponent<cEnemy_AttckBox>();
         isInAttackRange = false;
         ChangeDir(Vector3.right);
+        SetIsGrounded(false);
+        _animator = this.GetComponent<Animator>();
+
+        curPatternId = 0;
+
+        notizer.Init();
         attackBoxMng.Init();
+
+        isInit = true;
     }
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
-        if(isDead.Equals(false))
+        if(isInit.Equals(true))
         {
-            SetGravity();
-            Move();
+            base.FixedUpdate();
+            if (isDead.Equals(false))
+            {
+                SetGravity();
+                Move();
+            }
         }
     }
     
@@ -109,75 +103,62 @@ public class cEnemy_monster : cCharacter
         if(_animator != null)
              _animator.SetFloat("MoveSpeed", curMoveSpeed);
 
-        // 인식 범위 내 진입
-        if (isInNoticeRange.Equals(true))
-        {
-            //Hp바 on
-            img_curHp.transform.parent.gameObject.SetActive(true);
+        //// 인식 범위 내 진입
+        //if (isInNoticeRange.Equals(true))
+        //{
+        //    //Hp바 on
+        //    img_curHp.transform.parent.gameObject.SetActive(true);
 
-            // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
-            if (isInAttackRange.Equals(false))
-            {
-                playerPos = cUtil._player.gameObject.transform.position;
-                this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
+        //    // 인식 범위 안에 들어왔지만 공격 범위 내에는 없는 경우 ( cRangeNotizer에서 감지 )
+        //    if (isInAttackRange.Equals(false))
+        //    {
+        //        playerPos = cUtil._player.gameObject.transform.position;
+        //        this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
 
-                if (playerPos.x >= this.transform.position.x)
-                    ChangeDir(Vector3.right);
+        //        if (playerPos.x >= this.transform.position.x)
+        //            ChangeDir(Vector3.right);
 
-                else if (playerPos.x < this.transform.position.x)
-                    ChangeDir(Vector3.left);
-            }
-            // 공격 범위 안에 들어온 경우
-            // 공격 자체는 cEnemy_AttackBox에서 처리
-            else if (isInAttackRange.Equals(true))
-            {
-                playerPos = cUtil._player.gameObject.transform.position;
-                if (playerPos.x >= this.transform.position.x)
-                    ChangeDir(Vector3.right);
-                else if (playerPos.x < this.transform.position.x)
-                    ChangeDir(Vector3.left);
+        //        else if (playerPos.x < this.transform.position.x)
+        //            ChangeDir(Vector3.left);
+        //    }
+        //    // 공격 범위 안에 들어온 경우
+        //    // 공격 자체는 cEnemy_AttackBox에서 처리
+        //    else if (isInAttackRange.Equals(true))
+        //    {
+        //        playerPos = cUtil._player.gameObject.transform.position;
+        //        if (playerPos.x >= this.transform.position.x)
+        //            ChangeDir(Vector3.right);
+        //        else if (playerPos.x < this.transform.position.x)
+        //            ChangeDir(Vector3.left);
 
-                //공격 쿨타임 돌린다.
-                coolTimer += Time.deltaTime;
-                if (coolTimer >= attackCoolTime)
-                {
-                    Attack1();
-                }
-            }
-        }
-        // idle 상태
-        else if (isInNoticeRange.Equals(false))
-        {
-            img_curHp.transform.parent.gameObject.SetActive(false);
-            coolTimer = 0;
-            this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
-            //막히면 방향 바꿔준다.
-            if (isRightBlocked == true)
-            {
-                isRightBlocked = false;
-                ChangeDir(Vector3.left);
-            }
-            else if (isLeftBlocked == true)
-            {
-                isLeftBlocked = false;
-                ChangeDir(Vector3.right);
-            }
-        }
+        //        //공격 쿨타임 돌린다.
+        //        coolTimer += Time.deltaTime;
+        //        if (coolTimer >= attackCoolTime)
+        //        {
+        //            Attack1();
+        //        }
+        //    }
+        //}
+        //// idle 상태
+        //else if (isInNoticeRange.Equals(false))
+        //{
+        //    img_curHp.transform.parent.gameObject.SetActive(false);
+        //    coolTimer = 0;
+        //    this.transform.Translate(dir * curMoveSpeed * Time.deltaTime);
+        //    //막히면 방향 바꿔준다.
+        //    if (isRightBlocked == true)
+        //    {
+        //        isRightBlocked = false;
+        //        ChangeDir(Vector3.left);
+        //    }
+        //    else if (isLeftBlocked == true)
+        //    {
+        //        isLeftBlocked = false;
+        //        ChangeDir(Vector3.right);
+        //    }
+        //}
     }
-
-    public virtual void Attack1()
-    {
-        attackScript.SetAttackParameter(damage.value, GetDirection());
-        coolTimer = 0;
-        _animator.SetTrigger("Attack");
-    }
-
-    public virtual void SetBullet1()
-    {
-
-    }
-
-
+    
     public virtual void ChangeDir(Vector3 pDir)
     {
         dir = pDir;

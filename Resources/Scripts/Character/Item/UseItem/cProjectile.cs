@@ -42,7 +42,7 @@ public class cProjectile : cObject
 
         if (isGravityOn)
         {   
-            flyingTime += Time.deltaTime * 3;
+            flyingTime += Time.deltaTime;
             posY -= gravityAmount * flyingTime;
         }
 

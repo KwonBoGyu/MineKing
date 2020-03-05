@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class cBullet : cProjectile
 {
+    private bool isInit;
+
     private CircleCollider2D rangeCollider;
     private float attackRange;
 
@@ -18,23 +20,23 @@ public class cBullet : cProjectile
     private float explodeTime;
 
     public GameObject parentMonster;
-        
-    public void Init(BULLET_TYPE pType, float pPower, bool pUseGravity, Vector3 pDir)
+    
+    public void Init(BULLET_TYPE pType, float pPower, bool pUseGravity, Vector3 pDir, long pDamage, float pGravity = 7.0f)
     {
         this.transform.position = originObj.transform.position;
-        this.transform.localScale = new Vector3(1, 1, 1);
+        //this.transform.localScale = new Vector3(1, 1, 1);
 
-        type = pType;   
-        rangeCollider = parentMonster.GetComponent<cEnemy_monster>().notizer.GetComponent<CircleCollider2D>();
-        attackRange = rangeCollider.radius;
-        damage = parentMonster.GetComponent<cEnemy_Ranged>().GetBulletDamage(); 
+        type = pType;
+        //rangeCollider = parentMonster.GetComponent<cEnemy_monster>().notizer.GetComponent<CircleCollider2D>();
+        //attackRange = rangeCollider.radius;
+        damage = pDamage;
 
         splitCount = 0;
         explodeOn = false;
         explodeTime = 3.0f;
         isCollide = false;
         upBlockedContinue = false;
-        gravityAmount = 7.0f;
+        gravityAmount = pGravity;
 
         flyingTime = 0;
         defaultPower = pPower;
@@ -43,8 +45,7 @@ public class cBullet : cProjectile
         isGravityOn = pUseGravity;
         SetDir(pDir);
 
-        Debug.Log(dir);
-    
+        isInit = true;
     }
 
     public void SetType(BULLET_TYPE pType)
@@ -72,23 +73,29 @@ public class cBullet : cProjectile
 
     protected override void FixedUpdate()
     {
+        if (isInit.Equals(false))
+            return;
+
         if (dir.Equals(Vector3.zero))
             return;
-        
-        base.FixedUpdate();
-                
-        distance = new Vector2(this.transform.position.x - originObj.transform.position.x,
-            this.transform.position.y - originObj.transform.position.y).magnitude;
 
-        // 총알 최대 범위 이상으로 벗어나면 소멸
-        if (distance >= attackRange)
-        {
-            this.gameObject.SetActive(false);
-        }
+        base.FixedUpdate();
+
+        //distance = new Vector2(this.transform.position.x - originObj.transform.position.x,
+        //    this.transform.position.y - originObj.transform.position.y).magnitude;
+
+        //// 총알 최대 범위 이상으로 벗어나면 소멸
+        //if (distance >= attackRange)
+        //{
+        //    this.gameObject.SetActive(false);
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (isInit.Equals(false))
+            return;
+
         if (collision.gameObject.tag.Equals("Tile_canHit"))
         {
             isCollide = true;

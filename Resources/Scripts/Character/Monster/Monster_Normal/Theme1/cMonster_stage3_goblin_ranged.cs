@@ -116,7 +116,7 @@ public class cMonster_stage3_goblin_ranged : cEnemy_Ranged
                     if (timer >= bulletCoolTime)
                     {
                         // 기본값 : 발사체 1, 발사체 타입 일반형, 중력 적용 x, 타겟 : 유저
-                        Attack1();
+                        //Attack1();
                     }
                 }
                 // 공격 범위 안에 들어온 경우

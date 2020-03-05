@@ -14,10 +14,10 @@ public class cAttackScript : MonoBehaviour
         dir = pDir;
     }
 
-    public void SetBullet()
-    {
-        em.SetBullet1();
-    }
+    //public void SetBullet()
+    //{
+    //    em.SetBullet1();
+    //}
 
     public void Attack()
     {

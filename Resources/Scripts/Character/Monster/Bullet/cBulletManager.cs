@@ -24,56 +24,33 @@ public class cBulletManager : MonoBehaviour
         }
     }
 
-    //public void SetBullet(int pBulletAmount, float pBulletTerm, Vector3 pOriginPos ,bool pIsGravity, Vector3 pTarget)
+    //public void SetBullet(int pBulletAmount, float pBulletTerm, Vector3 pOriginPos, bool pIsGravity, Vector3 pTarget)
+    //{
+    //    StartCoroutine(SetBulletCor(pBulletAmount, pBulletAmount, pOriginPos, pIsGravity, pTarget));
+    //}
+
+    //IEnumerator SetBulletCor(int pBulletAmount, float pBulletTerm, Vector3 pOriginPos, bool pIsGravity, Vector3 pTarget)
     //{
     //    bulletAmount = pBulletAmount;
     //    bulletTerm = pBulletTerm;
 
     //    int bulletCount = 0;
-    //    float timer = bulletTerm;
 
-    //    while (bulletCount < bulletAmount)
+    //    while (true)
     //    {
-    //        if (timer >= bulletTerm)
+    //        if (bulletCount >= bulletAmount)
     //        {
-    //            LaunchBullet(pOriginPos, pIsGravity, pTarget);
-    //            bulletCount++;
-    //            timer = 0;
+    //            break;
     //        }
-    //        else
-    //        {
-    //            timer += Time.deltaTime;
-    //        }
+    //        Debug.Log("BulletTerm : " + bulletTerm);
+    //        Debug.Log("BulletCount : " + bulletCount);
+    //        LaunchBullet(pOriginPos, pIsGravity, pTarget);
+    //        yield return new WaitForSeconds(bulletTerm);
+    //        bulletCount++;
     //    }
     //}
 
-    public void SetBullet(int pBulletAmount, float pBulletTerm, Vector3 pOriginPos, bool pIsGravity, Vector3 pTarget)
-    {
-        StartCoroutine(SetBulletCor(pBulletAmount, pBulletAmount, pOriginPos, pIsGravity, pTarget));
-    }
-
-    IEnumerator SetBulletCor(int pBulletAmount, float pBulletTerm, Vector3 pOriginPos, bool pIsGravity, Vector3 pTarget)
-    {
-        bulletAmount = pBulletAmount;
-        bulletTerm = pBulletTerm;
-
-        int bulletCount = 0;
-
-        while (true)
-        {
-            if (bulletCount >= bulletAmount)
-            {
-                break;
-            }
-            Debug.Log("BulletTerm : " + bulletTerm);
-            Debug.Log("BulletCount : " + bulletCount);
-            LaunchBullet(pOriginPos, pIsGravity, pTarget);
-            yield return new WaitForSeconds(bulletTerm);
-            bulletCount++;
-        }
-    }
-
-    public void LaunchBullet(Vector3 pOriginPos, bool pIsGravity, Vector3 pTarget)
+    public void LaunchBullet(Vector3 pOriginPos, bool pIsGravity, Vector3 pTarget, long pDamage, float pPower, float pGravity = 7.0f)
     {
         for (int i = 0; i < bullets.Length; i++)
         {
@@ -91,7 +68,7 @@ public class cBulletManager : MonoBehaviour
                 {
                     tempDir = new Vector3(pTarget.x, pTarget.y, pTarget.z) - pOriginPos;
                 }
-                script.Init(BULLET_TYPE.NORMAL, 10.0f, pIsGravity, tempDir);
+                script.Init(BULLET_TYPE.NORMAL, pPower, pIsGravity, tempDir, pDamage, pGravity);
                 break;
             }
         }

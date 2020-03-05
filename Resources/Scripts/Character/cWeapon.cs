@@ -20,10 +20,10 @@ public class cWeapon : MonoBehaviour
             Debug.Log("Attack!");
             if(scr_player.GetStatus() == CHARACTERSTATUS.DASH_ATTACK)
             {
-                collision.GetComponent<cEnemy_monster>().ReduceHp(damage.value, GetComponentInParent<cPlayer>().GetDirection(), 10.0f);
+                collision.transform.GetChild(0).GetComponent<cEnemy_monster>().ReduceHp(damage.value, cUtil._player.GetDirection(), 10.0f);
             }
             else
-                collision.GetComponent<cEnemy_monster>().ReduceHp(damage.value, GetComponentInParent<cPlayer>().GetDirection());
+                collision.transform.GetChild(0).GetComponent<cEnemy_monster>().ReduceHp(damage.value, cUtil._player.GetDirection());
         }
 
         this.gameObject.SetActive(false);

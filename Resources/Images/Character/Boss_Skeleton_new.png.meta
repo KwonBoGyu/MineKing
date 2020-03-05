@@ -1,0 +1,376 @@
+fileFormatVersion: 2
+guid: 84f02451163913042a4a00c4208fa097
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1506126028112394494
+    second: Boss_Skeleton_new_hood1
+  - first:
+      213: 7737464837226685186
+    second: Boss_Skeleton_new_head
+  - first:
+      213: 4234008866338050099
+    second: Boss_Skeleton_new_redeye
+  - first:
+      213: 7301642940094512920
+    second: Boss_Skeleton_new_whiteeye
+  - first:
+      213: 4821680288704535127
+    second: Boss_Skeleton_new_hood2
+  - first:
+      213: -6601154520115597212
+    second: Boss_Skeleton_new_chin
+  - first:
+      213: -5717234898237034090
+    second: Boss_Skeleton_new_rightarm
+  - first:
+      213: 2037287526111721850
+    second: Boss_Skeleton_new_leftarm
+  - first:
+      213: 7062729706569812601
+    second: Boss_Skeleton_new_body
+  - first:
+      213: -18186837630548585
+    second: Boss_Skeleton_new_righthand
+  - first:
+      213: -4341838091162260570
+    second: Boss_Skeleton_new_lefthand
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_hood1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4368.758
+        width: 1295.6044
+        height: 1494.2422
+      alignment: 9
+      pivot: {x: 0.49787152, y: 0.5014195}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d286230d6875af46a4061dfb75ed785
+      internalID: 1506126028112394494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_head
+      rect:
+        serializedVersion: 2
+        x: 1963.5038
+        y: 4419.0005
+        width: 1036.4962
+        height: 1123.6265
+      alignment: 9
+      pivot: {x: 0.44733757, y: 0.6447872}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4e2ef3521de5c246a656df53f5d3764
+      internalID: 7737464837226685186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_redeye
+      rect:
+        serializedVersion: 2
+        x: 1283.0001
+        y: 3840
+        width: 250.45789
+        height: 241.88623
+      alignment: 9
+      pivot: {x: 0.4894912, y: 0.49816808}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c71c7e05e54cc94d9680e6062328f0d
+      internalID: 4234008866338050099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_whiteeye
+      rect:
+        serializedVersion: 2
+        x: 1786
+        y: 3933
+        width: 92.99988
+        height: 93
+      alignment: 9
+      pivot: {x: 0.50135916, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ad47504fca6e854c8b1a3ece2553967
+      internalID: 7301642940094512920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_hood2
+      rect:
+        serializedVersion: 2
+        x: 202.47614
+        y: 2414.3716
+        width: 1011.9775
+        height: 1283.9431
+      alignment: 9
+      pivot: {x: 0.4986007, y: 0.49778542}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ed292f10066d634a8d7a634532873c1
+      internalID: 4821680288704535127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_chin
+      rect:
+        serializedVersion: 2
+        x: 2149.0002
+        y: 3280
+        width: 754.27466
+        height: 654.1284
+      alignment: 9
+      pivot: {x: 0.49806038, y: 0.49760872}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c537a4579c6893c44b6088420e3e8eb2
+      internalID: -6601154520115597212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_rightarm
+      rect:
+        serializedVersion: 2
+        x: 447.17255
+        y: 785.0261
+        width: 396.4771
+        height: 1029.1542
+      alignment: 9
+      pivot: {x: 0.4940306, y: 0.4960129}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e2ebe633e89c88428af44da02996cbc
+      internalID: -5717234898237034090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_leftarm
+      rect:
+        serializedVersion: 2
+        x: 1317.0035
+        y: 785.0261
+        width: 427.96777
+        height: 920.36804
+      alignment: 9
+      pivot: {x: 0.49793977, y: 0.49542546}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f439fbb3a827ebc49ac0009a09750fe8
+      internalID: 2037287526111721850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_body
+      rect:
+        serializedVersion: 2
+        x: 2103.8442
+        y: 786.43787
+        width: 774.3657
+        height: 1930.934
+      alignment: 9
+      pivot: {x: 0.4976042, y: 0.49927244}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e95204d084ca74498807f3084a5a9e5
+      internalID: 7062729706569812601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_righthand
+      rect:
+        serializedVersion: 2
+        x: 1222.0382
+        y: 0.72558594
+        width: 299.1223
+        height: 416.5166
+      alignment: 9
+      pivot: {x: 0.49998447, y: 0.49163568}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b355a13f5e5e7d4fb6853df364b3c89
+      internalID: -18186837630548585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_Skeleton_new_lefthand
+      rect:
+        serializedVersion: 2
+        x: 1673.0763
+        y: 0
+        width: 250.45813
+        height: 425.83057
+      alignment: 9
+      pivot: {x: 0.5491879, y: 0.4919797}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb31c26190bc5bc469b13567d08fc5e4
+      internalID: -4341838091162260570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 0f4d101cecf579f4a80baa9c01dc5a40
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637184791981064354
+  assetBundleName: 
+  assetBundleVariant: 

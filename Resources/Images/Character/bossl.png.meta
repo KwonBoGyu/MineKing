@@ -1,0 +1,400 @@
+fileFormatVersion: 2
+guid: 7f2a1cae3e048954ba425449497c373e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4768925343527186659
+    second: bossl_0
+  - first:
+      213: -6484017776871148606
+    second: bossl_head
+  - first:
+      213: 3304004132675771040
+    second: bossl_2
+  - first:
+      213: -7521809397511662722
+    second: bossl_3
+  - first:
+      213: 6210825705106740453
+    second: bossl_4
+  - first:
+      213: -5997124447240570910
+    second: bossl_5
+  - first:
+      213: 8879323614537361189
+    second: bossl_6
+  - first:
+      213: 5138479124418655449
+    second: bossl_7
+  - first:
+      213: 8479451315774437648
+    second: bossl_8
+  - first:
+      213: 6875672614971827993
+    second: bossl_17
+  - first:
+      213: -3818483255203181844
+    second: bossl_19
+  - first:
+      213: -2307981032443416457
+    second: bossl_20
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bossl_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4373
+        width: 1290
+        height: 1490
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 682cdddc44ecfc642b8031f22510b736
+      internalID: -4768925343527186659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_head
+      rect:
+        serializedVersion: 2
+        x: 1963.5038
+        y: 4419.0005
+        width: 1036.4962
+        height: 1123.6265
+      alignment: 9
+      pivot: {x: 0.44733757, y: 0.6447872}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7148b40a48ce9d046946fdc8f3afd43e
+      internalID: -6484017776871148606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_2
+      rect:
+        serializedVersion: 2
+        x: 1288
+        y: 3845
+        width: 235
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a8dfb47c2889674980b7bfbab001273
+      internalID: 3304004132675771040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_3
+      rect:
+        serializedVersion: 2
+        x: 1791
+        y: 3938
+        width: 83
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ca10cecaab49d24d972884e1451489d
+      internalID: -7521809397511662722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_4
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 2421
+        width: 994
+        height: 1265
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8ff42cbe222abe49942d5744cb159c5
+      internalID: 6210825705106740453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_5
+      rect:
+        serializedVersion: 2
+        x: 2154
+        y: 3285
+        width: 741
+        height: 641
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76bb5278e4c288f4e9bcc20384a16837
+      internalID: -5997124447240570910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_6
+      rect:
+        serializedVersion: 2
+        x: 454
+        y: 789
+        width: 378
+        height: 1013
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f07b6a6be540a3499f801c4c2dd5178
+      internalID: 8879323614537361189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_7
+      rect:
+        serializedVersion: 2
+        x: 1324
+        y: 789
+        width: 412
+        height: 904
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 083a983f5e92d72488274e5d44ed672d
+      internalID: 5138479124418655449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_8
+      rect:
+        serializedVersion: 2
+        x: 2111
+        y: 794
+        width: 756
+        height: 1913
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 657dd89f42e10244483a2ae57226cabc
+      internalID: 8479451315774437648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_17
+      rect:
+        serializedVersion: 2
+        x: 1398
+        y: 10
+        width: 52
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fef86d6ed1cef34e9f55cdf9780723a
+      internalID: 6875672614971827993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_19
+      rect:
+        serializedVersion: 2
+        x: 1748
+        y: 53
+        width: 42
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ba08b866ef32e04fb40a3a83ce4558f
+      internalID: -3818483255203181844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bossl_20
+      rect:
+        serializedVersion: 2
+        x: 1833
+        y: 0
+        width: 49
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a85c4dc1d11664e43a8e3fcd6b7b2492
+      internalID: -2307981032443416457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 028f9a842b62c9045962a05401191837
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 637184773604412389
+  assetBundleName: 
+  assetBundleVariant: 

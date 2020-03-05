@@ -131,6 +131,8 @@ public class cDungeonNormal_processor : MonoBehaviour
                 b_exitBag[i].onClick.AddListener(() => ExitBag());
 
             b_goHome.onClick.AddListener(() => GoHome());
+            
+            SetEnemySpriteOrder();
         }
         //보스전
         else
@@ -228,5 +230,22 @@ public class cDungeonNormal_processor : MonoBehaviour
         cUtil._user._playerInfo.inventory.GetRock().GetValueToString();
         obj_values.transform.GetChild(2).GetChild(0).GetComponent<Text>().text =
         cUtil._user._playerInfo.inventory.GetDia().GetValueToString();
+    }
+
+    private void SetEnemySpriteOrder()
+    {
+        int enemyNum = _enemyPool.transform.childCount;
+        int eachSpriteNum = 10;
+
+        for (int i = 0; i < enemyNum; i++)
+        {
+            GameObject enemySprite = _enemyPool.transform.GetChild(i).transform.GetChild(0).transform.GetChild(2).gameObject;
+
+            for (int j = 0; j < enemySprite.transform.childCount ; j++)
+            {
+                Debug.Log(enemySprite.transform.GetChild(j).GetComponent<Anima2D.SpriteMeshInstance>().sortingOrder);
+                enemySprite.transform.GetChild(j).GetComponent<Anima2D.SpriteMeshInstance>().sortingOrder += i * eachSpriteNum;
+            }
+        }
     }
 }

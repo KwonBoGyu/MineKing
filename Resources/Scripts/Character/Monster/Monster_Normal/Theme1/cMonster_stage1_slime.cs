@@ -70,7 +70,7 @@ public class cMonster_stage1_slime : cEnemy_Ranged
                 timer += Time.deltaTime;
                 if (timer >= bulletCoolTime)
                 {
-                    Attack1();
+                    //Attack1();
                 }
             }
         }
@@ -95,18 +95,13 @@ public class cMonster_stage1_slime : cEnemy_Ranged
             }
         }
     }
-
-    public override void Attack1()
-    {
-        base.Attack1();
-    }
-
-    public override void SetBullet1()
-    {
-        // 기본값 : 발사체 1, 발사체 타입 일반형, 중력 적용 x, 타겟 : 유저
-        bulletManager.LaunchBullet(this.gameObject.transform.position, true, cUtil._player.originObj.transform.position);
-        timer = 0;
-    }
+    
+    //public override void SetBullet1()
+    //{
+    //    // 기본값 : 발사체 1, 발사체 타입 일반형, 중력 적용 x, 타겟 : 유저
+    //    bulletManager.LaunchBullet(this.gameObject.transform.position, true, cUtil._player.originObj.transform.position);
+    //    timer = 0;
+    //}
 
     public void Split()
     {

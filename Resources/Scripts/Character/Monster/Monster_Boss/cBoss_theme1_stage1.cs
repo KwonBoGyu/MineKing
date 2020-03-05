@@ -2,253 +2,237 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cBoss_theme1_stage1 : cEnemy_Boss
+public class cBoss_theme1_stage1 : cEnemy_monster
 {
-    //cBulletManager bulletMng;
+    //Pattern1 변수
+    private byte curNormalAttackCount; //n번 일반 공격 시 총알 난사
+    private byte curBulletSpoilCount; //n번 총알 난사 시 궁극기
+    public Transform smashGroundPos;
 
-    //Pattern MELEE;
-    //Pattern RANGED1;
-    //Pattern RANGED2;
-    //Pattern LIQUID;
-    //Pattern SUMMON;
+    private const float normalAttackCoolTime = 3.0f;
+    private float normalAttackCoolTimer;
 
-    //public GameObject liquid;
-    //private IEnumerator liquidCor;
+    private Vector3 NormalNearAttackBoxPos;//local
 
     public void InitBoss()
     {
-        skills = this.GetComponent<cBossSkill>();
-        skills.Init(this);
-        Init(cEnemyTable.SetMonsterInfo(50));
+        base.Init(cEnemyTable.SetMonsterInfo(50));
+        
+        bulletDamage = 10;
+        NormalNearAttackBoxPos = new Vector3(-54, 39, -1);
     }
 
-    public override void Init(enemyInitStruct pEs)
+    protected override void FixedUpdate()
     {
-        base.Init(pEs);
+        if (isInit.Equals(true))
+        {
+            base.FixedUpdate();            
+        }
+    }
+
+    protected override void Move()
+    {
+        if (_animator != null)
+            _animator.SetFloat("MoveSpeed", curMoveSpeed);
+
+        //막히면 방향 바꿔준다.
+        if (isRightBlocked == true)
+        {
+            isRightBlocked = false;
+            ChangeDir(Vector3.left);
+        }
+        else if (isLeftBlocked == true)
+        {
+            isLeftBlocked = false;
+            ChangeDir(Vector3.right);
+        }
+
+        //패턴
+        if (curPatternId.Equals(0))
+            Pattern1();
+        else if (curPatternId.Equals(1))
+            Pattern2();
+    }
+
+    private void Pattern1()
+    {
+        // 인식 범위 내 진입
+        //isInAttackRange : 근접공격범위
+        if (isInNoticeRange.Equals(true))
+        {
+            playerPos = cUtil._player.gameObject.transform.position;
+
+            if (playerPos.x >= this.transform.position.x)
+                ChangeDir(Vector3.right);
+
+            else if (playerPos.x < this.transform.position.x)
+                ChangeDir(Vector3.left);
+
+            //총알 난사 공격을 2회 했을 시 스매쉬
+            if (curBulletSpoilCount.Equals(2))
+            {
+                SmashGround();
+                return;
+            }
+
+            //일반 공격을 5회 했을 시 총알 난사
+            if (curNormalAttackCount.Equals(3))
+            {
+                SpoilBullet();
+                return;
+            }
+
+            //일반 원거리 공격
+            if (isInAttackRange.Equals(false))
+            {
+                //공격 쿨타임 돌린다.
+                normalAttackCoolTimer += Time.deltaTime;
+                if (normalAttackCoolTimer >= normalAttackCoolTime)
+                {
+                    NormalAttack(false);
+                    normalAttackCoolTimer = 0;
+                }
+            }
+            //일반 근접 공격
+            else if (isInAttackRange.Equals(true))
+            {
+                //공격 쿨타임 돌린다.
+                normalAttackCoolTimer += Time.deltaTime;
+                if (normalAttackCoolTimer >= normalAttackCoolTime)
+                {
+                    NormalAttack(true);
+                    normalAttackCoolTimer = 0;
+                }
+            }
+        }        
+    }
+
+    private void Pattern2()
+    {
 
     }
-    //patternTable = new List<Pattern>();
 
-    //    // 패턴 세팅
-    //    MELEE = new Pattern(0, 5, 4);
-    //    RANGED1 = new Pattern(1, 4, 3);
-    //    RANGED2 = new Pattern(2, 10, 2);
-    //    LIQUID = new Pattern(3, 30, 1);
-    //    SUMMON = new Pattern(4, 30, 1);
+    private void SmashGround()
+    {
+        _animator.SetTrigger("SmashGround");
+        curBulletSpoilCount = 0;
+    }
 
-    //    patternTable.Add(MELEE);
-    //    patternTable.Add(RANGED1);
-    //    patternTable.Add(RANGED2);
+    public void SmashGround_ani()
+    {
 
-    //    curPattern = MELEE;
-    //    curCoolTime = 0;
-    //    timer = 0;
-    //    curPatternCount = 0;
+        for (byte i = 0; i < 20; i++)
+        {
+            float randomX = Random.Range(-100, 100);
+            float randomY = Random.Range(50, 100);
 
-    //    curMoveSpeed = maxMoveSpeed; 
-    //    curCoolTime = MELEE.patternCount;
-    //    timer = curCoolTime;
-    //    liquidCor = SetLiquid();
+            float randomX2 = Random.Range(-200, 200);
+            float randomY2 = Random.Range(100, 150);
 
-    //    bulletMng = GameObject.Find("Bullets").GetComponent<cBulletManager>();
-    //}
+            bulletManager.LaunchBullet(
+                new Vector3(smashGroundPos.position.x + randomX,
+                smashGroundPos.position.y + 10,
+                smashGroundPos.position.z),
+                true,
+                new Vector3(smashGroundPos.position.x + randomX2,
+                smashGroundPos.position.y + randomY2,
+                smashGroundPos.position.z),
+                bulletDamage, 15.0f, 15.0f);
+        }
 
-    //protected override void FixedUpdate()
-    //{
-    //    base.FixedUpdate();
-    //}
+    }
 
-    //protected override void Move()
-    //{
-    //    switch (curPattern.patternNum)
-    //    {
-    //        // 근접 공격 및 이동 패턴
-    //        case 0:
-    //            if (curPatternCount > curPattern.patternCount)
-    //            {
-    //                ChangePattern();
-    //            }
+    private void SpoilBullet()
+    {
+        _animator.SetTrigger("SpoilBullet");
+        curNormalAttackCount = 0;
+        curBulletSpoilCount += 1;
+    }
 
-    //            if (timer >= curCoolTime)
-    //            {
-    //                curPatternCount += 1;
-    //            }
-    //            base.Move();
-    //            break;
+    public void SpoilBullet_ani()
+    {
+        float randomY = Random.Range(-30, 30);
+        bulletManager.LaunchBullet(originObj.transform.position, true, 
+            new Vector3(cUtil._player.originObj.transform.position.x,
+            cUtil._player.originObj.transform.position.y + randomY, 
+            cUtil._player.originObj.transform.position.z) , 
+            bulletDamage, 20.0f);
+    }
 
-    //        // 원거리 공격
-    //        case 1:
-    //            if (curPatternCount > curPattern.patternCount)
-    //            {
-    //                Debug.Log("change Pattern");
-    //                ChangePattern();
-    //            }
+    private void NormalAttack(bool isNear)
+    {
+        if(isNear.Equals(true))
+        {
+            _animator.SetTrigger("NormalNearAttack");
+        }
+        else
+        {
+            _animator.SetTrigger("NormalFarAttack");
+        }
 
-    //            if (timer >= curCoolTime)
-    //            {
-    //                RangeAttack1();
-    //                curPatternCount += 1;
-    //                timer = 0;
-    //            }
-    //            else
-    //            {
-    //                timer += Time.deltaTime;
-    //            }
-    //            Debug.Log("pattern2");
-    //            break;
+        curNormalAttackCount += 1;
+    }
 
-    //        // 원거리 공격
-    //        case 2:
-    //            if (curPatternCount > curPattern.patternCount)
-    //            {
-    //                Debug.Log("change Pattern");
-    //                ChangePattern();
-    //            }
-    //            if (timer >= curCoolTime)
-    //            {
-    //                RangeAttack2();
-    //                curPatternCount += 1;
-    //                timer = 0;
-    //                break;
-    //            }
-    //            else
-    //            {
-    //                timer += Time.deltaTime;
-    //            }
-    //            Debug.Log("pattern3");
-    //            break;
+    public void NormalNearAttack_ani()
+    {
+        if(isInAttackRange.Equals(true))
+        {
+            cUtil._player.ReduceHp(damage.value, dir);
+        }
+    }
 
-    //        // 액체 상태 공격 (장판)
-    //        case 3:
-    //            if (curPatternCount > curPattern.patternCount)
-    //            {
-    //                Debug.Log("change Pattern");
-    //                StopCoroutine(liquidCor);
-    //                ChangePattern();
-    //            }
-    //            if (timer >= curCoolTime)
-    //            {
-    //                StartCoroutine(liquidCor);
-    //                curPatternCount += 1;
-    //                timer = 0;
-    //                break;
-    //            }
-    //            else
-    //            {
-    //                timer += Time.deltaTime;
-    //            }
-    //            Debug.Log("pattern4");
-    //            break;
+    public void NormalFarAttack_ani()
+    {
+        bulletManager.LaunchBullet(originObj.transform.position, true, cUtil._player.originObj.transform.position, bulletDamage, 15.0f);
+    }
 
-    //        // 슬라임 소환
-    //        case 4:
-    //            if (curPatternCount > curPattern.patternCount)
-    //            {
-    //                Debug.Log("change Pattern");
-    //                ChangePattern();
-    //            }
-    //            if (timer >= curCoolTime)
-    //            {
-    //                SummonSlime();
-    //                curPatternCount += 1;
-    //                timer = 0;
-    //                break;
-    //            }
-    //            else
-    //            {
-    //                timer += Time.deltaTime;
-    //            }
-    //            Debug.Log("pattern5");
-    //            break;
-    //    }
-    //}
+    public override void ReduceHp(long pVal)
+    {
+        curHp.value -= pVal;
 
-    //private void RangeAttack1()
-    //{
-    //    bulletMng.SetBullet(3, 0.2f, originObj.transform.position, false, playerPos);
-    //}
-
-    //private void RangeAttack2()
-    //{
-    //    bulletMng.SetBullet(5, 0.5f, originObj.transform.position, true, playerPos);
-    //}
-
-    //public override void ReduceHp(long pVal)
-    //{
-    //    base.ReduceHp(pVal);
-
-    //    if (curHp.value <= 0)
-    //    {
-    //        SummonSlime();
-    //    }
-
-    //    if (curHp.value <= maxHp.value * 0.5f)
-    //    {
-    //        patternTable.Add(LIQUID);
-    //    }
-
-    //    if(curHp.value <= maxHp.value * 0.2f)
-    //    {
-    //        patternTable.Add(SUMMON);
-    //    }
-    //}
-
-    //public override void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5F)
-    //{
-    //    base.ReduceHp(pVal, pDir, pVelocity);
-
-    //    if (curHp.value <= 0)
-    //    {
-    //        SummonSlime();
-    //    }
-
-    //    if (curHp.value <= maxHp.value * 0.5f)
-    //    {
-    //        patternTable.Add(LIQUID);
-    //    }
-
-    //    if (curHp.value <= maxHp.value * 0.2f)
-    //    {
-    //        patternTable.Add(SUMMON);
-    //    }
-    //}
+        //if (curHp.value <= 0)
+        //{
+        //    coolTimer = 0;
+        //    curHp.value = 0;
+        //    isDead = true;
+        //    _animator.SetTrigger("Dead");
+        //    img_curHp.transform.parent.gameObject.SetActive(false);
+        //    originObj.GetComponent<BoxCollider2D>().enabled = false;
+        //    // 리스폰 타이머 활성화
+        //    StartCoroutine(RespawnTimer());
+        //}
+        //if (isDead.Equals(false))
+        //    _animator.SetTrigger("GetHit");
 
 
-    //IEnumerator SetLiquid()
-    //{
-    //    liquid.SetActive(true);
+        SetHp();
+    }
 
-    //    float height = this.gameObject.transform.position.y - 1500f;
-    //    this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y,
-    //        this.gameObject.transform.position.z - 1000f);
-    //    float liquidZPos = liquid.transform.position.z + 1000f;
+    // 공격자가 있는 경우 공격자가 바라보는 방향을 pDir로 받음
+    public override void ReduceHp(long pVal, Vector3 pDir, float pVelocity = 7.5f)
+    {
+        curHp.value -= pVal;
 
-    //    while(true)
-    //    {
-    //        liquid.transform.position = new Vector3(liquid.transform.position.x, height, liquidZPos);
-    //        height += 1f;
+        //// 체력이 0 이하로 떨어질 시 코루틴 중지, 리스폰 타이머 활성화
+        //if (curHp.value <= 0)
+        //{
+        //    curHp.value = 0;
+        //    isDead = true;
+        //    _animator.SetTrigger("Dead");
+        //    img_curHp.transform.parent.gameObject.SetActive(false);
+        //    originObj.GetComponent<BoxCollider2D>().enabled = false;
+        //    // 리스폰 타이머 활성화
+        //    Respawn();
+        //}
 
-    //        if (liquid.transform.position.y >= this.gameObject.transform.position.y)
-    //        {
-    //            break;
-    //        }
+        //if (isDead.Equals(false))
+        //    _animator.SetTrigger("GetHit");
+        //SetHp();
 
-    //        yield return new WaitForFixedUpdate();
-    //    }
+        //// 넉백
+        //if (curHp.value > 0)
+        //    StartKnockBack(pDir, pVelocity);
 
-    //    this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y,
-    //        this.gameObject.transform.position.z + 1000f);
-    //    liquid.SetActive(false);
-    //}
-
-    //private void SummonSlime()
-    //{
-    //    GameObject slime1 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), 
-    //        new Vector3(this.gameObject.transform.position.x - 100f, 
-    //        this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-
-    //    GameObject slime2 = Instantiate(Resources.Load<GameObject>(cPath.PrefabPath() + "Monster/Monster_Slime"), 
-    //        new Vector3(this.gameObject.transform.position.x + 100f, 
-    //        this.transform.position.y, this.transform.position.z), Quaternion.identity, this.transform.parent);
-    //}
+        SetHp();
+    }
 }
