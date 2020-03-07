@@ -51,6 +51,7 @@ public class cDungeonNormal_processor : MonoBehaviour
 
     //보스전일 때
     public cBoss_theme1_stage1 boss_slime;
+    public cBoss_Theme1_SkeletonMage boss_SkeletonMage;
 
     //필드 던전
     private void Start()
@@ -177,6 +178,7 @@ public class cDungeonNormal_processor : MonoBehaviour
 
             //씬별로 보스 다르게 초기화해야함
             boss_slime.InitBoss();
+            boss_SkeletonMage.InitBoss();
         }
 
         UpdateValue();

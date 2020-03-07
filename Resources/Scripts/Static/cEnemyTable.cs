@@ -234,6 +234,18 @@ public static class cEnemyTable
                     0,
                     new cProperty("Rocks", pRocks));
                 return es;
+            
+            //보스_틀딱해골법사
+            case 52:
+                pRocks = Random.Range((int)10, (int)20);
+                es.Init("Boss_SkeletonMage",
+                    new cProperty("Damage", 1),
+                    160,
+                    new cProperty("MaxHp", 25),
+                    new cProperty("CurHp", 25),
+                    0,
+                    new cProperty("Rocks", pRocks));
+                return es;
         }
 
         return es;

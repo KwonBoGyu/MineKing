@@ -118,7 +118,7 @@ public class cBoss_theme1_stage1 : cEnemy_monster
                     normalAttackCoolTimer = 0;
                 }
             }
-        }        
+        }
     }
 
     private void Pattern2()
